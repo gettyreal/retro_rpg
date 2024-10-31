@@ -12,11 +12,11 @@ import entity.Player;
 public class GamePanel extends JPanel implements Runnable {
     // screen setting
 
-    final int originalTileSize = 64; // 16 x 16 tile come un minecraft
-    final double scale = 1.5; // moltiplicatore dei pixel
-    public final int tileSize = (int)(originalTileSize * scale); // 48 x 48
-    final int maxScreenCol = 14; // 16 colonne
-    final int maxScreenRow = 10; // 12 rown quindi 4:3
+    final int originalTileSize = 64; // 64 x 64
+    final double scale = 1; // moltiplicatore dei pixel
+    public final int tileSize = (int)(originalTileSize * scale); // 64 x 64
+    final int maxScreenCol = 16; // 16 colonne
+    final int maxScreenRow = 12; // 12 rown quindi 4:3
     final int screenWidth = tileSize * maxScreenCol; // 768px
     final int screenHeight = tileSize * maxScreenRow; // 576px
     int fps = 60;
