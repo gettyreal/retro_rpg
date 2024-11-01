@@ -30,6 +30,32 @@ public class Player extends Entity {
     }
 
     private void loadFiles() {
+        int indexFile = 0;
+        int indexArray = 0;
+        for (int i = 0; i < 16; i++) {
+            if (indexArray == 4) {
+                indexArray = 0;
+            }
+            String fileName = "player/player_" + indexFile + ".png";
+            try {
+                if (i < 4) {
+                    this.down[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                    
+                } else if(i < 8) {
+                    this.up[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                                        
+                } else if (i < 12) {
+                    this.left[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                    
+                } else {
+                    this.right[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                }
+                indexFile++;
+                indexArray++;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /*
+    private void loadFiles() {
         int indexRow = 0;
         for (int i = 0; i < 4; i++) {
             loadRow(indexRow, i);
@@ -62,6 +88,8 @@ public class Player extends Entity {
         }
     }
 
+    */
+
     public void update() {
 
         if (keyH.checkMovement()) {
@@ -81,8 +109,8 @@ public class Player extends Entity {
             }
 
             this.spriteCounter++;
-            if (spriteCounter > 7) { // ogni 10 update cambia sprite
-                if (spriteNumber == 7) { // se le sprite sono finite l'animazione riparte
+            if (spriteCounter > 10) { // ogni 10 update cambia sprite
+                if (spriteNumber == 3) { // se le sprite sono finite l'animazione riparte
                     spriteNumber = 0;
                 } else {
                     spriteNumber++; // aumenta la sprite
@@ -108,6 +136,6 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, this.x, this.y, playerImage.getWidth(), playerImage.getHeight(), null);
+        g2.drawImage(playerImage, this.x, this.y, playerImage.getWidth()*2, playerImage.getHeight()*2, null);
     }
 }
