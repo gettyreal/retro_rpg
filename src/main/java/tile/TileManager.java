@@ -75,12 +75,6 @@ public class TileManager {
                     row++;
                 }
             }
-
-            for (int i = 0; i < gp.maxScreenCol; i++) {
-                for (int j = 0; j < gp.maxScreenRow; j++) {
-                    System.out.println(mapTileNum[i][j]);
-                }
-            }
             br.close();
         } catch (Exception e) {
         }
