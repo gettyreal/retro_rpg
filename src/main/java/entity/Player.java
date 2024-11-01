@@ -54,41 +54,6 @@ public class Player extends Entity {
             }
         }
     }
-    /*
-    private void loadFiles() {
-        int indexRow = 0;
-        for (int i = 0; i < 4; i++) {
-            loadRow(indexRow, i);
-            indexRow += 64;
-            System.out.println();
-        }
-    }
-
-    private void loadRow(int indexRow, int index) {
-        for (int i = 0; i < 8; i++) {
-            String filename = "player/tile_" + indexRow + "_" + ((i + 1) * 64) + ".png";
-            try {
-                switch (index) {
-                    case 0:
-                        this.up[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-                        break;
-                    case 1:
-                        this.left[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-                        break;
-                    case 2:
-                        this.down[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-                        break;
-                    case 3:
-                        this.right[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-                        break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    */
 
     public void update() {
 
