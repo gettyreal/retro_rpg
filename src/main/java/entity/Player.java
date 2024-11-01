@@ -108,6 +108,6 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, this.x, this.y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(playerImage, this.x, this.y, playerImage.getWidth(), playerImage.getHeight(), null);
     }
 }
