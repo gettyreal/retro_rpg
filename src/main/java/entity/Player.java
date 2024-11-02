@@ -11,25 +11,28 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
         setDefaultValues(); // set spawn coordinates
         getPlayerImage();
+
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
     }
 
     public void setDefaultValues() {
-        this.x = 100;
-        this.y = 100;
+        this.worldX = 23 * gp.tileSize;
+        this.worldY = 21 * gp.tileSize;
         this.speed = 2;
         this.direction = "up";
     }
 
     public void getPlayerImage() {
-        loadFiles();
-    }
-
-    private void loadFiles() {
         int indexFile = 0;
         int indexArray = 0;
         for (int i = 0; i < 16; i++) {
@@ -61,16 +64,16 @@ public class Player extends Entity {
             // move the player by playerSpeed
             if (keyH.upPressed == true) {
                 this.direction = "up";
-                this.y -= this.speed;
+                this.worldY -= this.speed;
             } else if (keyH.downPressed == true) {
                 this.direction = "down";
-                this.y += this.speed;
+                this.worldY += this.speed;
             } else if (keyH.leftPressed == true) {
                 this.direction = "left";
-                this.x -= this.speed;
+                this.worldX -= this.speed;
             } else if (keyH.rightPressed == true) {
                 this.direction = "right";
-                this.x += this.speed;
+                this.worldX += this.speed;
             }
 
             this.spriteCounter++;
@@ -101,6 +104,6 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, this.x, this.y, playerImage.getWidth()*2, playerImage.getHeight()*2, null);
+        g2.drawImage(playerImage, this.screenX, this.screenY, playerImage.getWidth()*2, playerImage.getHeight()*2, null);
     }
 }

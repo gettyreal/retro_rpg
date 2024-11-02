@@ -12,19 +12,25 @@ import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
     // screen setting
-
     final int originalTileSize = 16; // 64 x 64
     final double scale = 3; // moltiplicatore dei pixel
     public final int tileSize = (int)(originalTileSize * scale); // 64 x 64
     public final int maxScreenCol = 16; // 16 colonne
     public final int maxScreenRow = 12; // 12 rown quindi 4:3
-    final int screenWidth = tileSize * maxScreenCol; // 768px
-    final int screenHeight = tileSize * maxScreenRow; // 576px
+    public final int screenWidth = tileSize * maxScreenCol; // 768px
+    public final int screenHeight = tileSize * maxScreenRow; // 576px
+    
     int fps = 60;
+
+    //world settings
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     KeyHandler keyH = new KeyHandler(); // get key input
     Thread gameThread; // thread per clock
-    Player player = new Player(this, keyH); //instanzia player
+    public Player player = new Player(this, keyH); //instanzia player
     TileManager tileM = new TileManager(this);
 
     public GamePanel() {
