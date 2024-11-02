@@ -20,41 +20,33 @@ public class TileManager {
         mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
         getTileImage();
         loadMap("maps/map01.txt");
+        //loadMap("maps/vegetation-map.txt");
     }
 
     public void getTileImage() {
-
         try {
-            // Carica l'immagine del tileset
-            BufferedImage tileset = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/island-tileset.png"));
-
+            // Carica l'immagine unica con tutte le tile in fila
+            BufferedImage tileset = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/island_tileSet.png"));
+    
             // Dimensioni di ciascuna tile
             int tileWidth = 16;
             int tileHeight = 16;
-            int tileSpacing = 1; // Spazio nero di separazione
-
-            // Calcola il numero di tile in base alle dimensioni dell'immagine
-            int rows = (tileset.getHeight() + tileSpacing) / (tileHeight + tileSpacing);
-            int cols = (tileset.getWidth() + tileSpacing) / (tileWidth + tileSpacing);
-
-            // Array per contenere le immagini delle singole tile
-            tile = new Tile[rows * cols];  //specifica dimensioni array tile.
-
+            int totalTiles = 24; // Numero totale di tile
+    
+            // Inizializza l'array per contenere le immagini delle singole tile
+            tile = new Tile[totalTiles];
+    
             // Estrai ciascuna tile e salvala nell'array
-            int index = 0;
-            for (int y = 0; y < rows; y++) {
-                for (int x = 0; x < cols; x++) {
-                    int tileX = x * (tileWidth + tileSpacing);
-                    int tileY = y * (tileHeight + tileSpacing);
-                    tile[index] = new Tile();
-                    tile[index].image = tileset.getSubimage(tileX, tileY, tileWidth, tileHeight);
-                    index++;
-                }
+            for (int i = 0; i < totalTiles; i++) {
+                int tileX = i * tileWidth;
+                tile[i] = new Tile();
+                tile[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
     public void loadMap(String fileName) {
         try {
