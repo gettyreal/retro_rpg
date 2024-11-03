@@ -13,44 +13,47 @@ import main.GamePanel;
 public class TileManager {
     GamePanel gp;
     Tile[] tile;
+    Tile[] structures;
     int mapTileNum[][];
+    int mapStructNum[][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        getTileImage();
-        loadMap("maps/worldMap01");
-        // loadMap("maps/vegetation-map.txt");
+        mapStructNum = new int[gp.maxWorldCol][gp.maxWorldCol];
+        tile = new Tile[48];
+        structures = new Tile[87];
+        getTileImage(this.tile, "tiles/tileset.png");
+        getTileImage(this.structures, "tiles/structures.png");
+        loadMap(this.mapTileNum ,"maps/worldMap01");
+        loadMap(this.mapStructNum, "maps/structureMap01");
     }
 
-    public void getTileImage() {
+    public void getTileImage(Tile[] tilesheet, String fileName) {
         try {
-            // Carica l'immagine unica con tutte le tile in fila
-            BufferedImage tileset = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/tileset.png"));
+            //carica intero tileset
+            BufferedImage tileset = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
 
             // Dimensioni di ciascuna tile
             int tileWidth = 16;
             int tileHeight = 16;
-            int totalTiles = 35; // Numero totale di tile
+            int totalTiles = tileset.getWidth() / tileWidth; // total tiles
 
-            // Inizializza l'array per contenere le immagini delle singole tile
-            tile = new Tile[totalTiles];
-
-            // Estrai ciascuna tile e salvala nell'array
+            //estrazione dal tileset e salvataggio
             for (int i = 0; i < totalTiles; i++) {
                 int tileX = i * tileWidth;
-                tile[i] = new Tile();
-                tile[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
+                tilesheet[i] = new Tile();
+                tilesheet[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadMap(String fileName) {
+    public void loadMap(int[][] mapIndex,String fileName) {
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName); // import txt file
-            BufferedReader br = new BufferedReader(new InputStreamReader(is)); // read txt file
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName); // import della mappa
+            BufferedReader br = new BufferedReader(new InputStreamReader(is)); // reader
             int col = 0;
             int row = 0;
             while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
@@ -58,7 +61,7 @@ public class TileManager {
                 while (col < gp.maxWorldCol) {
                     String numbers[] = line.split(" "); // splitta la linea in un array di stringhe dallo spazio
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num; // prende il numero e lo mette nell'array
+                    mapIndex[col][row] = num; // prende il numero e lo mette nell'array
                     col++;
                 }
                 if (col == gp.maxWorldCol) {
@@ -78,6 +81,7 @@ public class TileManager {
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = mapTileNum[worldCol][worldRow];
+            int structureNum = mapStructNum[worldCol][worldRow];
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -88,6 +92,7 @@ public class TileManager {
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(structures[structureNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             worldCol++;
             if (worldCol == gp.maxWorldCol) {
