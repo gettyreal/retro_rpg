@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol; // 768px
     public final int screenHeight = tileSize * maxScreenRow; // 576px
     
+    //fps
     int fps = 60;
 
     //world settings
@@ -31,7 +32,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler(); // get key input
     Thread gameThread; // thread per clock
     public Player player = new Player(this, keyH); //instanzia player
-    TileManager tileM = new TileManager(this);
+    //layer 1
+    TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/worldMap01", "tiles/collisions/groundCollision.txt");
+    //layer 2
+    TileManager tileM2 = new TileManager(this, "tiles/structures.png", "maps/structureMap01", "tiles/collisions/structureCollision.txt");
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     public GamePanel() {
@@ -78,8 +82,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2); //draw the tiles
+        tileM1.draw(g2); //draw ground layer
         player.draw(g2); //draw player
+        tileM2.draw(g2); //draw structure layer
 
         g2.dispose();
     }

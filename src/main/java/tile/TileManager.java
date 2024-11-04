@@ -12,22 +12,15 @@ import main.GamePanel;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tile;
-    public Tile[] structures;
-    int mapTileNum[][];
-    public int mapStructNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
-    public TileManager(GamePanel gp) {
+    public TileManager(GamePanel gp, String tilesetFileImg,String mapFileName, String collisionFileName) {
         this.gp = gp;
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        mapStructNum = new int[gp.maxWorldCol][gp.maxWorldCol];
-        tile = new Tile[48];
-        structures = new Tile[87];
-        getTileImage(this.tile, "tiles/tileset.png");
-        getTileImage(this.structures, "tiles/structures.png");
-        loadMap(this.mapTileNum ,"maps/worldMap01");
-        loadMap(this.mapStructNum, "maps/structureMap01");
-        setTileCollision();
+        getTileImage(this.tile, tilesetFileImg);
+        loadMap(this.mapTileNum, mapFileName);
+        setTileCollision(collisionFileName);
     }
 
     public void getTileImage(Tile[] tilesheet, String fileName) {
@@ -40,11 +33,13 @@ public class TileManager {
             int tileHeight = 16;
             int totalTiles = tileset.getWidth() / tileWidth; // total tiles
 
+            tile = new Tile[totalTiles];
+
             //estrazione dal tileset e salvataggio
             for (int i = 0; i < totalTiles; i++) {
                 int tileX = i * tileWidth;
-                tilesheet[i] = new Tile();
-                tilesheet[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
+                tile[i] = new Tile();
+                tile[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,9 +71,19 @@ public class TileManager {
         }
     }
 
-    public void setTileCollision() {
-        for(int i = 1; i < structures.length; i++) {
-            structures[i].collision = true;
+    public void setTileCollision(String fileName) {
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            String indexes[] = line.split(" ");
+            for (int i = 0; i < tile.length; i++) {
+                if (Integer.parseInt(indexes[i]) == 1) {
+                    tile[i].collision = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -88,7 +93,7 @@ public class TileManager {
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = mapTileNum[worldCol][worldRow];
-            int structureNum = mapStructNum[worldCol][worldRow];
+            //int structureNum = mapStructNum[worldCol][worldRow];
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -99,7 +104,7 @@ public class TileManager {
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-                g2.drawImage(structures[structureNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                //g2.drawImage(structures[structureNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             worldCol++;
             if (worldCol == gp.maxWorldCol) {
