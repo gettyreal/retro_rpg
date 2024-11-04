@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -21,12 +22,14 @@ public class Player extends Entity {
         setDefaultValues(); // set spawn coordinates
         getPlayerImage();
 
+        this.collisionArea = new Rectangle(7, 17, 20, 15);
+
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
     }
 
     public void setDefaultValues() {
-        this.worldX = 23 * gp.tileSize;
+        this.worldX = 21 * gp.tileSize;
         this.worldY = 21 * gp.tileSize;
         this.speed = 2;
         this.direction = "up";
@@ -42,11 +45,11 @@ public class Player extends Entity {
             String fileName = "player/player_" + indexFile + ".png";
             try {
                 if (i < 4) {
-                    this.down[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                    
-                } else if(i < 8) {
-                    this.up[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                                        
+                    this.down[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                } else if (i < 8) {
+                    this.up[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
                 } else if (i < 12) {
-                    this.left[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));                    
+                    this.left[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
                 } else {
                     this.right[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
                 }
@@ -64,16 +67,33 @@ public class Player extends Entity {
             // move the player by playerSpeed
             if (keyH.upPressed == true) {
                 this.direction = "up";
-                this.worldY -= this.speed;
             } else if (keyH.downPressed == true) {
                 this.direction = "down";
-                this.worldY += this.speed;
             } else if (keyH.leftPressed == true) {
                 this.direction = "left";
-                this.worldX -= this.speed;
             } else if (keyH.rightPressed == true) {
                 this.direction = "right";
-                this.worldX += this.speed;
+            }
+
+            // check collision
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            if (collisionOn == false) {
+                switch (direction) {
+                    case "up":
+                        this.worldY -= this.speed;
+                        break;
+                    case "down":
+                        this.worldY += this.speed;
+                        break;
+                    case "left":
+                        this.worldX -= this.speed;
+                        break;
+                    case "right":
+                        this.worldX += this.speed;
+
+                        break;
+                }
             }
 
             this.spriteCounter++;
@@ -104,6 +124,7 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, this.screenX, this.screenY, playerImage.getWidth()*2, playerImage.getHeight()*2, null);
+        g2.drawImage(playerImage, this.screenX, this.screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2,
+                null);
     }
 }

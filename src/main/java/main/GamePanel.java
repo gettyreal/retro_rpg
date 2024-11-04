@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; // thread per clock
     public Player player = new Player(this, keyH); //instanzia player
     TileManager tileM = new TileManager(this);
+    public CollisionChecker cChecker = new CollisionChecker(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));

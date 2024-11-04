@@ -13,9 +13,9 @@ import main.GamePanel;
 public class TileManager {
     GamePanel gp;
     Tile[] tile;
-    Tile[] structures;
+    public Tile[] structures;
     int mapTileNum[][];
-    int mapStructNum[][];
+    public int mapStructNum[][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -27,6 +27,7 @@ public class TileManager {
         getTileImage(this.structures, "tiles/structures.png");
         loadMap(this.mapTileNum ,"maps/worldMap01");
         loadMap(this.mapStructNum, "maps/structureMap01");
+        setTileCollision();
     }
 
     public void getTileImage(Tile[] tilesheet, String fileName) {
@@ -72,6 +73,12 @@ public class TileManager {
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setTileCollision() {
+        for(int i = 1; i < structures.length; i++) {
+            structures[i].collision = true;
         }
     }
 

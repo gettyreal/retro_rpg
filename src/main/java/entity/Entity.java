@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 //super class per player mostri npc entita' ecc.
@@ -17,4 +18,8 @@ public class Entity {
 
     public int spriteCounter = 0; //index of sprite active on screen
     public int spriteNumber = 0;
+
+    //collisions
+    public Rectangle collisionArea;
+    public boolean collisionOn = false;
 }
