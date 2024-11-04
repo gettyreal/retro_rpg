@@ -32,10 +32,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler(); // get key input
     Thread gameThread; // thread per clock
     public Player player = new Player(this, keyH); //instanzia player
-    //layer 1
-    TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/worldMap01", "tiles/collisions/groundCollision.txt");
-    //layer 2
-    TileManager tileM2 = new TileManager(this, "tiles/structures.png", "maps/structureMap01", "tiles/collisions/structureCollision.txt");
+    // map layers
+    TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/layer1", "tiles/collisions.txt");
+    TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/layer2", "tiles/collisions.txt");
+    TileManager tileM3 = new TileManager(this, "tiles/tileset.png", "maps/layer3", "tiles/collisions.txt");
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     public GamePanel() {
@@ -82,9 +82,10 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM1.draw(g2); //draw ground layer
+        tileM1.draw(g2); 
+        tileM2.draw(g2); 
         player.draw(g2); //draw player
-        tileM2.draw(g2); //draw structure layer
+        tileM3.draw(g2);
 
         g2.dispose();
     }
