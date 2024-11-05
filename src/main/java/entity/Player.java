@@ -22,7 +22,7 @@ public class Player extends Entity {
         setDefaultValues(); // set spawn coordinates
         getPlayerImage();
 
-        this.collisionArea = new Rectangle(7, 17, 20, 15);
+        this.collisionArea = new Rectangle(7, 31, 20, 15);
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -83,7 +83,6 @@ public class Player extends Entity {
             gp.tileM2.cChecker.checkTile(this);
             gp.tileM3.cChecker.checkTile(this);
 
-
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
@@ -129,7 +128,7 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, this.screenX, this.screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2,
+        g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2,
                 null);
     }
 }
