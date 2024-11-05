@@ -77,7 +77,13 @@ public class Player extends Entity {
 
             // check collision
             collisionOn = false;
-            gp.cChecker.checkTile(this);
+
+            // check collision on all layers
+            gp.tileM1.cChecker.checkTile(this);
+            gp.tileM2.cChecker.checkTile(this);
+            gp.tileM3.cChecker.checkTile(this);
+
+
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
@@ -91,7 +97,6 @@ public class Player extends Entity {
                         break;
                     case "right":
                         this.worldX += this.speed;
-
                         break;
                 }
             }

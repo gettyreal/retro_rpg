@@ -8,15 +8,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
+
+import main.CollisionChecker;
 import main.GamePanel;
 
 public class TileManager {
     GamePanel gp;
+    public CollisionChecker cChecker;
     public Tile[] tile;
     public int mapTileNum[][];
 
     public TileManager(GamePanel gp, String tilesetFileImg,String mapFileName, String collisionFileName) {
         this.gp = gp;
+        cChecker = new CollisionChecker(gp, this);
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage(this.tile, tilesetFileImg);
         loadMap(this.mapTileNum, mapFileName);
