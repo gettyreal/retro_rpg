@@ -82,6 +82,7 @@ public class Player extends Entity {
             gp.tileM1.cChecker.checkTile(this);
             gp.tileM2.cChecker.checkTile(this);
             gp.tileM3.cChecker.checkTile(this);
+            gp.tileM4.cChecker.checkTile(this);
 
             if (collisionOn == false) {
                 switch (direction) {
