@@ -59,8 +59,10 @@ public class TileManager {
             while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
                 String line = br.readLine();
                 while (col < gp.maxWorldCol) {
-                    String numbers[] = line.split(" "); // splitta la linea in un array di stringhe dallo spazio
+                    String numbers[] = line.split(","); // splitta la linea in un array di stringhe dallo spazio
                     int num = Integer.parseInt(numbers[col]);
+                    if(num == -1)
+                        num = 48; //mette trasparente al posto che nullo (il tile trasparente piu vicino e' 48 sorry for bad dev)
                     mapIndex[col][row] = num; // prende il numero e lo mette nell'array
                     col++;
                 }

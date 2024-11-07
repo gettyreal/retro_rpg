@@ -33,9 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; // thread per clock
     public Player player = new Player(this, keyH); //instanzia player
     // map layers
-    public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/layer1", "tiles/collisions.txt");
-    public TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/layer2", "tiles/collisions.txt");
-    public TileManager tileM3 = new TileManager(this, "tiles/tileset.png", "maps/layer3", "tiles/collisions.txt");
+    public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_Layer1.csv", "tiles/collisions.txt");
+    public TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_Layer2.csv", "tiles/collisions.txt");
+    public TileManager tileM3 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_Layer3.csv", "tiles/collisions.txt");
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
