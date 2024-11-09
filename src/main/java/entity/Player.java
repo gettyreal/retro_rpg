@@ -92,6 +92,8 @@ public class Player extends Entity {
             objIndex = gp.tileM2.cChecker.checkObject(this, true);
             objIndex = gp.tileM3.cChecker.checkObject(this, true);
             objIndex = gp.tileM4.cChecker.checkObject(this, true);
+            pickupObject(objIndex); //pick up object when colliding for now
+
 
             if (collisionOn == false) {
                 switch (direction) {
@@ -119,6 +121,14 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
+        }
+    }
+
+    public void pickupObject(int index) {
+        if (index != 999) {
+            if (gp.obj.get(index).pickable == true) { //index == 999 not object.
+                gp.aSetter.removeObject(index); //deletes object == picks it up
+            }   
         }
     }
 

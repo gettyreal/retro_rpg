@@ -1,14 +1,15 @@
 package object;
 
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
-public class OBJ_PokeChest extends SuperObject{
-    public OBJ_PokeChest() {
-        this.name = "pokeChest";
-        this.collision = true;
-        this.pickable = false;
-        loadImage("object/poke-chest.png");
+public class OBJ_PokeBall extends SuperObject {
+    public OBJ_PokeBall() {
+        this.name = "pokeBall";
+        this.collision = false;
+        this.pickable = true;
+        loadImage("object/pokeball.png");
     }
 
     private void loadImage(String filename) {

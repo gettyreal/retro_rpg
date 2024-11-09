@@ -9,6 +9,7 @@ public class SuperObject {
     public BufferedImage image;
     public String name;
     public boolean collision = false;
+    public boolean pickable = false;
     public int worldX, worldY;
     public Rectangle collisionArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX = 0;

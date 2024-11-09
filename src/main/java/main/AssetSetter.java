@@ -1,5 +1,6 @@
 package main;
 
+import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
 import object.SuperObject;
 
@@ -13,6 +14,9 @@ public class AssetSetter {
     //adds obj into the game
     public void setObject() {
         addObject(new OBJ_PokeChest(), 27, 23);
+        addObject(new OBJ_PokeBall(), 5, 10);
+        addObject(new OBJ_PokeBall(), 5, 19);
+        addObject(new OBJ_PokeBall(), 10, 24);
     }
 
     //adds a new object into the game
@@ -29,8 +33,6 @@ public class AssetSetter {
     public void removeObject(int index) {
         if (index >= 0 && index < gp.obj.size()) {
             gp.obj.remove(index);
-        } else {
-            System.out.println("Index out of bounds.");
         }
     }
     
