@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -31,7 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyH = new KeyHandler(); // get key input
     Thread gameThread; // thread per clock
+    public AssetSetter aSetter = new AssetSetter(this); //instantiace obj and entities
     public Player player = new Player(this, keyH); //instanzia player
+    public ArrayList<SuperObject> obj = new ArrayList<>(); //obj in the game (10 can be dysplayed in the screen);
     // map layers
     public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer1.csv", "tiles/collisions.txt");
     public TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer2.csv", "tiles/collisions.txt");
@@ -44,6 +48,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame() { //set default object before game starts
+        aSetter.setObject();
     }
 
     public void startGameThread() {
@@ -84,6 +92,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM1.draw(g2); 
         tileM2.draw(g2); 
+
+        for (int i = 0; i < obj.size(); i++) {
+            if (obj.get(i) != null) {
+                obj.get(i).draw(g2, this);
+            }
+        }
 
         player.draw(g2); //draw player
         
