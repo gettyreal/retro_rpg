@@ -23,6 +23,8 @@ public class Player extends Entity {
         getPlayerImage();
 
         this.collisionArea = new Rectangle(7, 31, 20, 15);
+        solidAreaDefaultX = collisionArea.x;
+        solidAreaDefaultY = collisionArea.y;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -83,6 +85,13 @@ public class Player extends Entity {
             gp.tileM2.cChecker.checkTile(this);
             gp.tileM3.cChecker.checkTile(this);
             gp.tileM4.cChecker.checkTile(this);
+
+            //check objcets collison
+            int objIndex;
+            objIndex = gp.tileM1.cChecker.checkObject(this, true);
+            objIndex = gp.tileM2.cChecker.checkObject(this, true);
+            objIndex = gp.tileM3.cChecker.checkObject(this, true);
+            objIndex = gp.tileM4.cChecker.checkObject(this, true);
 
             if (collisionOn == false) {
                 switch (direction) {
