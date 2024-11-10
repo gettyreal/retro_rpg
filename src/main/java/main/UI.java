@@ -21,7 +21,7 @@ public class UI {
     public void drawMessage(Graphics2D g2) {
         int objIndex = gp.OBJChecker.checkObject(gp.player, true); //return a valid integer only if the player collides with the obj
         //checks if the index of obj passed is the null obj
-        if (gp.OBJChecker.checkObject(gp.player, true) == 999) { //checks if entity is colliding with obj
+        if (gp.OBJChecker.checkObject(gp.player, true) == 999) { //checks if entity is colliding with obj null
             return;
         }
 
@@ -29,7 +29,12 @@ public class UI {
             draw(g2, "press E to pick up PokeBall", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
         }
         if (gp.obj.get(objIndex) instanceof OBJ_PokeChest) {
-            draw(g2, "press E to open PokeChest", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
+            OBJ_PokeChest pokechest = (OBJ_PokeChest)gp.obj.get(objIndex); //downcast to obtain opened attribute
+            if (pokechest.opened == false) { //checks if pokechest is opened or not
+                draw(g2, "press E to open PokeChest", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));   
+            } else {
+                draw(g2, "PokeChest already opened", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
+            }
         }
     }
 

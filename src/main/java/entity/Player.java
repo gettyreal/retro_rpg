@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_PokeChest;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -17,7 +18,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    int objIndex = 999; //set obj null value.
+    int objIndex = 999; // set obj null value.
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -119,17 +120,26 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-        pickupObject(objIndex); //removes the obj on e key press if possible
+        System.out.println(objIndex);
+        pickupObject(objIndex); // removes the obj on e key press if possible
     }
 
     public void pickupObject(int index) {
         if (index != 999) { // index == 999 null object.
-            if (gp.obj.get(index).pickable == true) { // check uf obj is pickable or not
-                if (keyH.Epressed == true) {
-                    gp.aSetter.removeObject(index);
-                    objIndex--; //prevents index out bounds exeption
-                    keyH.Epressed = false; //resets the key to prevent all obj to be picked up
+            if (keyH.Epressed == true) {
+                if (gp.obj.get(index) instanceof OBJ_PokeChest) {
+                    gp.obj.get(index).loadImage("object/poke-chest-open.png"); //changes imagine after opening chest
+                    OBJ_PokeChest pokeChest = (OBJ_PokeChest)gp.obj.get(index); //down cast to modify opened boolean
+                    pokeChest.opened = true; //put pokechst opened on true after user input
                 }
+
+                //it needs to be the last cause objindex--;
+                if (gp.obj.get(index).pickable == true) {
+                    gp.aSetter.removeObject(index);
+                    objIndex--; // prevents index out bounds exeption
+                }
+
+                keyH.Epressed = false; //resets the key
             }
         }
     }
@@ -137,7 +147,7 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         BufferedImage playerImage = null;
 
-        //gets player srites
+        // gets player srites
         switch (this.direction) {
             case "up":
                 playerImage = this.up[spriteNumber];
@@ -152,7 +162,7 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        //draws current player sprite
+        // draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2, null);
     }
 }

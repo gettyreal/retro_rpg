@@ -2,6 +2,10 @@ package object;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import java.awt.Rectangle;
 import main.GamePanel;
 
@@ -24,6 +28,14 @@ public class SuperObject {
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(this.image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
+    }
+
+    public void loadImage(String filename) {
+        try {
+            this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
