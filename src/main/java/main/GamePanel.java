@@ -114,6 +114,8 @@ public class GamePanel extends JPanel implements Runnable {
         tileM3.draw(g2);
         tileM4.draw(g2);
 
+        userInterface.drawMessage(g2); //draws messages
+
         g2.dispose();
     }
 

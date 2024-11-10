@@ -3,9 +3,6 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 
-import object.OBJ_PokeBall;
-import object.OBJ_PokeChest;
-
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -157,21 +154,5 @@ public class Player extends Entity {
         }
         //draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2, null);
-        drawPickupMessage(g2);
-    }
-
-    public void drawPickupMessage(Graphics2D g2) {
-        int objIndex = gp.tileM1.cChecker.checkObject(this, true);
-        //checks if the index of obj passed is the null obj
-        if (gp.OBJChecker.checkObject(this, true) == 999) { //checks if player is colliding with obj
-            return;
-        }
-
-        if (gp.obj.get(objIndex) instanceof OBJ_PokeBall) {
-            gp.userInterface.drawText(g2, "press E to pick up PokeBall", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
-        }
-        if (gp.obj.get(objIndex) instanceof OBJ_PokeChest) {
-            gp.userInterface.drawText(g2, "press E to open PokeChest", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
-        }
     }
 }
