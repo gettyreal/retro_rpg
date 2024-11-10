@@ -12,6 +12,10 @@ public class CollisionChecker {
         this.tileM = tileM;
     }
 
+    public CollisionChecker(GamePanel gp) {
+        this.gp = gp;
+    }
+
     public void checkTile(Entity entity) {
         int entityLeftWorldX = entity.worldX + entity.collisionArea.x;
         int entityRightWorldX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width;

@@ -13,6 +13,7 @@ import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
+
     // screen setting
     final int originalTileSize = 16; // 64 x 64
     final double scale = 3; // moltiplicatore dei pixel
@@ -31,11 +32,19 @@ public class GamePanel extends JPanel implements Runnable {
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
+    //game thread
+    Thread gameThread; //for clock
+
+    //game input and checkers
     KeyHandler keyH = new KeyHandler(); // get key input
-    Thread gameThread; // thread per clock
     public AssetSetter aSetter = new AssetSetter(this); //instantiace obj and entities
-    public Player player = new Player(this, keyH); //instanzia player
+    public UI userInterface = new UI(this); //instantiace user interface for messages
+    public CollisionChecker OBJChecker = new CollisionChecker(this);
+
+    //game entities and objects
+    public Player player = new Player(this, keyH); //instantiace player
     public ArrayList<SuperObject> obj = new ArrayList<>(); //obj in the game (10 can be dysplayed in the screen);
+
     // map layers
     public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer1.csv", "tiles/collisions.txt");
     public TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer2.csv", "tiles/collisions.txt");
@@ -88,11 +97,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2= (Graphics2D) g;
 
         tileM1.draw(g2); 
         tileM2.draw(g2); 
 
+        //obj drawing
         for (int i = 0; i < obj.size(); i++) {
             if (obj.get(i) != null) {
                 obj.get(i).draw(g2, this);

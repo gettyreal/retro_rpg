@@ -2,9 +2,14 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+
+import object.OBJ_PokeBall;
+import object.OBJ_PokeChest;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
@@ -14,6 +19,8 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+
+    int objIndex = 999; //set obj null value.
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -64,7 +71,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-
         if (keyH.checkMovement()) {
             // move the player by playerSpeed
             if (keyH.upPressed == true) {
@@ -86,14 +92,8 @@ public class Player extends Entity {
             gp.tileM3.cChecker.checkTile(this);
             gp.tileM4.cChecker.checkTile(this);
 
-            //check objcets collison
-            int objIndex;
-            objIndex = gp.tileM1.cChecker.checkObject(this, true);
-            objIndex = gp.tileM2.cChecker.checkObject(this, true);
-            objIndex = gp.tileM3.cChecker.checkObject(this, true);
-            objIndex = gp.tileM4.cChecker.checkObject(this, true);
-            pickupObject(objIndex); //pick up object when colliding for now
-
+            // check objcets collison + gets the value of the obj colliding
+            objIndex = gp.OBJChecker.checkObject(this, true);
 
             if (collisionOn == false) {
                 switch (direction) {
@@ -122,18 +122,25 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+        pickupObject(objIndex); //removes the obj on e key press if possible
     }
 
     public void pickupObject(int index) {
-        if (index != 999) {
-            if (gp.obj.get(index).pickable == true) { //index == 999 not object.
-                gp.aSetter.removeObject(index); //deletes object == picks it up
-            }   
+        if (index != 999) { // index == 999 null object.
+            if (gp.obj.get(index).pickable == true) { // check uf obj is pickable or not
+                if (keyH.Epressed == true) {
+                    gp.aSetter.removeObject(index);
+                    objIndex--; //prevents index out bounds exeption
+                    keyH.Epressed = false; //resets the key to prevent all obj to be picked up
+                }
+            }
         }
     }
 
     public void draw(Graphics2D g2) {
         BufferedImage playerImage = null;
+
+        //gets player srites
         switch (this.direction) {
             case "up":
                 playerImage = this.up[spriteNumber];
@@ -148,7 +155,23 @@ public class Player extends Entity {
                 playerImage = this.right[spriteNumber];
                 break;
         }
-        g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2,
-                null);
+        //draws current player sprite
+        g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2, null);
+        drawPickupMessage(g2);
+    }
+
+    public void drawPickupMessage(Graphics2D g2) {
+        int objIndex = gp.tileM1.cChecker.checkObject(this, true);
+        //checks if the index of obj passed is the null obj
+        if (gp.OBJChecker.checkObject(this, true) == 999) { //checks if player is colliding with obj
+            return;
+        }
+
+        if (gp.obj.get(objIndex) instanceof OBJ_PokeBall) {
+            gp.userInterface.drawText(g2, "press E to pick up PokeBall", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
+        }
+        if (gp.obj.get(objIndex) instanceof OBJ_PokeChest) {
+            gp.userInterface.drawText(g2, "press E to open PokeChest", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
+        }
     }
 }
