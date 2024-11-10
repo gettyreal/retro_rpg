@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import java.awt.Rectangle;
 import main.GamePanel;
+import main.UtilityTool;
 
 public class SuperObject {
     public BufferedImage image;
@@ -34,6 +35,7 @@ public class SuperObject {
     public void loadImage(String filename) {
         try {
             this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
+            UtilityTool.scaleImage(image, 48, 48);
         } catch (IOException e) {
             e.printStackTrace();
         }

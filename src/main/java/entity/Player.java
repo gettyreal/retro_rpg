@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 import object.OBJ_PokeChest;
 
 import java.awt.Graphics2D;
@@ -53,12 +54,16 @@ public class Player extends Entity {
             try {
                 if (i < 4) {
                     this.down[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                    this.down[indexArray] = UtilityTool.scaleImage(this.down[indexArray], this.down[indexArray].getWidth() * 2, this.down[indexArray].getHeight() * 2); //scale img
                 } else if (i < 8) {
                     this.up[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                    this.up[indexArray] = UtilityTool.scaleImage(this.up[indexArray], this.up[indexArray].getWidth() * 2, this.up[indexArray].getHeight() * 2); //scale img
                 } else if (i < 12) {
                     this.left[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                    this.left[indexArray] = UtilityTool.scaleImage(this.left[indexArray], this.left[indexArray].getWidth() * 2, this.left[indexArray].getHeight() * 2); //scale img
                 } else {
                     this.right[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+                    this.right[indexArray] = UtilityTool.scaleImage(this.right[indexArray], this.right[indexArray].getWidth() * 2, this.right[indexArray].getHeight() * 2); //scale img
                 }
                 indexFile++;
                 indexArray++;
@@ -120,7 +125,6 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
-        System.out.println(objIndex);
         pickupObject(objIndex); // removes the obj on e key press if possible
     }
 
@@ -163,6 +167,6 @@ public class Player extends Entity {
                 break;
         }
         // draws current player sprite
-        g2.drawImage(playerImage, screenX, screenY, playerImage.getWidth() * 2, playerImage.getHeight() * 2, null);
+        g2.drawImage(playerImage, screenX, screenY, null);
     }
 }

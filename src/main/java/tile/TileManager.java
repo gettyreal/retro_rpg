@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import main.CollisionChecker;
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
     GamePanel gp;
@@ -44,8 +45,25 @@ public class TileManager {
                 int tileX = i * tileWidth;
                 tile[i] = new Tile();
                 tile[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
+                tile[i].image = UtilityTool.scaleImage(tile[i].image, gp.tileSize, gp.tileSize); //scales the image
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTileCollision(String fileName) {
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            String indexes[] = line.split(" ");
+            for (int i = 0; i < tile.length; i++) {
+                if (Integer.parseInt(indexes[i]) == 1) {
+                    tile[i].collision = true;
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -77,22 +95,6 @@ public class TileManager {
         }
     }
 
-    public void setTileCollision(String fileName) {
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = br.readLine();
-            String indexes[] = line.split(" ");
-            for (int i = 0; i < tile.length; i++) {
-                if (Integer.parseInt(indexes[i]) == 1) {
-                    tile[i].collision = true;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void draw(Graphics2D g2) {
         int worldCol = 0;
         int worldRow = 0;
@@ -109,7 +111,7 @@ public class TileManager {
                     worldX - gp.tileSize< gp.player.worldX + gp.player.screenX &&
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
             }
             worldCol++;
             if (worldCol == gp.maxWorldCol) {
