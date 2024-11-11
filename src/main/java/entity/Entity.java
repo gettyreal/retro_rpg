@@ -14,6 +14,12 @@ public class Entity {
     public BufferedImage[] down = new BufferedImage[4];
     public BufferedImage[] left = new BufferedImage[4];
     public BufferedImage[] right = new BufferedImage[4];
+
+    public BufferedImage[] bushUp = new BufferedImage[4];
+    public BufferedImage[] bushDown = new BufferedImage[4];
+    public BufferedImage[] bushLeft = new BufferedImage[4];
+    public BufferedImage[] bushRight = new BufferedImage[4];
+
     public String direction; //direction of the player
 
     public int spriteCounter = 0; //index of sprite active on screen
@@ -23,4 +29,5 @@ public class Entity {
     public Rectangle collisionArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public boolean bushIn = false;
 }

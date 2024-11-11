@@ -141,4 +141,54 @@ public class CollisionChecker {
         }
         return index;
     }
+
+    public boolean checkInBush(Entity entity) {
+        int entityLeftWorldX = entity.worldX + entity.collisionArea.x;
+        int entityRightWorldX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width;
+        int entityTopWorldY = entity.worldY + entity.collisionArea.y;
+        int entityBottomWorldY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height;
+
+        int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        int entityRightCol = entityRightWorldX / gp.tileSize;
+        int entityTopRow = entityTopWorldY / gp.tileSize;
+        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+
+        int tileNum1, tileNum2;
+
+        switch (entity.direction) {
+            case "up":
+                entityTopRow = (entityTopWorldY + entity.speed * 2) / gp.tileSize;
+                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
+                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
+                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
+                    return true; // return true if entity is on bush
+                }
+                break;
+            case "down":
+                entityBottomRow = (entityBottomWorldY - entity.speed * 2) / gp.tileSize;
+                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
+                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
+                    return true; // return true if entity is on bush
+                }
+                break;
+            case "left":
+                entityLeftCol = (entityLeftWorldX + entity.speed * 2) / gp.tileSize;
+                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
+                tileNum2 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
+                    return true; // return true if entity is on bush
+                }
+                break;
+            case "right":
+                entityRightCol = (entityRightWorldX - entity.speed * 2) / gp.tileSize;
+                tileNum1 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
+                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
+                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
+                    return true; // return true if entity is on bush
+                }
+                break;
+        }
+        return false;
+    }
 }

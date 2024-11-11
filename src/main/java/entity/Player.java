@@ -50,26 +50,35 @@ public class Player extends Entity {
             if (indexArray == 4) {
                 indexArray = 0;
             }
+            // loads all player imagines
             String fileName = "player/player_" + indexFile + ".png";
-            try {
-                if (i < 4) {
-                    this.down[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-                    this.down[indexArray] = UtilityTool.scaleImage(this.down[indexArray], this.down[indexArray].getWidth() * 2, this.down[indexArray].getHeight() * 2); //scale img
-                } else if (i < 8) {
-                    this.up[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-                    this.up[indexArray] = UtilityTool.scaleImage(this.up[indexArray], this.up[indexArray].getWidth() * 2, this.up[indexArray].getHeight() * 2); //scale img
-                } else if (i < 12) {
-                    this.left[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-                    this.left[indexArray] = UtilityTool.scaleImage(this.left[indexArray], this.left[indexArray].getWidth() * 2, this.left[indexArray].getHeight() * 2); //scale img
-                } else {
-                    this.right[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-                    this.right[indexArray] = UtilityTool.scaleImage(this.right[indexArray], this.right[indexArray].getWidth() * 2, this.right[indexArray].getHeight() * 2); //scale img
-                }
-                indexFile++;
-                indexArray++;
-            } catch (IOException e) {
-                e.printStackTrace();
+            String bushName = "player/bush_" + indexFile + ".png";
+            if (i < 4) {
+                loadImage(this.down, indexArray, fileName);
+                loadImage(this.bushDown, indexArray, bushName);
+            } else if (i < 8) {
+                loadImage(this.up, indexArray, fileName);
+                loadImage(this.bushUp, indexArray, bushName);
+            } else if (i < 12) {
+                loadImage(this.left, indexArray, fileName);
+                loadImage(this.bushLeft, indexArray, bushName);
+            } else {
+                loadImage(this.right, indexArray, fileName);
+                loadImage(this.bushRight, indexArray, bushName);
             }
+            indexFile++;
+            indexArray++;
+        }
+    }
+
+    // load single image and scales it
+    private void loadImage(BufferedImage[] array, int indexArray, String fileName) {
+        try {
+            array[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+            array[indexArray] = UtilityTool.scaleImage(array[indexArray],
+                    array[indexArray].getWidth() * 2, array[indexArray].getHeight() * 2); // scale img
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,6 +103,10 @@ public class Player extends Entity {
             gp.tileM2.cChecker.checkTile(this);
             gp.tileM3.cChecker.checkTile(this);
             gp.tileM4.cChecker.checkTile(this);
+
+            // check if player is in bush
+            // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
+            bushIn = gp.tileM2.cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
             // check objcets collison + gets the value of the obj colliding
             objIndex = gp.OBJChecker.checkObject(this, true);
@@ -132,18 +145,18 @@ public class Player extends Entity {
         if (index != 999) { // index == 999 null object.
             if (keyH.Epressed == true) {
                 if (gp.obj.get(index) instanceof OBJ_PokeChest) {
-                    gp.obj.get(index).loadImage("object/poke-chest-open.png"); //changes imagine after opening chest
-                    OBJ_PokeChest pokeChest = (OBJ_PokeChest)gp.obj.get(index); //down cast to modify opened boolean
-                    pokeChest.opened = true; //put pokechst opened on true after user input
+                    gp.obj.get(index).loadImage("object/poke-chest-open.png"); // changes imagine after opening chest
+                    OBJ_PokeChest pokeChest = (OBJ_PokeChest) gp.obj.get(index); // down cast to modify opened boolean
+                    pokeChest.opened = true; // put pokechst opened on true after user input
                 }
 
-                //it needs to be the last cause objindex--;
+                // it needs to be the last cause objindex--;
                 if (gp.obj.get(index).pickable == true) {
                     gp.aSetter.removeObject(index);
                     objIndex--; // prevents index out bounds exeption
                 }
 
-                keyH.Epressed = false; //resets the key
+                keyH.Epressed = false; // resets the key
             }
         }
     }
@@ -152,19 +165,36 @@ public class Player extends Entity {
         BufferedImage playerImage = null;
 
         // gets player srites
-        switch (this.direction) {
-            case "up":
-                playerImage = this.up[spriteNumber];
-                break;
-            case "down":
-                playerImage = this.down[spriteNumber];
-                break;
-            case "left":
-                playerImage = this.left[spriteNumber];
-                break;
-            case "right":
-                playerImage = this.right[spriteNumber];
-                break;
+        if (!bushIn) { // if not in bush gets player normal sprites
+            switch (this.direction) {
+                case "up":
+                    playerImage = this.up[spriteNumber];
+                    break;
+                case "down":
+                    playerImage = this.down[spriteNumber];
+                    break;
+                case "left":
+                    playerImage = this.left[spriteNumber];
+                    break;
+                case "right":
+                    playerImage = this.right[spriteNumber];
+                    break;
+            }
+        } else { // if in bush gets player bush sprites
+            switch (this.direction) {
+                case "up":
+                    playerImage = this.bushUp[spriteNumber];
+                    break;
+                case "down":
+                    playerImage = this.bushDown[spriteNumber];
+                    break;
+                case "left":
+                    playerImage = this.bushLeft[spriteNumber];
+                    break;
+                case "right":
+                    playerImage = this.bushRight[spriteNumber];
+                    break;
+            }
         }
         // draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, null);

@@ -17,6 +17,10 @@ public class AssetSetter {
         addObject(new OBJ_PokeBall(), 5, 10);
         addObject(new OBJ_PokeBall(), 5, 19);
         addObject(new OBJ_PokeBall(), 10, 24);
+        addObject(new OBJ_PokeBall(), 17, 30);
+        addObject(new OBJ_PokeBall(), 37, 11);
+        addObject(new OBJ_PokeBall(), 45, 42);
+        addObject(new OBJ_PokeBall(), 20, 45);
     }
 
     //adds a new object into the game
