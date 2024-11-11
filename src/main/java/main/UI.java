@@ -58,7 +58,7 @@ public class UI {
         g2.setColor(backgroundColor);
 
         // Disegna il rettangolo semi-trasparente attorno al testo
-        g2.fillRoundRect(screenX - 6, screenY - m.getAscent() - 6, messageWidth + 12, messageHeight + 12, 20, 20);
+        g2.fillRoundRect(screenX - 15, screenY - m.getAscent() - 10, messageWidth + 30, messageHeight + 20, 30, 45);
 
         g2.setFont(arial_16);
         g2.setColor(Color.WHITE); // white text color
