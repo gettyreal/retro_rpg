@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Graphics2D;
+
+import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
 
@@ -35,6 +37,9 @@ public class UI {
             } else {
                 draw(g2, "PokeChest already opened", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));
             }
+        }
+        if (gp.obj.get(objIndex) instanceof OBJ_Door) {
+            draw(g2, "press E to open up Door", gp.screenWidth / 2, gp.screenHeight / 2 + (4 * gp.tileSize));            
         }
     }
 

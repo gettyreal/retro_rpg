@@ -1,5 +1,6 @@
 package main;
 
+import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
 import object.SuperObject;
@@ -14,6 +15,7 @@ public class AssetSetter {
     //adds obj into the game
     public void setObject() {
         addObject(new OBJ_PokeChest(), 27, 23);
+        addObject(new OBJ_Door(), 24, 22);
         addObject(new OBJ_PokeBall(), 5, 10);
         addObject(new OBJ_PokeBall(), 5, 19);
         addObject(new OBJ_PokeBall(), 10, 24);
