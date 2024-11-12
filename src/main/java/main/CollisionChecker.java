@@ -176,7 +176,7 @@ public class CollisionChecker {
         tileNum = this.tileM.mapTileNum[entityTileCol][entityTileRow];
 
         // Verifica se il tile è un bush
-        if (tileNum >= 260 && tileNum <= 275) {
+        if (tileNum >= 260 && tileNum <= 275 || tileNum >= 343 && tileNum <= 362) {
             // Calcola il centro del tile
             int tileCenterX = (entityTileCol * gp.tileSize) + gp.tileSize / 2;
             int tileCenterY = (entityTileRow * gp.tileSize) + gp.tileSize / 2;
