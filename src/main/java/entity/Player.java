@@ -2,18 +2,13 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 import object.OBJ_PokeChest;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-
 public class Player extends Entity {
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
@@ -22,11 +17,13 @@ public class Player extends Entity {
     int objIndex = 999; // set obj null value.
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
 
         setDefaultValues(); // set spawn coordinates
-        getPlayerImage();
+        
+        getEntityImage("player/player_");
+        getEntityBushImage("player/bush_");
 
         this.collisionArea = new Rectangle(7, 31, 20, 15);
         solidAreaDefaultX = collisionArea.x;
@@ -43,45 +40,7 @@ public class Player extends Entity {
         this.direction = "up";
     }
 
-    public void getPlayerImage() {
-        int indexFile = 0;
-        int indexArray = 0;
-        for (int i = 0; i < 16; i++) {
-            if (indexArray == 4) {
-                indexArray = 0;
-            }
-            // loads all player imagines
-            String fileName = "player/player_" + indexFile + ".png";
-            String bushName = "player/bush_" + indexFile + ".png";
-            if (i < 4) {
-                loadImage(this.down, indexArray, fileName);
-                loadImage(this.bushDown, indexArray, bushName);
-            } else if (i < 8) {
-                loadImage(this.up, indexArray, fileName);
-                loadImage(this.bushUp, indexArray, bushName);
-            } else if (i < 12) {
-                loadImage(this.left, indexArray, fileName);
-                loadImage(this.bushLeft, indexArray, bushName);
-            } else {
-                loadImage(this.right, indexArray, fileName);
-                loadImage(this.bushRight, indexArray, bushName);
-            }
-            indexFile++;
-            indexArray++;
-        }
-    }
-
-    // load single image and scales it
-    private void loadImage(BufferedImage[] array, int indexArray, String fileName) {
-        try {
-            array[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-            array[indexArray] = UtilityTool.scaleImage(array[indexArray],
-                    array[indexArray].getWidth() * 2, array[indexArray].getHeight() * 2); // scale img
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    @Override
     public void update() {
         if (keyH.checkMovement()) {
             // move the player by playerSpeed
@@ -161,6 +120,7 @@ public class Player extends Entity {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         BufferedImage playerImage = null;
 

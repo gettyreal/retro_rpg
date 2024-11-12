@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import entity.pokemon.Cubone;
 import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
@@ -41,5 +43,26 @@ public class AssetSetter {
             gp.obj.remove(index);
         }
     }
-    
+
+    //adds pokemon to the game.
+    public void setPokemons() {
+        addPokemon(new Cubone(gp), 21, 26);
+    }
+
+    //adds a new pokemon into the game
+    //specify into the entity parameter which subclass pokemon to pass 
+    //example of usage = addPokemon(New Cubone(gp), 10, 10);
+    public void addPokemon(Entity pokemonType, int tileColumm, int tileRow) {
+        pokemonType.worldX = tileColumm * gp.tileSize;
+        pokemonType.worldY = tileRow * gp.tileSize;
+        gp.pokemons.add(pokemonType);
+    }
+
+    //removes a pokemon entity from the game
+    //specify the index of the pokemon to remove.
+    public void removePokemon(int index) {
+        if (index >= 0 && index < gp.pokemons.size()) {
+            gp.pokemons.remove(index);
+        }
+    }
 }
