@@ -70,7 +70,7 @@ public class CollisionChecker {
     }
 
     public int checkObject(Entity entity, boolean player) {
-        int index = 999; //null obj
+        int index = 999; // null obj
         for (int i = 0; i < gp.obj.size(); i++) {
             if (gp.obj.get(i) != null) {
                 // entity solid area position
@@ -87,7 +87,7 @@ public class CollisionChecker {
                             if (gp.obj.get(i).collision == true) {
                                 entity.collisionOn = true;
                             }
-                            if (player == true) { //return index to pick up obj, only player can do that
+                            if (player == true) { // return index to pick up obj, only player can do that
                                 index = i;
                             }
                         }
@@ -99,7 +99,7 @@ public class CollisionChecker {
                                 if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
-                                if (player == true) { //return index to pick up obj, only player can do that
+                                if (player == true) { // return index to pick up obj, only player can do that
                                     index = i;
                                 }
                             }
@@ -112,7 +112,7 @@ public class CollisionChecker {
                                 if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
-                                if (player == true) { //return index to pick up obj, only player can do that
+                                if (player == true) { // return index to pick up obj, only player can do that
                                     index = i;
                                 }
                             }
@@ -125,14 +125,14 @@ public class CollisionChecker {
                                 if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
-                                if (player == true) { //return index to pick up obj, only player can do that
+                                if (player == true) { // return index to pick up obj, only player can do that
                                     index = i;
                                 }
                             }
                         }
                         break;
                 }
-                //resets rectangle areas and positions
+                // resets rectangle areas and positions
                 entity.collisionArea.x = entity.solidAreaDefaultX;
                 entity.collisionArea.y = entity.solidAreaDefaultY;
                 gp.obj.get(i).collisionArea.x = gp.obj.get(i).solidAreaDefaultX;
@@ -143,52 +143,66 @@ public class CollisionChecker {
     }
 
     public boolean checkInBush(Entity entity) {
-        int entityLeftWorldX = entity.worldX + entity.collisionArea.x;
-        int entityRightWorldX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width;
-        int entityTopWorldY = entity.worldY + entity.collisionArea.y;
-        int entityBottomWorldY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height;
+        // Calcola le coordinate del rettangolo di collisione dell'entità nel mondo
+        int entityLeftX = entity.worldX + entity.collisionArea.x;
+        int entityRightX = entityLeftX + entity.collisionArea.width;
+        int entityTopY = entity.worldY + entity.collisionArea.y;
+        int entityBottomY = entityTopY + entity.collisionArea.height;
 
-        int entityLeftCol = entityLeftWorldX / gp.tileSize;
-        int entityRightCol = entityRightWorldX / gp.tileSize;
-        int entityTopRow = entityTopWorldY / gp.tileSize;
-        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+        // Trova la posizione del tile in cui si trova il centro dell'entità
+        int entityCenterX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width / 2;
+        int entityCenterY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height / 2;
+        int entityTileCol = entityCenterX / gp.tileSize;
+        int entityTileRow = entityCenterY / gp.tileSize;
 
-        int tileNum1, tileNum2;
+        int tileNum;
 
         switch (entity.direction) {
             case "up":
-                entityTopRow = (entityTopWorldY + entity.speed * 2) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
-                    return true; // return true if entity is on bush
-                }
+                entityTileRow = (entityCenterY - entity.speed) / gp.tileSize;
                 break;
             case "down":
-                entityBottomRow = (entityBottomWorldY - entity.speed * 2) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
-                    return true; // return true if entity is on bush
-                }
+                entityTileRow = (entityCenterY + entity.speed) / gp.tileSize;
                 break;
             case "left":
-                entityLeftCol = (entityLeftWorldX + entity.speed * 2) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
-                    return true; // return true if entity is on bush
-                }
+                entityTileCol = (entityCenterX - entity.speed) / gp.tileSize;
                 break;
             case "right":
-                entityRightCol = (entityRightWorldX - entity.speed * 2) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (tileNum1 >= 260 && tileNum1 <= 275 || tileNum2 >= 260 && tileNum2 <= 275) {
-                    return true; // return true if entity is on bush
-                }
+                entityTileCol = (entityCenterX + entity.speed) / gp.tileSize;
                 break;
         }
+
+        // Prendi il numero del tile
+        tileNum = this.tileM.mapTileNum[entityTileCol][entityTileRow];
+
+        // Verifica se il tile è un bush
+        if (tileNum >= 260 && tileNum <= 275) {
+            // Calcola il centro del tile
+            int tileCenterX = (entityTileCol * gp.tileSize) + gp.tileSize / 2;
+            int tileCenterY = (entityTileRow * gp.tileSize) + gp.tileSize / 2;
+
+            // Definisci una hitbox centrale all'interno del tile (esempio: 5x5 pixel)
+            int bushHitboxSize = 36; //minimum size done by hand.
+            int halfBushHitbox = bushHitboxSize / 2;
+
+            int bushHitboxLeftX = tileCenterX - halfBushHitbox;
+            int bushHitboxRightX = tileCenterX + halfBushHitbox;
+            int bushHitboxTopY = tileCenterY - halfBushHitbox;
+            int bushHitboxBottomY = tileCenterY + halfBushHitbox;
+
+            // Verifica se il rettangolo di collisione dell'entità interseca la hitbox
+            // centrale del bush
+            boolean collision = entityRightX >= bushHitboxLeftX &&
+                    entityLeftX <= bushHitboxRightX &&
+                    entityBottomY >= bushHitboxTopY &&
+                    entityTopY <= bushHitboxBottomY;
+
+            if (collision) {
+                return true;
+            }
+        }
+
         return false;
     }
+
 }
