@@ -125,6 +125,9 @@ public abstract class Entity {
         gp.tileM3.cChecker.checkTile(this);
         gp.tileM4.cChecker.checkTile(this);
 
+        // checks obj collision
+        gp.OBJChecker.checkObject(this, false);
+
         // move the entity
         if (collisionOn == false) {
             switch (direction) {

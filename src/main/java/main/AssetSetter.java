@@ -27,6 +27,12 @@ public class AssetSetter {
         addObject(new OBJ_PokeBall(), 20, 45);
     }
 
+    //adds pokemon to the game.
+    public void setPokemons() {
+        addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
+        addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 23, 25);
+    }
+
     //adds a new object into the game
     //specify into the superovject parameter which subclass to pass 
     //example of usage = gp.obj.set(0, new OBJ_PokeChest());
@@ -42,11 +48,6 @@ public class AssetSetter {
         if (index >= 0 && index < gp.obj.size()) {
             gp.obj.remove(index);
         }
-    }
-
-    //adds pokemon to the game.
-    public void setPokemons() {
-        addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
     }
 
     //adds a new pokemon into the game
