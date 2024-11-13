@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; // for clock
 
     // game input and checkers
-    KeyHandler keyH = new KeyHandler(); // get key input
+    KeyHandler keyH = new KeyHandler(this); // get key input
     public AssetSetter aSetter = new AssetSetter(this); // instantiace obj and entities
     public UI userInterface = new UI(this); // instantiace user interface for messages
     public CollisionChecker Checker = new CollisionChecker(this);
@@ -58,6 +58,11 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM4 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer4.csv",
             "tiles/collisions.txt");
 
+    // game status
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -67,6 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() { // set default object before game starts
+        gameState = playState;
         aSetter.setPokemons();
         aSetter.setObject();
         aSetter.setNPC();
@@ -101,14 +107,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        // player update
-        player.update();
-        // pokemons update
-        for(int i = 0; i < pokemons.size(); i++) {
-            if (pokemons.get(i) != null) {
-                pokemons.get(i).update();
+        if (gameState == playState) {
+            // player update
+            player.update();
+            // pokemons update
+            for (int i = 0; i < pokemons.size(); i++) {
+                if (pokemons.get(i) != null) {
+                    pokemons.get(i).update();
+                }
             }
-        }
+        } 
+        if (playState == pauseState) {}
     }
 
     public void paintComponent(Graphics g) {
@@ -132,8 +141,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        //npc drawing
-        for(int i = 0; i < npc.size(); i++) {
+        // npc drawing
+        for (int i = 0; i < npc.size(); i++) {
             if (npc.get(i) != null) {
                 npc.get(i).draw(g2);
             }

@@ -178,7 +178,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, null);
-        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
+        //sssssg2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
 
     }
 }
