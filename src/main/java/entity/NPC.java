@@ -1,50 +1,27 @@
 package entity;
 
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
-import main.UtilityTool;
 
-public class Pokemon extends Entity {
-    public Pokemon(GamePanel gp, String name, String packageName, int Xoffset, int Yoffset) {
-        // calls entity constructor
+public class NPC extends Entity{
+    public NPC(GamePanel gp, String name, String packageName, int Xoffset, int Yoffset) {
+        //calls entity constructor
         super(gp);
-        // sets default values
+        //sets default values
         this.name = name;
-        this.direction = "up";
+        this.direction = "down";
         this.speed = 1;
-        // gets player image
+        //gets player image
         getEntityImage(packageName);
-
+        
         // gets collision area parameters
         this.Xoffset = Xoffset;
         this.Yoffset = Yoffset;
+        collisionArea = new Rectangle(Xoffset, Yoffset, this.down[0].getWidth(), this.down[0].getHeight());
         solidAreaDefaultX = collisionArea.x;
         solidAreaDefaultY = collisionArea.y;
-    }
-
-    @Override
-    public void loadImage(BufferedImage[] array, int indexArray, String fileName) {
-        try {
-            // Carica l'immagine
-            BufferedImage originalImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-
-            // Scala l'immagine
-            BufferedImage scaledImage = UtilityTool.scaleImage(originalImage,
-                    originalImage.getWidth() * 3, originalImage.getHeight() * 3);
-
-            // Imposta l'immagine scalata nell'array
-            array[indexArray] = scaledImage;
-            
-            collisionArea = new Rectangle(Xoffset, Yoffset, scaledImage.getWidth(), scaledImage.getHeight());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -52,7 +29,7 @@ public class Pokemon extends Entity {
         updateLockCounter++;
         Random random = new Random();
         int randomTime = random.nextInt(240) + 180; // Intervallo di 2-3 secondi circa
-
+    
         if (updateLockCounter > randomTime) {
             int i = random.nextInt(100) + 1; // numero casuale tra 1 e 100
 
@@ -67,9 +44,8 @@ public class Pokemon extends Entity {
             } else {
                 direction = "right";
             }
-
+    
             updateLockCounter = 0;
         }
     }
-
 }

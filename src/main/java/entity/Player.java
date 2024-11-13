@@ -68,8 +68,12 @@ public class Player extends Entity {
             bushIn = gp.tileM2.cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
             // checks pokemon collision
-            int npcIndex = gp.Checker.checkEntity(this, gp.pokemons);
-            interactEntity(npcIndex);
+            int pokemonIndex = gp.Checker.checkEntity(this, gp.pokemons);
+            interactPokemon(pokemonIndex);
+
+            //check npc collision
+            int npcIndex = gp.Checker.checkEntity(this, gp.npc);
+            interactNPC(npcIndex);
 
             // check objcets collison + gets the value of the obj colliding
             objIndex = gp.Checker.checkObject(this, true);
@@ -124,9 +128,15 @@ public class Player extends Entity {
         }
     }
 
-    public void interactEntity(int index) {
+    public void interactPokemon(int index) {
         if (index != 999) {
             System.out.println("hittin "+ gp.pokemons.get(index).name);
+        }
+    }
+
+    public void interactNPC(int index) {
+        if (index != 999) {
+            System.out.println("hittin "+ gp.npc.get(index).name);
         }
     }
 

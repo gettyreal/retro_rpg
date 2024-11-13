@@ -21,6 +21,7 @@ public abstract class Entity {
     public int speed; // entity speed
 
     // movement animation
+
     public BufferedImage[] up = new BufferedImage[4];
     public BufferedImage[] down = new BufferedImage[4];
     public BufferedImage[] left = new BufferedImage[4];
@@ -50,8 +51,6 @@ public abstract class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
-
-        
     }
 
     // gets the entity image in the resources package
@@ -200,9 +199,7 @@ public abstract class Entity {
                     lastSprite = this.right[spriteNumber];
                     break;
             }
-
-            g2.drawImage(Image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-            g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
+            g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
         }
     }
 }

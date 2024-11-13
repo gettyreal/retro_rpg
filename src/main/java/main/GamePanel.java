@@ -44,8 +44,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // game entities and objects
     public Player player = new Player(this, keyH); // instantiace player
+    public ArrayList<Entity> npc = new ArrayList<>(); // npc entity arraylist
     public ArrayList<Entity> pokemons = new ArrayList<>(); // pokemon entitiy arraylist
-    public ArrayList<SuperObject> obj = new ArrayList<>(); // obj in the game
+    public ArrayList<SuperObject> obj = new ArrayList<>(); // obj array list
 
     // map layers
     public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer1.csv",
@@ -68,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() { // set default object before game starts
         aSetter.setPokemons();
         aSetter.setObject();
+        aSetter.setNPC();
     }
 
     public void startGameThread() {
@@ -127,6 +129,13 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < pokemons.size(); i++) {
             if (pokemons.get(i) != null) {
                 pokemons.get(i).draw(g2);
+            }
+        }
+
+        //npc drawing
+        for(int i = 0; i < npc.size(); i++) {
+            if (npc.get(i) != null) {
+                npc.get(i).draw(g2);
             }
         }
 

@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.Pokemon;
+import entity.npc.Doctor;
 import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
@@ -31,6 +32,10 @@ public class AssetSetter {
     public void setPokemons() {
         addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
         addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 23, 25);
+    }
+
+    public void setNPC() {
+        addNPC(new Doctor(gp), 17, 23);
     }
 
     //adds a new object into the game
@@ -65,5 +70,11 @@ public class AssetSetter {
         if (index >= 0 && index < gp.pokemons.size()) {
             gp.pokemons.remove(index);
         }
+    }
+
+    public void addNPC(Entity npcType, int tileColumm, int tileRow) {
+        npcType.worldX = tileColumm * gp.tileSize;
+        npcType.worldY = tileRow * gp.tileSize;
+        gp.npc.add(npcType);
     }
 }
