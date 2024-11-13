@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -15,7 +16,7 @@ import main.UtilityTool;
 public abstract class Entity {
     public String name;
 
-    GamePanel gp;
+    public GamePanel gp;
 
     public int worldX, worldY; // entity spawn coordinates
     public int speed; // entity speed
@@ -48,6 +49,10 @@ public abstract class Entity {
 
     // for update interval
     public int updateLockCounter = 0;
+
+    // entity dialogues
+    public ArrayList<String> dialogues = new ArrayList<>();
+    public int dialogueIndex = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -166,6 +171,10 @@ public abstract class Entity {
             }
             spriteCounter = 0;
         }
+    }
+
+    public void speak() {
+
     }
 
     public void draw(Graphics2D g2) {

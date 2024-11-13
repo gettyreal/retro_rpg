@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogState = 3;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -107,7 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == playState) {
+        if (gameState == playState) { //update only when game is on play state.
             // player update
             player.update();
             // pokemons update
@@ -116,8 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
                     pokemons.get(i).update();
                 }
             }
-        } 
-        if (playState == pauseState) {}
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -153,7 +153,7 @@ public class GamePanel extends JPanel implements Runnable {
         tileM3.draw(g2);
         tileM4.draw(g2);
 
-        userInterface.drawMessage(g2); // draws messages
+        userInterface.draw(g2); // draws messages
 
         g2.dispose();
     }

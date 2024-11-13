@@ -9,12 +9,14 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
-    KeyHandler keyH;
+    public KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
 
     int objIndex = 999; // set obj null value.
+    int pokemonIndex = 999;
+    int npcIndex = 999;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -68,12 +70,10 @@ public class Player extends Entity {
             bushIn = gp.tileM2.cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
             // checks pokemon collision
-            int pokemonIndex = gp.Checker.checkEntity(this, gp.pokemons);
-            interactPokemon(pokemonIndex);
+            pokemonIndex = gp.Checker.checkEntity(this, gp.pokemons);
 
-            //check npc collision
-            int npcIndex = gp.Checker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
+            //checks entity collision
+            npcIndex = gp.Checker.checkEntity(this, gp.npc);
 
             // check objcets collison + gets the value of the obj colliding
             objIndex = gp.Checker.checkObject(this, true);
@@ -105,6 +105,9 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+        //events on collision
+        interactNPC(npcIndex);
+        interactPokemon(pokemonIndex);
         pickupObject(objIndex); // removes the obj on e key press if possible
     }
 
@@ -136,7 +139,11 @@ public class Player extends Entity {
 
     public void interactNPC(int index) {
         if (index != 999) {
-            System.out.println("hittin "+ gp.npc.get(index).name);
+            
+            if (keyH.Fpressed == true) {
+                gp.gameState = gp.dialogState;
+                gp.npc.get(index).speak();
+            }
         }
     }
 

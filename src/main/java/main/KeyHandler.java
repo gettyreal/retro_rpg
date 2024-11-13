@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, Epressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, Epressed, Fpressed, enterPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -13,32 +13,40 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //not used
+        // not used
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         int code = e.getKeyCode();
-        // get WASD key input
-        if (code == KeyEvent.VK_W) {
-            upPressed = true; // key is pressed
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_E) {
-            Epressed = true;
-        }
-        if (code == KeyEvent.VK_ESCAPE) {
-            if (gp.gameState == gp.playState) {
+
+        if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;
-            } else if (gp.gameState == gp.pauseState) {
+            }
+            if (code == KeyEvent.VK_W) {
+                upPressed = true; // key is pressed
+            }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_E) {
+                Epressed = true;
+            }
+            if (code == KeyEvent.VK_F) {
+                Fpressed = true;
+            }
+        } else if (gp.gameState == gp.pauseState) {
+            gp.gameState = gp.playState;
+        } else if (gp.gameState == gp.dialogState) {
+            if (code == KeyEvent.VK_ENTER) {
                 gp.gameState = gp.playState;
             }
         }
@@ -47,7 +55,6 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        // get WASD key input
         if (code == KeyEvent.VK_W) {
             upPressed = false; // key is released
         }
