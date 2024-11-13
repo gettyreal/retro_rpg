@@ -174,7 +174,12 @@ public abstract class Entity {
     }
 
     public void speak() {
-
+        if (dialogueIndex == dialogues.size()) {
+            gp.player.keyH.Fpressed = false;
+        } else {
+            gp.userInterface.currentDialog = dialogues.get(dialogueIndex);
+            dialogueIndex++;
+        }
     }
 
     public void draw(Graphics2D g2) {

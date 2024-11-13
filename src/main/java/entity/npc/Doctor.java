@@ -45,11 +45,6 @@ public class Doctor extends NPC {
 
     @Override
     public void speak() {
-        if (dialogueIndex == dialogues.size()) {
-            gp.player.keyH.Fpressed = false;
-        } else {
-            gp.userInterface.currentDialog = dialogues.get(dialogueIndex);
-            dialogueIndex++;
-        }
+        super.speak();
     }
 }
