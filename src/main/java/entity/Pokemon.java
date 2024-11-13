@@ -29,21 +29,25 @@ public class Pokemon extends Entity {
     public void setAction() {
         updateLockCounter++;
         Random random = new Random();
-        int randomTime = random.nextInt(90) + 30;
-        if (updateLockCounter > randomTime) { // 2 seconds
-            int i = random.nextInt(100) + 1; // random 1 - 100;
+        int randomTime = random.nextInt(240) + 180; // Intervallo di 2-3 secondi circa
+    
+        if (updateLockCounter > randomTime) {
+            int i = random.nextInt(100) + 1; // numero casuale tra 1 e 100
 
-            // sets random direction
-            if (i <= 25) {
+            if (i <= 70) {
+                direction = "idle";
+            } else if (i > 70 && i <= 80) {
                 direction = "up";
-            } else if (i > 25 && i <= 50) {
+            } else if (i > 80 && i <= 90) {
                 direction = "down";
-            } else if (i > 50 && i <= 75) {
+            } else if (i > 90 && i <= 95) {
                 direction = "left";
-            } else if (i > 75) {
+            } else {
                 direction = "right";
             }
+    
             updateLockCounter = 0;
         }
     }
+    
 }

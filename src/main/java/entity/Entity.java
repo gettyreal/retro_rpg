@@ -29,6 +29,8 @@ public abstract class Entity {
     public BufferedImage[] bushLeft = new BufferedImage[4];
     public BufferedImage[] bushRight = new BufferedImage[4];
 
+    public BufferedImage lastSprite;
+
     public String direction; // direction of the player
 
     public int spriteCounter = 0; // index of sprite active on screen
@@ -145,6 +147,8 @@ public abstract class Entity {
                 case "right":
                     this.worldX += this.speed;
                     break;
+                default:
+                    break;
             }
         }
 
@@ -170,17 +174,25 @@ public abstract class Entity {
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             switch (this.direction) {
+                case "idle":
+                    Image = lastSprite;
+                    spriteCounter--; //stays on the same image
+                    break; 
                 case "up":
                     Image = this.up[spriteNumber];
+                    lastSprite = this.up[spriteNumber];
                     break;
                 case "down":
                     Image = this.down[spriteNumber];
+                    lastSprite = this.down[spriteNumber];
                     break;
                 case "left":
                     Image = this.left[spriteNumber];
+                    lastSprite = this.left[spriteNumber];
                     break;
                 case "right":
                     Image = this.right[spriteNumber];
+                    lastSprite = this.right[spriteNumber];
                     break;
             }
 
