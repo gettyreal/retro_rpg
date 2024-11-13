@@ -36,6 +36,7 @@ public abstract class Entity {
 
     // collisions
     public Rectangle collisionArea;
+    public int Xoffset,Yoffset;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public boolean bushIn = false;
@@ -179,6 +180,7 @@ public abstract class Entity {
             }
 
             g2.drawImage(Image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
         }
     }
 }

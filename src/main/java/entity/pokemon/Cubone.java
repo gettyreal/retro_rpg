@@ -13,16 +13,19 @@ public class Cubone extends Entity implements Pokemon {
         this.direction = "down";
         this.speed = 1;
         getEntityImage("pokemon/cubone/cubone_");
-        this.collisionArea = new Rectangle(0, 0, this.down[0].getWidth(), this.down[0].getHeight());
+
+        Xoffset = 8;
+        Yoffset = 12;
+        this.collisionArea = new Rectangle(Xoffset, Yoffset, this.down[0].getWidth(), this.down[0].getHeight());
     }
 
     @Override
     public void setAction() {
         updateLockCounter++;
-
-        if (updateLockCounter == 120) { // 2 seconds
-            Random r = new Random();
-            int i = r.nextInt(100) + 1; // random 1 - 100;
+        Random random = new Random();
+        int randomTime = random.nextInt(90) + 30;
+        if (updateLockCounter > randomTime) { // 2 seconds
+            int i = random.nextInt(100) + 1; // random 1 - 100;
 
             // sets random direction
             if (i <= 25) {

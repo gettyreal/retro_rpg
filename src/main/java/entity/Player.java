@@ -25,7 +25,9 @@ public class Player extends Entity {
         getEntityImage("player/player_");
         getEntityBushImage("player/bush_");
 
-        this.collisionArea = new Rectangle(7, 31, 20, 15);
+        Xoffset = 8;
+        Yoffset = 32;
+        this.collisionArea = new Rectangle(Xoffset, Yoffset, 20, 20);
         solidAreaDefaultX = collisionArea.x;
         solidAreaDefaultY = collisionArea.y;
 
@@ -158,5 +160,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, null);
+        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
+
     }
 }
