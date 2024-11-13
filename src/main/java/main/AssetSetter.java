@@ -1,7 +1,7 @@
 package main;
 
 import entity.Entity;
-import entity.pokemon.Cubone;
+import entity.Pokemon;
 import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
@@ -46,7 +46,7 @@ public class AssetSetter {
 
     //adds pokemon to the game.
     public void setPokemons() {
-        addPokemon(new Cubone(gp), 21, 26);
+        addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
     }
 
     //adds a new pokemon into the game
