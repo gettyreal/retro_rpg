@@ -20,7 +20,9 @@ public class Pokemon extends Entity {
         // gets collision area parameters
         this.Xoffset = Xoffset;
         this.Yoffset = Yoffset;
-        collisionArea = new Rectangle(this.Xoffset, this.Yoffset, this.down[0].getWidth(), this.down[0].getHeight());
+        collisionArea = new Rectangle(Xoffset, Yoffset, this.down[0].getWidth(), this.down[0].getHeight());
+        solidAreaDefaultX = collisionArea.x;
+        solidAreaDefaultY = collisionArea.y;
     }
 
     @Override

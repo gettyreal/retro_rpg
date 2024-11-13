@@ -46,6 +46,8 @@ public abstract class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
+
+        
     }
 
     // gets the entity image in the resources package
