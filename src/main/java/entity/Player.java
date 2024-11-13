@@ -69,8 +69,12 @@ public class Player extends Entity {
             // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
             bushIn = gp.tileM2.cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
+            // checks pokemon collision
+            int npcIndex = gp.Checker.checkEntity(this, gp.pokemons);
+            interactEntity(npcIndex);
+
             // check objcets collison + gets the value of the obj colliding
-            objIndex = gp.OBJChecker.checkObject(this, true);
+            objIndex = gp.Checker.checkObject(this, true);
 
             if (collisionOn == false) {
                 switch (direction) {
@@ -119,6 +123,12 @@ public class Player extends Entity {
 
                 keyH.Epressed = false; // resets the key
             }
+        }
+    }
+
+    public void interactEntity(int index) {
+        if (index != 999) {
+            System.out.println("hittin "+ gp.pokemons.get(index).name);
         }
     }
 

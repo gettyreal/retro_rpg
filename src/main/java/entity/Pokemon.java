@@ -6,12 +6,11 @@ import java.util.Random;
 import main.GamePanel;
 
 public class Pokemon extends Entity {
-    public String name;
-
     public Pokemon(GamePanel gp, String name, String packageName, int Xoffset, int Yoffset) {
         //calls entity constructor
         super(gp);
         //sets default values
+        this.name = name;
         this.direction = "down";
         this.speed = 1;
         //gets player image

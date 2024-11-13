@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler(); // get key input
     public AssetSetter aSetter = new AssetSetter(this); // instantiace obj and entities
     public UI userInterface = new UI(this); // instantiace user interface for messages
-    public CollisionChecker OBJChecker = new CollisionChecker(this);
+    public CollisionChecker Checker = new CollisionChecker(this);
 
     // game entities and objects
     public Player player = new Player(this, keyH); // instantiace player

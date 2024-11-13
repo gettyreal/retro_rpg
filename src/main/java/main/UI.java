@@ -21,9 +21,9 @@ public class UI {
 
     //draws messages on event, only player can cause these events
     public void drawMessage(Graphics2D g2) {
-        int objIndex = gp.OBJChecker.checkObject(gp.player, true); //return a valid integer only if the player collides with the obj
+        int objIndex = gp.Checker.checkObject(gp.player, true); //return a valid integer only if the player collides with the obj
         //checks if the index of obj passed is the null obj
-        if (gp.OBJChecker.checkObject(gp.player, true) == 999) { //checks if entity is colliding with obj null
+        if (gp.Checker.checkObject(gp.player, true) == 999) { //checks if entity is colliding with obj null
             return;
         }
 

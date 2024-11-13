@@ -13,6 +13,8 @@ import main.UtilityTool;
 //super class per player mostri npc entita' ecc.
 
 public abstract class Entity {
+    public String name;
+
     GamePanel gp;
 
     public int worldX, worldY; // entity spawn coordinates
@@ -130,7 +132,7 @@ public abstract class Entity {
         gp.tileM4.cChecker.checkTile(this);
 
         // checks obj collision
-        gp.OBJChecker.checkObject(this, false);
+        gp.Checker.checkObject(this, false);
 
         // move the entity
         if (collisionOn == false) {
