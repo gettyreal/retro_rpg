@@ -56,10 +56,8 @@ public class Player extends Entity {
                 this.direction = "right";
             }
 
-            // check collision
-            collisionOn = false;
-
             // check collision on all layers
+            collisionOn = false;
             gp.tileM1.cChecker.checkTile(this);
             gp.tileM2.cChecker.checkTile(this);
             gp.tileM3.cChecker.checkTile(this);

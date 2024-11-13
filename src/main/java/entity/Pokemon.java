@@ -11,7 +11,7 @@ public class Pokemon extends Entity {
         super(gp);
         //sets default values
         this.name = name;
-        this.direction = "down";
+        this.direction = "up";
         this.speed = 1;
         //gets player image
         getEntityImage(packageName);

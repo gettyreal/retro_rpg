@@ -134,6 +134,9 @@ public abstract class Entity {
         // checks obj collision
         gp.Checker.checkObject(this, false);
 
+        // checks player collision
+        gp.Checker.checkPlayer(this);
+
         // move the entity
         if (collisionOn == false) {
             switch (direction) {

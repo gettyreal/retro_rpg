@@ -6,16 +6,16 @@ import entity.Entity;
 import tile.TileManager;
 
 public class CollisionChecker {
-    GamePanel target;
+    GamePanel gp;
     TileManager tileM;
 
     public CollisionChecker(GamePanel gp, TileManager tileM) {
-        this.target = gp;
+        this.gp = gp;
         this.tileM = tileM;
     }
 
     public CollisionChecker(GamePanel gp) {
-        this.target = gp;
+        this.gp = gp;
     }
 
     public void checkTile(Entity entity) {
@@ -24,16 +24,16 @@ public class CollisionChecker {
         int entityTopWorldY = entity.worldY + entity.collisionArea.y;
         int entityBottomWorldY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height;
 
-        int entityLeftCol = entityLeftWorldX / target.tileSize;
-        int entityRightCol = entityRightWorldX / target.tileSize;
-        int entityTopRow = entityTopWorldY / target.tileSize;
-        int entityBottomRow = entityBottomWorldY / target.tileSize;
+        int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        int entityRightCol = entityRightWorldX / gp.tileSize;
+        int entityTopRow = entityTopWorldY / gp.tileSize;
+        int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
             case "up":
-                entityTopRow = (entityTopWorldY - entity.speed) / target.tileSize;
+                entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
                 if (this.tileM.tile[tileNum1].collision == true ||
@@ -42,7 +42,7 @@ public class CollisionChecker {
                 }
                 break;
             case "down":
-                entityBottomRow = (entityBottomWorldY + entity.speed) / target.tileSize;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (this.tileM.tile[tileNum1].collision == true ||
@@ -51,7 +51,7 @@ public class CollisionChecker {
                 }
                 break;
             case "left":
-                entityLeftCol = (entityLeftWorldX - entity.speed) / target.tileSize;
+                entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 if (this.tileM.tile[tileNum1].collision == true ||
@@ -60,7 +60,7 @@ public class CollisionChecker {
                 }
                 break;
             case "right":
-                entityRightCol = (entityRightWorldX + entity.speed) / target.tileSize;
+                entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 tileNum1 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (this.tileM.tile[tileNum1].collision == true ||
@@ -73,20 +73,20 @@ public class CollisionChecker {
 
     public int checkObject(Entity entity, boolean player) {
         int index = 999; // null obj
-        for (int i = 0; i < target.obj.size(); i++) {
-            if (target.obj.get(i) != null) {
+        for (int i = 0; i < gp.obj.size(); i++) {
+            if (gp.obj.get(i) != null) {
                 // entity solid area position
                 entity.collisionArea.x = entity.worldX + entity.collisionArea.x;
                 entity.collisionArea.y = entity.worldY + entity.collisionArea.y;
                 // obj solid area position
-                target.obj.get(i).collisionArea.x = target.obj.get(i).worldX + target.obj.get(i).collisionArea.x;
-                target.obj.get(i).collisionArea.y = target.obj.get(i).worldY + target.obj.get(i).collisionArea.y;
+                gp.obj.get(i).collisionArea.x = gp.obj.get(i).worldX + gp.obj.get(i).collisionArea.x;
+                gp.obj.get(i).collisionArea.y = gp.obj.get(i).worldY + gp.obj.get(i).collisionArea.y;
 
                 switch (entity.direction) {
                     case "up":
                         entity.collisionArea.y -= entity.speed;
-                        if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                            if (target.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                            if (gp.obj.get(i).collision == true) {
                                 entity.collisionOn = true;
                             }
                             if (player == true) { // return index to pick up obj, only player can do that
@@ -96,9 +96,9 @@ public class CollisionChecker {
                         break;
                     case "down":
                         entity.collisionArea.y += entity.speed;
-                        if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                                if (target.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                                if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -109,9 +109,9 @@ public class CollisionChecker {
                         break;
                     case "left":
                         entity.collisionArea.x -= entity.speed;
-                        if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                                if (target.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                                if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -122,9 +122,9 @@ public class CollisionChecker {
                         break;
                     case "right":
                         entity.collisionArea.x += entity.speed;
-                        if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(target.obj.get(i).collisionArea)) {
-                                if (target.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
+                                if (gp.obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -137,8 +137,8 @@ public class CollisionChecker {
                 // resets rectangle areas and positions
                 entity.collisionArea.x = entity.solidAreaDefaultX;
                 entity.collisionArea.y = entity.solidAreaDefaultY;
-                target.obj.get(i).collisionArea.x = target.obj.get(i).solidAreaDefaultX;
-                target.obj.get(i).collisionArea.y = target.obj.get(i).solidAreaDefaultY;
+                gp.obj.get(i).collisionArea.x = gp.obj.get(i).solidAreaDefaultX;
+                gp.obj.get(i).collisionArea.y = gp.obj.get(i).solidAreaDefaultY;
             }
         }
         return index;
@@ -154,23 +154,23 @@ public class CollisionChecker {
         // Trova la posizione del tile in cui si trova il centro dell'entità
         int entityCenterX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width / 2;
         int entityCenterY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height / 2;
-        int entityTileCol = entityCenterX / target.tileSize;
-        int entityTileRow = entityCenterY / target.tileSize;
+        int entityTileCol = entityCenterX / gp.tileSize;
+        int entityTileRow = entityCenterY / gp.tileSize;
 
         int tileNum;
 
         switch (entity.direction) {
             case "up":
-                entityTileRow = (entityCenterY - entity.speed) / target.tileSize;
+                entityTileRow = (entityCenterY - entity.speed) / gp.tileSize;
                 break;
             case "down":
-                entityTileRow = (entityCenterY + entity.speed) / target.tileSize;
+                entityTileRow = (entityCenterY + entity.speed) / gp.tileSize;
                 break;
             case "left":
-                entityTileCol = (entityCenterX - entity.speed) / target.tileSize;
+                entityTileCol = (entityCenterX - entity.speed) / gp.tileSize;
                 break;
             case "right":
-                entityTileCol = (entityCenterX + entity.speed) / target.tileSize;
+                entityTileCol = (entityCenterX + entity.speed) / gp.tileSize;
                 break;
         }
 
@@ -180,8 +180,8 @@ public class CollisionChecker {
         // Verifica se il tile è un bush
         if (tileNum >= 260 && tileNum <= 275 || tileNum >= 343 && tileNum <= 362) {
             // Calcola il centro del tile
-            int tileCenterX = (entityTileCol * target.tileSize) + target.tileSize / 2;
-            int tileCenterY = (entityTileRow * target.tileSize) + target.tileSize / 2;
+            int tileCenterX = (entityTileCol * gp.tileSize) + gp.tileSize / 2;
+            int tileCenterY = (entityTileRow * gp.tileSize) + gp.tileSize / 2;
 
             // Definisci una hitbox centrale all'interno del tile (esempio: 5x5 pixel)
             int bushHitboxSize = 36; // minimum size done by hand.
@@ -263,5 +263,52 @@ public class CollisionChecker {
             }
         }
         return index;
+    }
+
+    public void checkPlayer(Entity entity) {
+        // entity solid area position
+        entity.collisionArea.x = entity.worldX + entity.collisionArea.x;
+        entity.collisionArea.y = entity.worldY + entity.collisionArea.y;
+        // obj solid area position
+        gp.player.collisionArea.x = gp.player.worldX + gp.player.collisionArea.x;
+        gp.player.collisionArea.y = gp.player.worldY + gp.player.collisionArea.y;
+
+        switch (entity.direction) {
+            case "up":
+                entity.collisionArea.y -= entity.speed;
+                if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "down":
+                entity.collisionArea.y += entity.speed;
+                if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                    if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                        entity.collisionOn = true;
+                    }
+                }
+                break;
+            case "left":
+                entity.collisionArea.x -= entity.speed;
+                if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                    if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                        entity.collisionOn = true;
+                    }
+                }
+                break;
+            case "right":
+                entity.collisionArea.x += entity.speed;
+                if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                    if (entity.collisionArea.intersects(gp.player.collisionArea)) {
+                        entity.collisionOn = true;
+                    }
+                }
+                break;
+        }
+        // resets rectangle areas and positions
+        entity.collisionArea.x = entity.solidAreaDefaultX;
+        entity.collisionArea.y = entity.solidAreaDefaultY;
+        gp.player.collisionArea.x = gp.player.solidAreaDefaultX;
+        gp.player.collisionArea.y = gp.player.solidAreaDefaultY;
     }
 }
