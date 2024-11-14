@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -14,7 +15,7 @@ import tile.TileManager;
 
 //super class per player mostri npc entita' ecc.
 
-public abstract class Entity{
+public abstract class Entity {
     public String name;
 
     public GamePanel gp;
@@ -43,7 +44,7 @@ public abstract class Entity{
 
     // collisions
     public Rectangle collisionArea;
-    public int Xoffset,Yoffset;
+    public int Xoffset, Yoffset;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public boolean bushIn = false;
@@ -121,6 +122,27 @@ public abstract class Entity{
     // sets default behavior of entity class
     // each single entity behaves differently so nothing is inside
     public void setAction() {
+        updateLockCounter++;
+        Random random = new Random();
+        int randomTime = random.nextInt(240) + 180; // Intervallo di 2-3 secondi circa
+
+        if (updateLockCounter > randomTime) {
+            int i = random.nextInt(100) + 1; // numero casuale tra 1 e 100
+
+            if (i <= 70) {
+                direction = "idle";
+            } else if (i > 70 && i <= 80) {
+                direction = "up";
+            } else if (i > 80 && i <= 90) {
+                direction = "down";
+            } else if (i > 90 && i <= 95) {
+                direction = "left";
+            } else {
+                direction = "right";
+            }
+
+            updateLockCounter = 0;
+        }
     }
 
     public void setEntityWorldPosition(int row, int column) {
@@ -182,7 +204,7 @@ public abstract class Entity{
         }
     }
 
-    //method to reload the currentdialog to continue the dialog.
+    // method to reload the currentdialog to continue the dialog.
     public void speak() {
         if (dialogueIndex == dialogues.size()) {
             gp.gameState = gp.playState;
@@ -205,8 +227,8 @@ public abstract class Entity{
             switch (this.direction) {
                 case "idle":
                     Image = lastSprite;
-                    spriteCounter--; //stays on the same image
-                    break; 
+                    spriteCounter--; // stays on the same image
+                    break;
                 case "up":
                     Image = this.up[spriteNumber];
                     lastSprite = this.up[spriteNumber];

@@ -5,18 +5,8 @@ import main.GamePanel;
 
 public class Doctor_Oak extends NPC {
     public Doctor_Oak(GamePanel gp) {
-        super(gp, "Dottor Oak", "npc/doctor_oak.png", 0, 0);
+        super(gp, "Dottor Oak", "npc/doctor_oak/doctor_oak_", 0, 0);
         setDialogue();
-    }
-
-    @Override
-    public void getEntityImage(String packageName) {
-        loadImage(this.down, 0, packageName);
-    }
-
-    @Override
-    public void setAction() {
-
     }
 
     public void setDialogue() {

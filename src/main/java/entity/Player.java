@@ -110,7 +110,6 @@ public class Player extends Entity {
     }
 
     public void interactObject(int index) {
-        System.out.println(index);
         if (index != 999) { // index == 999 null object.
             if (keyH.Epressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_PokeChest) {

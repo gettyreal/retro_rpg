@@ -36,10 +36,10 @@ public class AssetSetter {
     public void setPokemons(int mapIndex) {
         if (mapIndex == 0) {
             addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
-            addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 23, 25);
+            
         }
         if (mapIndex == 1) {
-
+            addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 30, 25);
         }
     }
 
