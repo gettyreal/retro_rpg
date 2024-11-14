@@ -109,6 +109,12 @@ public class GamePanel extends JPanel implements Runnable {
                     mapM.maps.get(currentMap).pokemons.get(i).update();
                 }
             }
+
+            for(int i = 0; i < mapM.maps.get(currentMap).npc.size(); i++) {
+                if (mapM.maps.get(currentMap).npc.get(i) != null) {
+                    mapM.maps.get(currentMap).npc.get(i).update();
+                }
+            }
         }
     }
 
