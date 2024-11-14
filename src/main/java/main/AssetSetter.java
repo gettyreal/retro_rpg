@@ -18,7 +18,7 @@ public class AssetSetter {
     public void setObject(int mapIndex) {
         if (mapIndex == 0) {
             addObject(new OBJ_PokeChest(), 27, 23);
-            addObject(new OBJ_Door(), 24, 22);
+            addObject(new OBJ_Door(), 7, 9);
             addObject(new OBJ_PokeBall(), 5, 10);
             addObject(new OBJ_PokeBall(), 5, 19);
             addObject(new OBJ_PokeBall(), 10, 24);
@@ -28,7 +28,7 @@ public class AssetSetter {
             addObject(new OBJ_PokeBall(), 20, 45);
         }
         if (mapIndex == 1) {
-
+            addObject(new OBJ_Door(), 25, 27);
         }
     }
 
@@ -48,7 +48,7 @@ public class AssetSetter {
 
         }
         if (mapIndex == 1) {
-            addNPC(new Doctor_Oak(gp), 26, 24);
+            addNPC(new Doctor_Oak(gp), 20, 21);
         }
     }
 

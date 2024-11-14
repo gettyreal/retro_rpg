@@ -110,6 +110,7 @@ public class Player extends Entity {
     }
 
     public void interactObject(int index) {
+        System.out.println(index);
         if (index != 999) { // index == 999 null object.
             if (keyH.Epressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_PokeChest) {
@@ -118,16 +119,20 @@ public class Player extends Entity {
                     pokeChest.opened = true; // put pokechst opened on true after user input
                 }
 
-                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
-                    worldX = 22 * gp.tileSize;
-                    worldY = 29 * gp.tileSize;
-                    gp.currentMap = 1;
-                }
-
                 // it needs to be the last cause objindex--;
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
                     gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
                     objIndex--; // prevents index out bounds exeption
+                }
+
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
+                    if (gp.currentMap == 0) {
+                        setEntityWorldPosition(25, 27);
+                        gp.currentMap = 1;
+                    } else if (gp.currentMap == 1) {
+                        setEntityWorldPosition(7, 9);
+                        gp.currentMap = 0;
+                    }
                 }
 
                 keyH.Epressed = false; // resets the key

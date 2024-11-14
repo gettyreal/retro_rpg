@@ -123,6 +123,11 @@ public abstract class Entity{
     public void setAction() {
     }
 
+    public void setEntityWorldPosition(int row, int column) {
+        this.worldX = row * gp.tileSize;
+        this.worldY = column * gp.tileSize;
+    }
+
     // updates the entity
     // set default update cicle of entiy
     // much the same for all entities exept for player
