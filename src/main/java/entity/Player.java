@@ -137,9 +137,10 @@ public class Player extends Entity {
         }
     }
 
+    //method to start npc interaction
+    //set gamestate to dialog state and instaantiace the first dialog
     public void interactNPC(int index) {
-        if (index != 999) {
-            
+        if (index != 999) { 
             if (keyH.Fpressed == true) {
                 gp.gameState = gp.dialogState;
                 gp.npc.get(index).speak();

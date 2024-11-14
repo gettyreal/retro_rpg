@@ -44,10 +44,12 @@ public class KeyHandler implements KeyListener {
                 Fpressed = true;
             }
         } else if (gp.gameState == gp.pauseState) {
-            gp.gameState = gp.playState;
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.playState;
+            }
         } else if (gp.gameState == gp.dialogState) {
             if (code == KeyEvent.VK_ENTER) {
-                gp.gameState = gp.playState;
+                enterPressed = true;
             }
         }
     }
@@ -69,6 +71,12 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_E) {
             Epressed = false;
+        }
+        if (code == KeyEvent.VK_F) {
+            Fpressed = false;
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = false;
         }
     }
 

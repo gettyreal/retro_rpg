@@ -173,9 +173,11 @@ public abstract class Entity {
         }
     }
 
+    //method to reload the currentdialog to continue the dialog.
     public void speak() {
         if (dialogueIndex == dialogues.size()) {
-            gp.player.keyH.Fpressed = false;
+            gp.gameState = gp.playState;
+            dialogueIndex = dialogues.size() - 1;
         } else {
             gp.userInterface.currentDialog = dialogues.get(dialogueIndex);
             dialogueIndex++;

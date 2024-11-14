@@ -123,6 +123,13 @@ public class UI {
     }
 
     public void drawDialogueScreen(Graphics2D g2) {
+
+        //continues the dialog on enter press
+        if (gp.keyH.enterPressed == true) {
+            gp.npc.get(gp.Checker.checkEntity(gp.player, gp.npc)).speak();
+            gp.keyH.enterPressed = false;
+        }
+
         int x = gp.tileSize;
         int y = gp.tileSize / 2;
         int width = gp.screenWidth - (gp.tileSize * 2);
