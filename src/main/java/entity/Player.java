@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Door;
 import object.OBJ_PokeChest;
 
 import java.awt.Graphics2D;
@@ -105,10 +106,10 @@ public class Player extends Entity {
         //events on collision
         interactNPC(npcIndex);
         interactPokemon(pokemonIndex);
-        pickupObject(objIndex); // removes the obj on e key press if possible
+        interactObject(objIndex); // removes the obj on e key press if possible
     }
 
-    public void pickupObject(int index) {
+    public void interactObject(int index) {
         if (index != 999) { // index == 999 null object.
             if (keyH.Epressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_PokeChest) {
@@ -121,6 +122,12 @@ public class Player extends Entity {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
                     gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
                     objIndex--; // prevents index out bounds exeption
+                }
+
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
+                    worldX = 22 * gp.tileSize;
+                    worldY = 29 * gp.tileSize;
+                    gp.currentMap = 1;
                 }
 
                 keyH.Epressed = false; // resets the key

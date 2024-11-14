@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // maps
     public MapManager mapM = new MapManager(this);
-    public int currentMap = 1;
+    public int currentMap = 0;
 
     // game status
     public int gameState;
@@ -61,9 +61,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() { // set default object before game starts
         gameState = playState;
-        mapM.maps.get(currentMap).aSetter.setPokemons();
-        mapM.maps.get(currentMap).aSetter.setObject();
-        mapM.maps.get(currentMap).aSetter.setNPC();
+        mapSetup(0);
+        mapSetup(1);
+    }
+
+    private void mapSetup(int mapIndex) {
+        mapM.maps.get(mapIndex).aSetter.setPokemons(mapIndex);
+        mapM.maps.get(mapIndex).aSetter.setObject(mapIndex);
+        mapM.maps.get(mapIndex).aSetter.setNPC(mapIndex);
     }
 
     public void startGameThread() {
