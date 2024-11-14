@@ -73,20 +73,20 @@ public class CollisionChecker {
 
     public int checkObject(Entity entity, boolean player) {
         int index = 999; // null obj
-        for (int i = 0; i < gp.obj.size(); i++) {
-            if (gp.obj.get(i) != null) {
+        for (int i = 0; i < gp.mapM.maps.get(gp.currentMap).obj.size(); i++) {
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(i) != null) {
                 // entity solid area position
                 entity.collisionArea.x = entity.worldX + entity.collisionArea.x;
                 entity.collisionArea.y = entity.worldY + entity.collisionArea.y;
                 // obj solid area position
-                gp.obj.get(i).collisionArea.x = gp.obj.get(i).worldX + gp.obj.get(i).collisionArea.x;
-                gp.obj.get(i).collisionArea.y = gp.obj.get(i).worldY + gp.obj.get(i).collisionArea.y;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj.get(i).worldX + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj.get(i).worldY + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y;
 
                 switch (entity.direction) {
                     case "up":
                         entity.collisionArea.y -= entity.speed;
-                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                            if (gp.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                 entity.collisionOn = true;
                             }
                             if (player == true) { // return index to pick up obj, only player can do that
@@ -96,9 +96,9 @@ public class CollisionChecker {
                         break;
                     case "down":
                         entity.collisionArea.y += entity.speed;
-                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                                if (gp.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                                if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -109,9 +109,9 @@ public class CollisionChecker {
                         break;
                     case "left":
                         entity.collisionArea.x -= entity.speed;
-                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                                if (gp.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                                if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -122,9 +122,9 @@ public class CollisionChecker {
                         break;
                     case "right":
                         entity.collisionArea.x += entity.speed;
-                        if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.obj.get(i).collisionArea)) {
-                                if (gp.obj.get(i).collision == true) {
+                        if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                                if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
                                 if (player == true) { // return index to pick up obj, only player can do that
@@ -137,8 +137,8 @@ public class CollisionChecker {
                 // resets rectangle areas and positions
                 entity.collisionArea.x = entity.solidAreaDefaultX;
                 entity.collisionArea.y = entity.solidAreaDefaultY;
-                gp.obj.get(i).collisionArea.x = gp.obj.get(i).solidAreaDefaultX;
-                gp.obj.get(i).collisionArea.y = gp.obj.get(i).solidAreaDefaultY;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj.get(i).solidAreaDefaultX;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj.get(i).solidAreaDefaultY;
             }
         }
         return index;

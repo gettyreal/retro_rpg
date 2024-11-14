@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Door;
 import object.OBJ_PokeChest;
 
 import java.awt.Graphics2D;
@@ -60,20 +61,17 @@ public class Player extends Entity {
 
             // check collision on all layers
             collisionOn = false;
-            gp.tileM1.cChecker.checkTile(this);
-            gp.tileM2.cChecker.checkTile(this);
-            gp.tileM3.cChecker.checkTile(this);
-            gp.tileM4.cChecker.checkTile(this);
+            checkTileCollision();
 
             // check if player is in bush
             // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
-            bushIn = gp.tileM2.cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
+            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
             // checks pokemon collision
-            pokemonIndex = gp.Checker.checkEntity(this, gp.pokemons);
+            pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
 
             //checks entity collision
-            npcIndex = gp.Checker.checkEntity(this, gp.npc);
+            npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
 
             // check objcets collison + gets the value of the obj colliding
             objIndex = gp.Checker.checkObject(this, true);
@@ -108,22 +106,32 @@ public class Player extends Entity {
         //events on collision
         interactNPC(npcIndex);
         interactPokemon(pokemonIndex);
-        pickupObject(objIndex); // removes the obj on e key press if possible
+        interactObject(objIndex); // removes the obj on e key press if possible
     }
 
-    public void pickupObject(int index) {
+    public void interactObject(int index) {
         if (index != 999) { // index == 999 null object.
             if (keyH.Epressed == true) {
-                if (gp.obj.get(index) instanceof OBJ_PokeChest) {
-                    gp.obj.get(index).loadImage("object/poke-chest-open.png"); // changes imagine after opening chest
-                    OBJ_PokeChest pokeChest = (OBJ_PokeChest) gp.obj.get(index); // down cast to modify opened boolean
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_PokeChest) {
+                    gp.mapM.maps.get(gp.currentMap).obj.get(index).loadImage("object/poke-chest-open.png"); // changes imagine after opening chest
+                    OBJ_PokeChest pokeChest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(index); // down cast to modify opened boolean
                     pokeChest.opened = true; // put pokechst opened on true after user input
                 }
 
                 // it needs to be the last cause objindex--;
-                if (gp.obj.get(index).pickable == true) {
-                    gp.aSetter.removeObject(index);
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
+                    gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
                     objIndex--; // prevents index out bounds exeption
+                }
+
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
+                    if (gp.currentMap == 0) {
+                        setEntityWorldPosition(25, 27);
+                        gp.currentMap = 1;
+                    } else if (gp.currentMap == 1) {
+                        setEntityWorldPosition(7, 9);
+                        gp.currentMap = 0;
+                    }
                 }
 
                 keyH.Epressed = false; // resets the key
@@ -142,7 +150,7 @@ public class Player extends Entity {
         if (index != 999) { 
             if (keyH.Fpressed == true) {
                 gp.gameState = gp.dialogState;
-                gp.npc.get(index).speak();
+                gp.mapM.maps.get(gp.currentMap).npc.get(index).speak();
             }
         }
     }

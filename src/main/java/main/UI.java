@@ -45,20 +45,20 @@ public class UI {
     public void drawPlayMessages(Graphics2D g2) {
         // play state messages
         int objIndex = gp.Checker.checkObject(gp.player, true);
-        int npcIndex = gp.Checker.checkEntity(gp.player, gp.npc);
+        int npcIndex = gp.Checker.checkEntity(gp.player, gp.mapM.maps.get(gp.currentMap).npc);
 
         // PLAYER - OBJ MESSAGES
         if (objIndex != 999) { // checks if entity is colliding with obj null
 
             // pokeball message
-            if (gp.obj.get(objIndex) instanceof OBJ_PokeBall) {
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeBall) {
                 drawMessage(g2, "press E to pick up PokeBall", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
 
             // pokechest message
-            if (gp.obj.get(objIndex) instanceof OBJ_PokeChest) {
-                OBJ_PokeChest pokechest = (OBJ_PokeChest) gp.obj.get(objIndex); // downcast to obtain opened attribute
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeChest) {
+                OBJ_PokeChest pokechest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(objIndex); // downcast to obtain opened attribute
                 if (pokechest.opened == false) { // checks if pokechest is opened or not
                     drawMessage(g2, "press E to open PokeChest", gp.screenWidth / 2, // when not opened
                             gp.screenHeight / 2 + (4 * gp.tileSize));
@@ -69,7 +69,7 @@ public class UI {
             }
 
             // door message
-            if (gp.obj.get(objIndex) instanceof OBJ_Door) {
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_Door) {
                 drawMessage(g2, "press E to open up Door", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
@@ -79,13 +79,13 @@ public class UI {
         if (npcIndex != 999) {
 
             // doctor oaK message.
-            if (gp.npc.get(npcIndex) instanceof Doctor_Oak) {
+            if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Doctor_Oak) {
                 drawMessage(g2, "press F to talk to Dottor Oak", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
 
             // nurse joy message
-            if (gp.npc.get(npcIndex) instanceof Nurse_Joy) {
+            if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Nurse_Joy) {
                 drawMessage(g2, "press F to talk to Nurse Joy", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
@@ -133,7 +133,7 @@ public class UI {
 
         //continues the dialog on enter press
         if (gp.keyH.enterPressed == true) {
-            gp.npc.get(gp.Checker.checkEntity(gp.player, gp.npc)).speak();
+            gp.mapM.maps.get(gp.currentMap).npc.get(gp.Checker.checkEntity(gp.player, gp.mapM.maps.get(gp.currentMap).npc)).speak();
             gp.keyH.enterPressed = false;
         }
 
