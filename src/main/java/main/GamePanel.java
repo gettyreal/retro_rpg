@@ -4,14 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import entity.Entity;
 import entity.Player;
-import object.SuperObject;
-import tile.TileManager;
+import map.MapManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -37,26 +34,16 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; // for clock
 
     // game input and checkers
-    KeyHandler keyH = new KeyHandler(this); // get key input
-    public AssetSetter aSetter = new AssetSetter(this); // instantiace obj and entities
+    public KeyHandler keyH = new KeyHandler(this); // get key input
     public UI userInterface = new UI(this); // instantiace user interface for messages
     public CollisionChecker Checker = new CollisionChecker(this);
 
-    // game entities and objects
+    // PLAYER
     public Player player = new Player(this, keyH); // instantiace player
-    public ArrayList<Entity> npc = new ArrayList<>(); // npc entity arraylist
-    public ArrayList<Entity> pokemons = new ArrayList<>(); // pokemon entitiy arraylist
-    public ArrayList<SuperObject> obj = new ArrayList<>(); // obj array list
 
-    // map layers
-    public TileManager tileM1 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer1.csv",
-            "tiles/collisions.txt");
-    public TileManager tileM2 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer2.csv",
-            "tiles/collisions.txt");
-    public TileManager tileM3 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer3.csv",
-            "tiles/collisions.txt");
-    public TileManager tileM4 = new TileManager(this, "tiles/tileset.png", "maps/tilemap_layer4.csv",
-            "tiles/collisions.txt");
+    // maps
+    public MapManager mapM = new MapManager(this);
+    public int currentMap = 1;
 
     // game status
     public int gameState;
@@ -74,9 +61,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() { // set default object before game starts
         gameState = playState;
-        aSetter.setPokemons();
-        aSetter.setObject();
-        aSetter.setNPC();
+        mapM.maps.get(currentMap).aSetter.setPokemons();
+        mapM.maps.get(currentMap).aSetter.setObject();
+        mapM.maps.get(currentMap).aSetter.setNPC();
     }
 
     public void startGameThread() {
@@ -108,13 +95,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == playState) { //update only when game is on play state.
+        if (gameState == playState) { // update only when game is on play state.
             // player update
             player.update();
             // pokemons update
-            for (int i = 0; i < pokemons.size(); i++) {
-                if (pokemons.get(i) != null) {
-                    pokemons.get(i).update();
+            for (int i = 0; i < mapM.maps.get(currentMap).pokemons.size(); i++) {
+                if (mapM.maps.get(currentMap).pokemons.get(i) != null) {
+                    mapM.maps.get(currentMap).pokemons.get(i).update();
                 }
             }
         }
@@ -124,38 +111,37 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM1.draw(g2);
-        tileM2.draw(g2);
+        mapM.maps.get(currentMap).layers.get(0).draw(g2);
+        mapM.maps.get(currentMap).layers.get(1).draw(g2);
 
         // obj drawing
-        for (int i = 0; i < obj.size(); i++) {
-            if (obj.get(i) != null) {
-                obj.get(i).draw(g2, this);
+        for (int i = 0; i < mapM.maps.get(currentMap).obj.size(); i++) {
+            if (mapM.maps.get(currentMap).obj.get(i) != null) {
+                mapM.maps.get(currentMap).obj.get(i).draw(g2, this);
             }
         }
 
         // pokemon drawing
-        for (int i = 0; i < pokemons.size(); i++) {
-            if (pokemons.get(i) != null) {
-                pokemons.get(i).draw(g2);
+        for (int i = 0; i < mapM.maps.get(currentMap).pokemons.size(); i++) {
+            if (mapM.maps.get(currentMap).pokemons.get(i) != null) {
+                mapM.maps.get(currentMap).pokemons.get(i).draw(g2);
             }
         }
 
         // npc drawing
-        for (int i = 0; i < npc.size(); i++) {
-            if (npc.get(i) != null) {
-                npc.get(i).draw(g2);
+        for (int i = 0; i < mapM.maps.get(currentMap).npc.size(); i++) {
+            if (mapM.maps.get(currentMap).npc.get(i) != null) {
+                mapM.maps.get(currentMap).npc.get(i).draw(g2);
             }
         }
 
         player.draw(g2); // draw player
 
-        tileM3.draw(g2);
-        tileM4.draw(g2);
+        mapM.maps.get(currentMap).layers.get(2).draw(g2);
+        mapM.maps.get(currentMap).layers.get(3).draw(g2);
 
         userInterface.draw(g2); // draws messages
 
         g2.dispose();
     }
-
 }

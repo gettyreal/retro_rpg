@@ -10,10 +10,11 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
+import tile.TileManager;
 
 //super class per player mostri npc entita' ecc.
 
-public abstract class Entity {
+public abstract class Entity{
     public String name;
 
     public GamePanel gp;
@@ -130,10 +131,7 @@ public abstract class Entity {
 
         // checks entity collision
         collisionOn = false;
-        gp.tileM1.cChecker.checkTile(this);
-        gp.tileM2.cChecker.checkTile(this);
-        gp.tileM3.cChecker.checkTile(this);
-        gp.tileM4.cChecker.checkTile(this);
+        checkTileCollision();
 
         // checks obj collision
         gp.Checker.checkObject(this, false);
@@ -170,6 +168,12 @@ public abstract class Entity {
                 spriteNumber++; // aumenta la sprite
             }
             spriteCounter = 0;
+        }
+    }
+
+    public void checkTileCollision() {
+        for (TileManager tileM : gp.mapM.maps.get(gp.currentMap).layers) {
+            tileM.cChecker.checkTile(this);
         }
     }
 

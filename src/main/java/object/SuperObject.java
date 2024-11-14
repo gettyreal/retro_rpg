@@ -7,10 +7,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import java.awt.Rectangle;
+
 import main.GamePanel;
 import main.UtilityTool;
 
-public class SuperObject {
+public class SuperObject{
     public BufferedImage image;
     public String name;
     public boolean collision = false;
