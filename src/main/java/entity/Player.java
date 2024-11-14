@@ -118,16 +118,16 @@ public class Player extends Entity {
                     pokeChest.opened = true; // put pokechst opened on true after user input
                 }
 
-                // it needs to be the last cause objindex--;
-                if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
-                    gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
-                    objIndex--; // prevents index out bounds exeption
-                }
-
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
                     worldX = 22 * gp.tileSize;
                     worldY = 29 * gp.tileSize;
                     gp.currentMap = 1;
+                }
+
+                // it needs to be the last cause objindex--;
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
+                    gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
+                    objIndex--; // prevents index out bounds exeption
                 }
 
                 keyH.Epressed = false; // resets the key
