@@ -1,12 +1,7 @@
 package main;
 
-import entity.Entity;
-import entity.Pokemon;
-import entity.npc.Doctor;
-import object.OBJ_Door;
-import object.OBJ_PokeBall;
-import object.OBJ_PokeChest;
-import object.SuperObject;
+import entity.*;
+import object.*;
 
 public class AssetSetter {
     GamePanel gp;
@@ -35,7 +30,8 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-        addNPC(new Doctor(gp), 17, 23);
+        //addNPC(new Doctor_Oak(gp), 17, 23);
+        //addNPC(new Nurse_Joy(gp), 11, 10);
     }
 
     //adds a new object into the game

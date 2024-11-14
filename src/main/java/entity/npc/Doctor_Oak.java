@@ -3,11 +3,9 @@ package entity.npc;
 import entity.NPC;
 import main.GamePanel;
 
-public class Doctor extends NPC {
-    boolean defaultSpeak = false;
-
-    public Doctor(GamePanel gp) {
-        super(gp, "prof Oak", "npc/doctor.png", 0, 0);
+public class Doctor_Oak extends NPC {
+    public Doctor_Oak(GamePanel gp) {
+        super(gp, "Dottor Oak", "npc/doctor_oak.png", 0, 0);
         setDialogue();
     }
 

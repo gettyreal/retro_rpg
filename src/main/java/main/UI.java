@@ -2,7 +2,8 @@ package main;
 
 import java.awt.Graphics2D;
 
-import entity.npc.Doctor;
+import entity.npc.Doctor_Oak;
+import entity.npc.Nurse_Joy;
 import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
@@ -67,7 +68,7 @@ public class UI {
                 }
             }
 
-            // doop message
+            // door message
             if (gp.obj.get(objIndex) instanceof OBJ_Door) {
                 drawMessage(g2, "press E to open up Door", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
@@ -77,9 +78,15 @@ public class UI {
         // PLAYER - NPC MESSAGES
         if (npcIndex != 999) {
 
-            // doctor oat message.
-            if (gp.npc.get(npcIndex) instanceof Doctor) {
+            // doctor oaK message.
+            if (gp.npc.get(npcIndex) instanceof Doctor_Oak) {
                 drawMessage(g2, "press F to talk to Dottor Oak", gp.screenWidth / 2,
+                        gp.screenHeight / 2 + (4 * gp.tileSize));
+            }
+
+            // nurse joy message
+            if (gp.npc.get(npcIndex) instanceof Nurse_Joy) {
+                drawMessage(g2, "press F to talk to Nurse Joy", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
         }

@@ -133,7 +133,6 @@ public class Player extends Entity {
 
     public void interactPokemon(int index) {
         if (index != 999) {
-            System.out.println("hittin "+ gp.pokemons.get(index).name);
         }
     }
 
