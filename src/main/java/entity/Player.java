@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Door;
 import object.OBJ_PokeChest;
+import object.OBJ_nurseDialogue;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -15,9 +16,9 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    int objIndex = 999; // set obj null value.
-    int pokemonIndex = 999;
-    int npcIndex = 999;
+    public int objIndex = 999; // set obj null value.
+    public int pokemonIndex = 999;
+    public int npcIndex = 999;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -41,7 +42,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         this.worldX = 21 * gp.tileSize;
         this.worldY = 21 * gp.tileSize;
-        this.speed = 2;
+        this.speed = 4;
         this.direction = "up";
     }
 
@@ -135,6 +136,13 @@ public class Player extends Entity {
                 }
 
                 keyH.Epressed = false; // resets the key
+            }
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_nurseDialogue) {
+                npcIndex = 1;
+                if (keyH.Fpressed == true) {
+                    interactNPC(npcIndex);
+                    keyH.Fpressed = false;
+                }
             }
         }
     }

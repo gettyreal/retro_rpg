@@ -7,6 +7,7 @@ import entity.npc.Nurse_Joy;
 import object.OBJ_Door;
 import object.OBJ_PokeBall;
 import object.OBJ_PokeChest;
+import object.OBJ_nurseDialogue;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -58,7 +59,11 @@ public class UI {
 
             // pokechest message
             if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeChest) {
-                OBJ_PokeChest pokechest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(objIndex); // downcast to obtain opened attribute
+                OBJ_PokeChest pokechest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(objIndex); // downcast
+                                                                                                             // to
+                                                                                                             // obtain
+                                                                                                             // opened
+                                                                                                             // attribute
                 if (pokechest.opened == false) { // checks if pokechest is opened or not
                     drawMessage(g2, "press E to open PokeChest", gp.screenWidth / 2, // when not opened
                             gp.screenHeight / 2 + (4 * gp.tileSize));
@@ -71,6 +76,11 @@ public class UI {
             // door message
             if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_Door) {
                 drawMessage(g2, "press E to open up Door", gp.screenWidth / 2,
+                        gp.screenHeight / 2 + (4 * gp.tileSize));
+            }
+
+            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_nurseDialogue) {
+                drawMessage(g2, "press F to talk to Nurse Joy", gp.screenWidth / 2,
                         gp.screenHeight / 2 + (4 * gp.tileSize));
             }
         }
@@ -131,9 +141,10 @@ public class UI {
 
     public void drawDialogueScreen(Graphics2D g2) {
 
-        //continues the dialog on enter press
+        // continues the dialog on enter press
         if (gp.keyH.enterPressed == true) {
-            gp.mapM.maps.get(gp.currentMap).npc.get(gp.Checker.checkEntity(gp.player, gp.mapM.maps.get(gp.currentMap).npc)).speak();
+            gp.mapM.maps.get(gp.currentMap).npc
+                    .get(gp.player.npcIndex).speak();
             gp.keyH.enterPressed = false;
         }
 
@@ -144,13 +155,12 @@ public class UI {
 
         drawSubWindow(g2, x, y, width, height);
 
-
         g2.setColor(Color.white);
         g2.setFont(dialog_24);
 
-        x+= gp.tileSize;
-        y+= gp.tileSize;
-        for(String line : currentDialog.split("\n")) {
+        x += gp.tileSize;
+        y += gp.tileSize;
+        for (String line : currentDialog.split("\n")) {
             g2.drawString(line, x, y);
             y += 40;
         }

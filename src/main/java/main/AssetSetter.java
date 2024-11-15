@@ -29,6 +29,7 @@ public class AssetSetter {
         }
         if (mapIndex == 1) {
             addObject(new OBJ_Door(), 25, 27);
+            addObject(new OBJ_nurseDialogue(), 25, 22);
         }
     }
 

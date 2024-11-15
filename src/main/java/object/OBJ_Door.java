@@ -5,6 +5,6 @@ public class OBJ_Door extends SuperObject{ //door wont be visible because the im
         this.name = "door"; 
         this.collision = false;
         this.pickable = false;
-        loadImage("object/door.png");
+        loadImage("object/null.png");
     }
 }
