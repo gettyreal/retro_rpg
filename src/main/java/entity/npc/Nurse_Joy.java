@@ -12,11 +12,13 @@ public class Nurse_Joy extends NPC{
     @Override
     public void getEntityImage(String packageName) {
         loadImage(this.down, 0, packageName);
+        loadImage(this.down, 1, packageName);
+        loadImage(this.down, 2, packageName);
+        loadImage(this.down, 3, packageName);
     }
 
     @Override
     public void setAction() {
-
     }
 
     public void setDialogue() {

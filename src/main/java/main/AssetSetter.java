@@ -49,6 +49,7 @@ public class AssetSetter {
         }
         if (mapIndex == 1) {
             addNPC(new Doctor_Oak(gp), 20, 21);
+            addNPC(new Nurse_Joy(gp), 25, 20);
         }
     }
 
