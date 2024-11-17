@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 import entity.npc.Doctor_Oak;
 import entity.npc.Nurse_Joy;
@@ -39,6 +41,9 @@ public class UI {
         }
         if (gp.gameState == gp.dialogState) {
             drawDialogueScreen(g2);
+        }
+        if (gp.gameState == gp.battleState) {
+            drawBattleScreen(g2);
         }
 
     }
@@ -121,7 +126,7 @@ public class UI {
     }
 
     public void drawPauseScreen(Graphics2D g2) {
-        String text = "Game Paused";
+        String text = " Game Paused ";
 
         // Draw semi-transparent background
         drawSubWindow(g2, 0, 0, gp.screenWidth, gp.screenHeight);
@@ -166,9 +171,23 @@ public class UI {
         }
     }
 
+    public void drawBattleScreen(Graphics2D g2) {
+        UtilityTool ui = new UtilityTool();
+        BufferedImage image;
+        //draw backround screen
+        image = ui.getBufferedImage("screens/battle_forest.png");
+        image = UtilityTool.scaleImage(image, image.getWidth() * 2, image.getHeight() *2);
+        g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
+
+        //draw selvatic pokemon image
+        image = ui.getBufferedImage("pokemon/treecko/treecko_battle.png");
+        image = UtilityTool.scaleImage(image, image.getWidth() * 3, image.getHeight() *3);
+        g2.drawImage(image, 11 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
+    }
+
     public void drawSubWindow(Graphics2D g2, int x, int y, int width, int height) {
         g2.setColor(new Color(0, 0, 0, 150)); // Black with transparency
-        g2.fillRoundRect(x, y, width, height, 30, 45);
+        g2.fillRect(x, y, width, height);
     }
 
 }

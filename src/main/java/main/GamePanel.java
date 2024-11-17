@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogState = 3;
+    public final int battleState = 4;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -111,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            for(int i = 0; i < mapM.maps.get(currentMap).npc.size(); i++) {
+            for (int i = 0; i < mapM.maps.get(currentMap).npc.size(); i++) {
                 if (mapM.maps.get(currentMap).npc.get(i) != null) {
                     mapM.maps.get(currentMap).npc.get(i).update();
                 }
@@ -123,6 +124,25 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        switch (gameState) {
+            case playState:
+                paintPlayState(g2);
+                break;
+            case pauseState:
+                paintPlayState(g2);
+                break;
+            case dialogState:
+                paintPlayState(g2);
+                break;
+            case battleState:
+                paintBattleState(g2);
+                break;
+        }
+
+        g2.dispose();
+    }
+
+    private void paintPlayState(Graphics2D g2) {
         mapM.maps.get(currentMap).layers.get(0).draw(g2);
         mapM.maps.get(currentMap).layers.get(1).draw(g2);
 
@@ -151,9 +171,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         mapM.maps.get(currentMap).layers.get(2).draw(g2);
         mapM.maps.get(currentMap).layers.get(3).draw(g2);
-
         userInterface.draw(g2); // draws messages
+    }
 
-        g2.dispose();
+    private void paintBattleState(Graphics2D g2) {
+        userInterface.draw(g2); // draws messages
     }
 }

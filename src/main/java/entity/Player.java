@@ -143,6 +143,7 @@ public class Player extends Entity {
 
     public void interactPokemon(int index) {
         if (index != 999) {
+            gp.gameState = gp.battleState;
         }
     }
 
