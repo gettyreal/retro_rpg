@@ -18,7 +18,9 @@ public class AssetSetter {
     public void setObject(int mapIndex) {
         if (mapIndex == 0) {
             addObject(new OBJ_PokeChest(), 27, 23);
-            addObject(new OBJ_Door(), 7, 9);
+            addObject(new OBJ_Door("toPokecentre"), 7, 9);
+            addObject(new OBJ_Door("toHome"), 16, 22);
+            addObject(new OBJ_Door("ToPokeshop"), 12, 10);
             addObject(new OBJ_PokeBall(), 5, 10);
             addObject(new OBJ_PokeBall(), 5, 19);
             addObject(new OBJ_PokeBall(), 10, 24);
@@ -28,8 +30,11 @@ public class AssetSetter {
             addObject(new OBJ_PokeBall(), 20, 45);
         }
         if (mapIndex == 1) {
-            addObject(new OBJ_Door(), 25, 27);
+            addObject(new OBJ_Door("fromPokecentre"), 25, 27);
             addObject(new OBJ_nurseDialogue(), 25, 22);
+        }
+        if (mapIndex == 2) {
+            addObject(new OBJ_Door("fromHome"), 13, 28);
         }
     }
 
@@ -42,6 +47,9 @@ public class AssetSetter {
         if (mapIndex == 1) {
             addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 30, 25);
         }
+        if (mapIndex == 2) {
+            addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 38, 23);
+        }
     }
 
     public void setNPC(int mapIndex) {
@@ -51,6 +59,8 @@ public class AssetSetter {
         if (mapIndex == 1) {
             addNPC(new Doctor_Oak(gp), 20, 21);
             addNPC(new Nurse_Joy(gp), 25, 20);
+        }
+        if (mapIndex == 2) {
         }
     }
 

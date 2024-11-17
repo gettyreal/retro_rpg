@@ -14,6 +14,7 @@ import main.UtilityTool;
 public class SuperObject{
     public BufferedImage image;
     public String name;
+    public String actionCode;
     public boolean collision = false;
     public boolean pickable = false;
     public int worldX, worldY;

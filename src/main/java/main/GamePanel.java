@@ -63,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = playState;
         mapSetup(0);
         mapSetup(1);
+        mapSetup(2);
     }
 
     private void mapSetup(int mapIndex) {

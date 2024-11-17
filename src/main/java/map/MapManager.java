@@ -18,8 +18,11 @@ public class MapManager {
         // OVERWORLD MAP
         addMap("overWorld Map", "tiles/tileset.png", "tilemap", "tiles/collisions.txt");
 
-        // HOUSE 1 MAP
+        // POKECENTRE MAP
         addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");
+
+        // home MAP
+        addMap("home Map", "tiles/home.png", "home", "tiles/home.txt");
     }
 
     private void addMap(String mapName, String tilesetPath, String baseLayerName, String collisionPath) {
