@@ -1,7 +1,11 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
+import javax.swing.Timer;
 
 import entity.npc.Doctor_Oak;
 import entity.npc.Nurse_Joy;
@@ -16,17 +20,25 @@ import java.awt.Color;
 
 public class UI {
     GamePanel gp;
+    Timer t;
     Font dialog_16;
     Font dialog_24;
     Font dialog_80;
 
     public String currentDialog;
 
+    int width;
+    int height;
+
     public UI(GamePanel gp) {
         this.gp = gp;
+        t = new Timer(1000, null);
         this.dialog_16 = new Font("Dialog", Font.BOLD, 16); // Custom font for message
         this.dialog_80 = new Font("Dialog", Font.BOLD, 80);
         this.dialog_24 = new Font("Dialog", Font.BOLD, 24);
+
+        width = gp.screenWidth;
+        height = gp.screenHeight;
     }
 
     // draws messages on event, only player can cause these events
@@ -170,22 +182,58 @@ public class UI {
         }
     }
 
-    public void drawBattleScreen(Graphics2D g2) {
-        UtilityTool ui = new UtilityTool();
-        BufferedImage image;
-        //draw backround screen
-        image = ui.getBufferedImage("screens/battle_forest.png");
-        image = UtilityTool.scaleImage(image, image.getWidth() * 2, image.getHeight() *2);
-        g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
-
-        //draw selvatic pokemon image
-        image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; //gets colliding pokemon battle image
-        g2.drawImage(image, 11 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
-    }
-
     public void drawSubWindow(Graphics2D g2, int x, int y, int width, int height) {
         g2.setColor(new Color(0, 0, 0, 150)); // Black with transparency
         g2.fillRect(x, y, width, height);
     }
 
+    // BATTLE ANIMATIONS
+    private long animationStartTime = 0; // Tempo d'inizio dell'animazione
+    private boolean isAnimationActive = true; // Stato dell'animazione
+    private final int animationDuration = 750; // Durata in millisecondi
+
+    public void drawBattleScreen(Graphics2D g2) {
+        UtilityTool ui = new UtilityTool();
+        BufferedImage image;
+
+        // Disegna lo sfondo della schermata di battaglia
+        image = ui.getBufferedImage("screens/battle_forest.png");
+        image = UtilityTool.scaleImage(image, image.getWidth() * 2, image.getHeight() * 2);
+        g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
+
+        // Disegna l'immagine del Pokémon selvatico
+        image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; // Pokémon che collide
+        g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
+
+        battleAnimation(g2);
+    }
+
+    public void battleAnimation(Graphics2D g2) {
+        if (isAnimationActive) {
+            // Avvia l'animazione se non è stato registrato un tempo d'inizio
+            if (animationStartTime == 0) {
+                animationStartTime = System.currentTimeMillis();
+            }
+
+            // Calcola il tempo trascorso
+            long elapsedTime = System.currentTimeMillis() - animationStartTime;
+
+            // Determina la proporzione di completamento dell'animazione (tra 0.0 e 1.0)
+            double progress = Math.min(1.0, (double) elapsedTime / animationDuration);
+
+            // Calcola l'altezza corrente dei rettangoli
+            int maxHeight = gp.screenHeight / 2; // Altezza iniziale massima
+            int currentHeight = (int) (maxHeight * (1.0 - progress)); // Riduzione graduale
+
+            // Disegna i rettangoli con altezza ridotta
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, gp.screenWidth, currentHeight); // Rettangolo superiore
+            g2.fillRect(0, gp.screenHeight - currentHeight, gp.screenWidth, currentHeight); // Rettangolo inferiore
+
+            // Termina l'animazione se completata
+            if (progress >= 1.0) {
+                isAnimationActive = false;
+            }
+        }
+    }
 }
