@@ -2,7 +2,6 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 import entity.npc.Doctor_Oak;
 import entity.npc.Nurse_Joy;

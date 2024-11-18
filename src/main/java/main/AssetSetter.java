@@ -35,20 +35,20 @@ public class AssetSetter {
         }
         if (mapIndex == 2) {
             addObject(new OBJ_Door("fromHome"), 13, 28);
+            addObject(new OBJ_Door("toSecondFloor"), 17, 21);
+            addObject(new OBJ_Door("fromSecondFloor"), 37, 20);
+
         }
     }
 
     // adds pokemon to the game.
     public void setPokemons(int mapIndex) {
-        if (mapIndex == 0) {
-            addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 21, 26);
-            
+        if (mapIndex == 0) {            
         }
         if (mapIndex == 1) {
             addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 30, 25);
         }
         if (mapIndex == 2) {
-            addPokemon(new Pokemon(gp, "cubone", "pokemon/cubone/cubone_", 8, 12), 38, 23);
         }
     }
 

@@ -164,6 +164,13 @@ public class Player extends Entity {
             gp.currentMap = 0;
             setEntityWorldPosition(16, 22);
         }
+        if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
+            setEntityWorldPosition(37, 20);
+        }
+        if (door.actionCode.equalsIgnoreCase("fromSecondFloor")) {
+            setEntityWorldPosition(17, 21);
+        }
+        
     }
 
     //method to start npc interaction
@@ -179,6 +186,7 @@ public class Player extends Entity {
 
     @Override
     public void draw(Graphics2D g2) {
+        System.out.println(this.worldX / gp.tileSize+ " || "+ this.worldY / gp.tileSize);
         BufferedImage playerImage = null;
 
         // gets player srites
