@@ -46,7 +46,7 @@ public class AssetSetter {
         if (mapIndex == 0) {            
         }
         if (mapIndex == 1) {
-            addPokemon(new Pokemon(gp, "treecko", "pokemon/treecko/treecko_", 10, 12), 30, 25);
+            addPokemon(new Pokemon(gp, "treecko", "treecko/treecko_", "treecko/treecko_battle.png", 10, 12), 30, 25);
         }
         if (mapIndex == 2) {
         }

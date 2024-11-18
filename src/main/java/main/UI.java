@@ -179,8 +179,7 @@ public class UI {
         g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
 
         //draw selvatic pokemon image
-        image = ui.getBufferedImage("pokemon/treecko/treecko_battle.png");
-        image = UtilityTool.scaleImage(image, image.getWidth() * 3, image.getHeight() *3);
+        image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; //gets colliding pokemon battle image
         g2.drawImage(image, 11 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
     }
 

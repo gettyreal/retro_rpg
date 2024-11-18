@@ -10,21 +10,57 @@ import main.GamePanel;
 import main.UtilityTool;
 
 public class Pokemon extends Entity {
-    public Pokemon(GamePanel gp, String name, String packageName, int Xoffset, int Yoffset) {
+    public Pokemon(GamePanel gp, String name, String packageName, String BattleImagePath, int Xoffset, int Yoffset) {
         // calls entity constructor
         super(gp);
         // sets default values
         this.name = name;
         this.direction = "up";
         this.speed = 1;
-        // gets player image
+        // gets pokemon imagines
         getEntityImage(packageName);
+        setEntityBattleImage(BattleImagePath);
 
         // gets collision area parameters
         this.Xoffset = Xoffset;
         this.Yoffset = Yoffset;
         solidAreaDefaultX = collisionArea.x;
         solidAreaDefaultY = collisionArea.y;
+    }
+
+    public void setEntityBattleImage(String fileName) {
+        fileName = "pokemon/" + fileName;
+        try {
+            this.battleImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+            this.battleImage = UtilityTool.scaleImage(battleImage, battleImage.getWidth() * 3, battleImage.getHeight() * 3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getEntityImage(String packagePath) {
+        packagePath = "pokemon/" + packagePath;
+        int indexFile = 0;
+        int indexArray = 0;
+        for (int i = 0; i < 16; i++) {
+            if (indexArray == 4) {
+                indexArray = 0;
+            }
+            // loads all player imagines
+            String fileName = packagePath + indexFile + ".png";
+            if (i < 4) {
+                loadImage(this.down, indexArray, fileName);
+            } else if (i < 8) {
+                loadImage(this.up, indexArray, fileName);
+            } else if (i < 12) {
+                loadImage(this.left, indexArray, fileName);
+            } else {
+                loadImage(this.right, indexArray, fileName);
+            }
+            indexFile++;
+            indexArray++;
+        }
     }
 
     @Override

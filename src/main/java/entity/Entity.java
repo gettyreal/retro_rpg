@@ -36,6 +36,7 @@ public abstract class Entity {
     public BufferedImage[] bushRight = new BufferedImage[4];
 
     public BufferedImage lastSprite;
+    public BufferedImage battleImage;
 
     public String direction; // direction of the player
 
