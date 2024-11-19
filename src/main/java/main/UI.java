@@ -1,8 +1,6 @@
 package main;
 
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Timer;
@@ -188,9 +186,6 @@ public class UI {
     }
 
     // BATTLE ANIMATIONS
-    private long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    private boolean isAnimationActive = true; // Stato dell'animazione
-    private final int animationDuration = 750; // Durata in millisecondi
 
     public void drawBattleScreen(Graphics2D g2) {
         UtilityTool ui = new UtilityTool();
@@ -208,7 +203,12 @@ public class UI {
         battleAnimation(g2);
     }
 
+    // screen opening animation.
+    long animationStartTime = 0; // Tempo d'inizio dell'animazione
+    boolean isAnimationActive = true; // Stato dell'animazione
+    final int animationDuration = 750; // Durata in millisecondi
     public void battleAnimation(Graphics2D g2) {
+
         if (isAnimationActive) {
             // Avvia l'animazione se non è stato registrato un tempo d'inizio
             if (animationStartTime == 0) {
