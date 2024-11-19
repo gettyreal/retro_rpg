@@ -187,7 +187,16 @@ public class UI {
 
     // BATTLE ANIMATIONS
 
+    long animationStartTime = 0; // Tempo d'inizio dell'animazione
+    boolean isAnimationActive = true; // Stato dell'animazione
+    final int animationDuration = 750; // Durata in millisecondi
+
     public void drawBattleScreen(Graphics2D g2) {
+        getBattleImagines(g2);
+        battleAnimation(g2);
+    }
+    
+    public void getBattleImagines(Graphics2D g2) {
         UtilityTool ui = new UtilityTool();
         BufferedImage image;
 
@@ -199,14 +208,8 @@ public class UI {
         // Disegna l'immagine del Pokémon selvatico
         image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; // Pokémon che collide
         g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
-
-        battleAnimation(g2);
     }
 
-    // screen opening animation.
-    long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    boolean isAnimationActive = true; // Stato dell'animazione
-    final int animationDuration = 750; // Durata in millisecondi
     public void battleAnimation(Graphics2D g2) {
 
         if (isAnimationActive) {
