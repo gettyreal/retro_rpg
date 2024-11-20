@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // game status
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogState = 3;
@@ -61,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() { // set default object before game starts
-        gameState = playState;
+        gameState = titleState;
         mapSetup(0);
         mapSetup(1);
         mapSetup(2);
@@ -125,6 +126,9 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         switch (gameState) {
+            case titleState:
+                userInterface.draw(g2);
+                break;
             case playState:
                 paintPlayState(g2);
                 break;

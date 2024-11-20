@@ -41,6 +41,9 @@ public class UI {
 
     // draws messages on event, only player can cause these events
     public void draw(Graphics2D g2) {
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen(g2);
+        }
         if (gp.gameState == gp.playState) {
             drawPlayMessages(g2);
         }
@@ -55,6 +58,23 @@ public class UI {
             drawBattleScreen(g2);
         }
 
+    }
+
+    public void drawTitleScreen(Graphics2D g2) {
+        UtilityTool ut = new UtilityTool();
+
+        //draws backround gamescreen
+        BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
+        titleScreen = UtilityTool.scaleImage(titleScreen,(int)(titleScreen.getWidth() * 3.5), (int)(titleScreen.getHeight() * 3.5));
+        g2.drawImage(titleScreen, -8,32, titleScreen.getWidth(), titleScreen.getHeight(), null);
+
+        //draws "press any key to start"
+        String text = "Press any Key to Start";
+        g2.setFont(dialog_24);
+        g2.setColor(Color.WHITE);
+        int x = 192;
+        int y = 512;
+        g2.drawString(text, x, y);
     }
 
     public void drawPlayMessages(Graphics2D g2) {

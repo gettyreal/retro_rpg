@@ -19,7 +19,7 @@ public class AssetSetter {
         if (mapIndex == 0) {
             addObject(new OBJ_PokeChest(), 27, 23);
             addObject(new OBJ_Door("toPokecentre"), 7, 9);
-            addObject(new OBJ_Door("toHome"), 16, 22);
+            addObject(new OBJ_Door("toHome"), 18, 11);
             addObject(new OBJ_Door("ToPokeshop"), 12, 10);
             addObject(new OBJ_PokeBall(), 5, 10);
             addObject(new OBJ_PokeBall(), 5, 19);

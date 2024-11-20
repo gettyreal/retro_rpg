@@ -20,8 +20,9 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
-
-        if (gp.gameState == gp.playState) {
+        if (gp.gameState == gp.titleState) {
+          gp.gameState = gp.playState;  
+        } else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;
             }

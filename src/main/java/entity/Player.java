@@ -162,7 +162,7 @@ public class Player extends Entity {
         }
         if (door.actionCode.equalsIgnoreCase("fromHome")) {
             gp.currentMap = 0;
-            setEntityWorldPosition(16, 22);
+            setEntityWorldPosition(18, 11);
         }
         if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
             setEntityWorldPosition(37, 20);
