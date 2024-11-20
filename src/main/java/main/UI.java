@@ -16,7 +16,7 @@ import object.OBJ_nurseDialogue;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.FontMetrics;
+import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class UI {
@@ -29,8 +29,17 @@ public class UI {
     Font dialog_80;
     Font pokemon_font;
     Font pokemon_16;
-    Font pokemon_24;
+    Font pokemon_14;
     Font pokemon_64;
+
+    //Colors
+    Color black = Color.BLACK;
+    Color white = Color.white;
+    Color boxOutline1 = new Color(66,117,160);
+    Color boxOutline2 = new Color(162,208,232);
+    Color textColor = new Color(101,101,101);
+    Color textShadow = new Color(212,212,212);
+
 
     public String currentDialog;
     private boolean showStartText = true;
@@ -53,8 +62,8 @@ public class UI {
             InputStream is = getClass().getResourceAsStream("/font/PokemonGb-RAeo.ttf");
             this.pokemon_font = Font.createFont(Font.TRUETYPE_FONT, is);
             this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f);
-            this.pokemon_24 = pokemon_font.deriveFont(24f);
-            this.pokemon_64 = pokemon_font.deriveFont(64f);
+            this.pokemon_14 = pokemon_font.deriveFont(Font.BOLD, 14f);
+            this.pokemon_64 = pokemon_font.deriveFont(Font.BOLD, 64f);
             is.close();
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -96,7 +105,7 @@ public class UI {
         //draws "press any key to start"
         String text = "Press any Key to Start";
         g2.setFont(pokemon_16);
-        g2.setColor(Color.WHITE);
+        g2.setColor(white);
         int x = 128;
         int y = 508;
         if (showStartText) {
@@ -164,21 +173,18 @@ public class UI {
     }
 
     public void drawMessage(Graphics2D g2, String message, int screenX, int screenY) {
-        FontMetrics m = g2.getFontMetrics(dialog_16);
+        int x = gp.tileSize;
+        int y = (gp.screenHeight / 4) * 3;
+        int width = gp.screenWidth - (gp.tileSize * 2);
+        int height = gp.tileSize * 2;
 
-        // centre text on width
-        int messageWidth = m.stringWidth(message);
-        screenX = screenX - (messageWidth / 2);
+        drawSubWindow(g2, x, y, width, height);
 
-        // centre text on height
-        int messageHeight = m.getHeight();
-        screenY = screenY - (messageHeight / 2);
-
-        drawSubWindow(g2, screenX - 15, screenY - m.getAscent() - 10, messageWidth + 30, messageHeight + 20);
-
-        g2.setFont(dialog_16);
-        g2.setColor(Color.WHITE); // white text color
-        g2.drawString(message, screenX, screenY);
+        g2.setFont(pokemon_14);
+        g2.setColor(textShadow);
+        g2.drawString(message, x + 16 + 2, y + 32 + 2);
+        g2.setColor(textColor);
+        g2.drawString(message, x + 16, y + 32);
     }
 
     public void drawPauseScreen(Graphics2D g2) {
@@ -188,8 +194,8 @@ public class UI {
         drawSubWindow(g2, 0, 0, gp.screenWidth, gp.screenHeight);
 
         // Set font and color for the text
-        g2.setFont(dialog_80);
-        g2.setColor(Color.WHITE);
+        g2.setFont(pokemon_64);
+        g2.setColor(textColor);
 
         // Center the text horizontally and vertically
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
@@ -216,8 +222,8 @@ public class UI {
 
         drawSubWindow(g2, x, y, width, height);
 
-        g2.setColor(Color.white);
-        g2.setFont(dialog_24);
+        g2.setColor(textColor);
+        g2.setFont(pokemon_14);
 
         x += gp.tileSize;
         y += gp.tileSize;
@@ -228,8 +234,17 @@ public class UI {
     }
 
     public void drawSubWindow(Graphics2D g2, int x, int y, int width, int height) {
-        g2.setColor(new Color(0, 0, 0, 150)); // Black with transparency
-        g2.fillRect(x, y, width, height);
+        g2.setColor(white); // Black with transparency
+        g2.fillRoundRect(x, y, width, height, 40, 50);
+
+        g2.setColor(boxOutline1);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(x, y, width, height, 40, 50);
+
+
+        g2.setColor(boxOutline2);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x + 4, y + 4, width - 8, height - 8, 32, 40);
     }
 
     // BATTLE ANIMATIONS
