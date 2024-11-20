@@ -2,6 +2,8 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.Timer;
 
@@ -13,27 +15,50 @@ import object.OBJ_PokeChest;
 import object.OBJ_nurseDialogue;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Color;
 
 public class UI {
     GamePanel gp;
     Timer t;
+
+    //fonts
     Font dialog_16;
     Font dialog_24;
     Font dialog_80;
+    Font pokemon_font;
+    Font pokemon_16;
+    Font pokemon_24;
+    Font pokemon_64;
 
     public String currentDialog;
+    private boolean showStartText = true;
 
     int width;
     int height;
 
     public UI(GamePanel gp) {
         this.gp = gp;
-        t = new Timer(1000, null);
+        t = new Timer(500, e -> {
+            showStartText =!showStartText;
+            gp.repaint();
+        });
+        t.start();
         this.dialog_16 = new Font("Dialog", Font.BOLD, 16); // Custom font for message
         this.dialog_80 = new Font("Dialog", Font.BOLD, 80);
         this.dialog_24 = new Font("Dialog", Font.BOLD, 24);
+
+        try {
+            InputStream is = getClass().getResourceAsStream("/font/PokemonGb-RAeo.ttf");
+            this.pokemon_font = Font.createFont(Font.TRUETYPE_FONT, is);
+            this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f);
+            this.pokemon_24 = pokemon_font.deriveFont(24f);
+            this.pokemon_64 = pokemon_font.deriveFont(64f);
+            is.close();
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
 
         width = gp.screenWidth;
         height = gp.screenHeight;
@@ -70,11 +95,13 @@ public class UI {
 
         //draws "press any key to start"
         String text = "Press any Key to Start";
-        g2.setFont(dialog_24);
+        g2.setFont(pokemon_16);
         g2.setColor(Color.WHITE);
-        int x = 192;
-        int y = 512;
-        g2.drawString(text, x, y);
+        int x = 128;
+        int y = 508;
+        if (showStartText) {
+            g2.drawString(text, x, y);
+        }
     }
 
     public void drawPlayMessages(Graphics2D g2) {
