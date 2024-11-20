@@ -59,7 +59,7 @@ public class UI {
         this.dialog_24 = new Font("Dialog", Font.BOLD, 24);
 
         try {
-            InputStream is = getClass().getResourceAsStream("/font/PokemonGb-RAeo.ttf");
+            InputStream is = getClass().getResourceAsStream("/font/Pokemon_Classic.ttf");
             this.pokemon_font = Font.createFont(Font.TRUETYPE_FONT, is);
             this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f);
             this.pokemon_14 = pokemon_font.deriveFont(Font.BOLD, 14f);
