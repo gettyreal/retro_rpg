@@ -186,16 +186,10 @@ public class UI {
     }
 
     // BATTLE ANIMATIONS
-<<<<<<< HEAD
-    private long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    private boolean isAnimationActive = true; // Stato dell'animazione (rettangoli o immagine)
-    private final int animationDuration = 2000; // Durata complessiva in millisecondi
-=======
 
     long animationStartTime = 0; // Tempo d'inizio dell'animazione
     boolean isAnimationActive = true; // Stato dell'animazione
     final int animationDuration = 750; // Durata in millisecondi
->>>>>>> a921f973fee1f5d3cca52050316c3f391a7c442d
 
     public void drawBattleScreen(Graphics2D g2) {
         getBattleImagines(g2);
@@ -211,13 +205,6 @@ public class UI {
         image = UtilityTool.scaleImage(image, image.getWidth() * 2, image.getHeight() * 2);
         g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
 
-<<<<<<< HEAD
-        // Animazione combinata
-        drawCombinedAnimation(g2);
-    }
-
-    public void drawCombinedAnimation(Graphics2D g2) {
-=======
         // Disegna l'immagine del Pokémon selvatico
         image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; // Pokémon che collide
         g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
@@ -225,7 +212,6 @@ public class UI {
 
     public void battleAnimation(Graphics2D g2) {
 
->>>>>>> a921f973fee1f5d3cca52050316c3f391a7c442d
         if (isAnimationActive) {
             if (animationStartTime == 0) {
                 animationStartTime = System.currentTimeMillis();
