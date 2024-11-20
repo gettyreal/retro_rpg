@@ -7,7 +7,7 @@ public class Main {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("RetroRPG");
+        window.setTitle("POKEMON FREED EDITION");
 
         GamePanel gamePanel = new GamePanel(); //add gamePanel alla finestra
         window.add(gamePanel);
