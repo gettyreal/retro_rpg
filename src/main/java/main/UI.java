@@ -1,8 +1,6 @@
 package main;
 
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Timer;
@@ -189,8 +187,8 @@ public class UI {
 
     // BATTLE ANIMATIONS
     private long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    private boolean isAnimationActive = true; // Stato dell'animazione
-    private final int animationDuration = 750; // Durata in millisecondi
+    private boolean isAnimationActive = true; // Stato dell'animazione (rettangoli o immagine)
+    private final int animationDuration = 2000; // Durata complessiva in millisecondi
 
     public void drawBattleScreen(Graphics2D g2) {
         UtilityTool ui = new UtilityTool();
@@ -201,39 +199,59 @@ public class UI {
         image = UtilityTool.scaleImage(image, image.getWidth() * 2, image.getHeight() * 2);
         g2.drawImage(image, -128, 0, image.getWidth(), image.getHeight(), null);
 
-        // Disegna l'immagine del Pokémon selvatico
-        image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; // Pokémon che collide
-        g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
-
-        battleAnimation(g2);
+        // Animazione combinata
+        drawCombinedAnimation(g2);
     }
 
-    public void battleAnimation(Graphics2D g2) {
+    public void drawCombinedAnimation(Graphics2D g2) {
         if (isAnimationActive) {
-            // Avvia l'animazione se non è stato registrato un tempo d'inizio
             if (animationStartTime == 0) {
                 animationStartTime = System.currentTimeMillis();
             }
 
-            // Calcola il tempo trascorso
             long elapsedTime = System.currentTimeMillis() - animationStartTime;
 
-            // Determina la proporzione di completamento dell'animazione (tra 0.0 e 1.0)
-            double progress = Math.min(1.0, (double) elapsedTime / animationDuration);
+            // Durata per ciascuna animazione (rettangoli e immagine)
+            int rectangleAnimationDuration = animationDuration / 2; // Prima metà del tempo
+            int imageAnimationDuration = animationDuration / 2;    // Seconda metà del tempo
 
-            // Calcola l'altezza corrente dei rettangoli
-            int maxHeight = gp.screenHeight / 2; // Altezza iniziale massima
-            int currentHeight = (int) (maxHeight * (1.0 - progress)); // Riduzione graduale
+            if (elapsedTime <= rectangleAnimationDuration) {
+                // **Animazione rettangoli**
+                double progress = (double) elapsedTime / rectangleAnimationDuration;
 
-            // Disegna i rettangoli con altezza ridotta
-            g2.setColor(Color.BLACK);
-            g2.fillRect(0, 0, gp.screenWidth, currentHeight); // Rettangolo superiore
-            g2.fillRect(0, gp.screenHeight - currentHeight, gp.screenWidth, currentHeight); // Rettangolo inferiore
+                int maxHeight = gp.screenHeight / 2; // Altezza iniziale massima
+                int currentHeight = (int) (maxHeight * (1.0 - progress));
 
-            // Termina l'animazione se completata
-            if (progress >= 1.0) {
-                isAnimationActive = false;
+                g2.setColor(Color.BLACK);
+                g2.fillRect(0, 0, gp.screenWidth, currentHeight); // Rettangolo superiore
+                g2.fillRect(0, gp.screenHeight - currentHeight, gp.screenWidth, currentHeight); // Rettangolo inferiore
+            } else {
+                // **Animazione immagine Pokémon**
+                double progress = Math.min(1.0, (double) (elapsedTime - rectangleAnimationDuration) / imageAnimationDuration);
+
+                // Ottieni l'immagine del Pokémon
+                BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
+
+                // Calcola la posizione dell'immagine
+                int finalX = (int) (gp.screenWidth * 0.75) - (image.getWidth() / 2); // 3/4 dello schermo
+                int finalY = (gp.screenHeight - image.getHeight()) / 2; // Centro verticale
+                int startX = gp.screenWidth; // Partenza fuori dallo schermo a destra
+                int currentX = (int) (startX + (finalX - startX) * progress);
+
+                // Disegna l'immagine nella posizione corrente
+                g2.drawImage(image, currentX, finalY, image.getWidth(), image.getHeight(), null);
+
+                if (progress >= 1.0) {
+                    // L'immagine rimane ferma una volta completato il movimento
+                    isAnimationActive = false; // Fine animazione generale, ma l'immagine resta visibile
+                }
             }
+        } else {
+            // Mostra direttamente l'immagine al suo stato finale se l'animazione è terminata
+            BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
+            int finalX = (int) (gp.screenWidth * 0.75) - (image.getWidth() / 2); // 3/4 dello schermo
+            int finalY = (gp.screenHeight - image.getHeight()) / 2; // Centro verticale
+            g2.drawImage(image, finalX, finalY, image.getWidth(), image.getHeight(), null);
         }
     }
 }

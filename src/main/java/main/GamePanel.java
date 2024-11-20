@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // maps
     public MapManager mapM = new MapManager(this);
-    public int currentMap = 0;
+    public int currentMap = 2;
 
     // game status
     public int gameState;
