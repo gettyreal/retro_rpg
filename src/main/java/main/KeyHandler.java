@@ -21,7 +21,11 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
         if (gp.gameState == gp.titleState) {
-          gp.gameState = gp.playState;  
+          if (gp.userInterface.titleScreenState == 0) {
+            gp.userInterface.titleScreenState =1;
+          } else if(gp.userInterface.titleScreenState == 1) {
+            gp.gameState = gp.playState;
+          }
         } else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;

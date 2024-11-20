@@ -23,7 +23,7 @@ public class UI {
     GamePanel gp;
     Timer t;
 
-    //fonts
+    // fonts
     Font dialog_16;
     Font dialog_24;
     Font dialog_80;
@@ -32,25 +32,31 @@ public class UI {
     Font pokemon_14;
     Font pokemon_64;
 
-    //Colors
+    // Colors
     Color black = Color.BLACK;
     Color white = Color.white;
-    Color boxOutline1 = new Color(66,117,160);
-    Color boxOutline2 = new Color(162,208,232);
-    Color textColor = new Color(101,101,101);
-    Color textShadow = new Color(212,212,212);
+    Color boxOutline1 = new Color(66, 117, 160);
+    Color boxOutline2 = new Color(162, 208, 232);
+    Color textColor = new Color(101, 101, 101);
+    Color textShadow = new Color(212, 212, 212);
 
+    // Screen states
+    public int titleScreenState = 0;
 
+    // dialog states
     public String currentDialog;
+
+    // animation states
     private boolean showStartText = true;
 
+    // divs propreties
     int width;
     int height;
 
     public UI(GamePanel gp) {
         this.gp = gp;
         t = new Timer(500, e -> {
-            showStartText =!showStartText;
+            showStartText = !showStartText;
             gp.repaint();
         });
         t.start();
@@ -97,19 +103,26 @@ public class UI {
     public void drawTitleScreen(Graphics2D g2) {
         UtilityTool ut = new UtilityTool();
 
-        //draws backround gamescreen
-        BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
-        titleScreen = UtilityTool.scaleImage(titleScreen,(int)(titleScreen.getWidth() * 3.5), (int)(titleScreen.getHeight() * 3.5));
-        g2.drawImage(titleScreen, -8,32, titleScreen.getWidth(), titleScreen.getHeight(), null);
+        if (titleScreenState == 0) {
+            // draws backround gamescreen
+            BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
+            titleScreen = UtilityTool.scaleImage(titleScreen, (int) (titleScreen.getWidth() * 3.5),
+                    (int) (titleScreen.getHeight() * 3.5));
+            g2.drawImage(titleScreen, -8, 32, titleScreen.getWidth(), titleScreen.getHeight(), null);
 
-        //draws "press any key to start"
-        String text = "Press any Key to Start";
-        g2.setFont(pokemon_16);
-        g2.setColor(white);
-        int x = 128;
-        int y = 508;
-        if (showStartText) {
-            g2.drawString(text, x, y);
+            // draws "press any key to start"
+            String text = "Press any Key to Start";
+            g2.setFont(pokemon_16);
+            g2.setColor(white);
+            int x = 128;
+            int y = 508;
+            if (showStartText) {
+                g2.drawString(text, x, y);
+            }
+        }
+        if (titleScreenState == 1) {
+            BufferedImage oakDialogue = ut.getBufferedImage("screens/intro_dialogue.png");
+            g2.drawImage(oakDialogue, 0, 0, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
         }
     }
 
@@ -241,7 +254,6 @@ public class UI {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(x, y, width, height, 40, 50);
 
-
         g2.setColor(boxOutline2);
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 4, y + 4, width - 8, height - 8, 32, 40);
@@ -257,7 +269,7 @@ public class UI {
         getBattleImagines(g2);
         battleAnimation(g2);
     }
-    
+
     public void getBattleImagines(Graphics2D g2) {
         UtilityTool ui = new UtilityTool();
         BufferedImage image;
@@ -283,7 +295,7 @@ public class UI {
 
             // Durata per ciascuna animazione (rettangoli e immagine)
             int rectangleAnimationDuration = animationDuration / 2; // Prima metà del tempo
-            int imageAnimationDuration = animationDuration / 2;    // Seconda metà del tempo
+            int imageAnimationDuration = animationDuration / 2; // Seconda metà del tempo
 
             if (elapsedTime <= rectangleAnimationDuration) {
                 // **Animazione rettangoli**
@@ -297,7 +309,8 @@ public class UI {
                 g2.fillRect(0, gp.screenHeight - currentHeight, gp.screenWidth, currentHeight); // Rettangolo inferiore
             } else {
                 // **Animazione immagine Pokémon**
-                double progress = Math.min(1.0, (double) (elapsedTime - rectangleAnimationDuration) / imageAnimationDuration);
+                double progress = Math.min(1.0,
+                        (double) (elapsedTime - rectangleAnimationDuration) / imageAnimationDuration);
 
                 // Ottieni l'immagine del Pokémon
                 BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
@@ -317,7 +330,8 @@ public class UI {
                 }
             }
         } else {
-            // Mostra direttamente l'immagine al suo stato finale se l'animazione è terminata
+            // Mostra direttamente l'immagine al suo stato finale se l'animazione è
+            // terminata
             BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
             int finalX = (int) (gp.screenWidth * 0.75) - (image.getWidth() / 2); // 3/4 dello schermo
             int finalY = (gp.screenHeight - image.getHeight()) / 2; // Centro verticale
