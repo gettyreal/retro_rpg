@@ -35,11 +35,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // game input and checkers
     public KeyHandler keyH = new KeyHandler(this); // get key input
+    public Player player = new Player(this, keyH); // instantiace player
     public UI userInterface = new UI(this); // instantiace user interface for messages
     public CollisionChecker Checker = new CollisionChecker(this);
-
-    // PLAYER
-    public Player player = new Player(this, keyH); // instantiace player
 
     // maps
     public MapManager mapM = new MapManager(this);
@@ -62,10 +60,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() { // set default object before game starts
-        gameState = titleState;
         mapSetup(0);
         mapSetup(1);
         mapSetup(2);
+        gameState = titleState;
     }
 
     private void mapSetup(int mapIndex) {

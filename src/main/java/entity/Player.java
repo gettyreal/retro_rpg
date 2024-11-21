@@ -40,6 +40,7 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
+        this.name = "GETTYREAL";
         this.worldX = 32 * gp.tileSize;
         this.worldY = 22 * gp.tileSize;
         this.speed = 2;

@@ -41,7 +41,7 @@ public class UI {
     Color textShadow = new Color(212, 212, 212);
 
     // Screen states
-    public int titleScreenState = 0;
+    public int titleScreenState = -1;
 
     // dialog states
     public String currentDialog;
@@ -53,8 +53,13 @@ public class UI {
     int width;
     int height;
 
+    Doctor_Oak dr;
+
     public UI(GamePanel gp) {
         this.gp = gp;
+
+        dr = new Doctor_Oak(gp);
+
         t = new Timer(500, e -> {
             showStartText = !showStartText;
             gp.repaint();
@@ -103,6 +108,10 @@ public class UI {
     public void drawTitleScreen(Graphics2D g2) {
         UtilityTool ut = new UtilityTool();
 
+        if (titleScreenState == -1) {
+            dr.speak();
+            titleScreenState = 0;
+        }
         if (titleScreenState == 0) {
             // draws backround gamescreen
             BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
@@ -122,7 +131,15 @@ public class UI {
         }
         if (titleScreenState == 1) {
             BufferedImage oakDialogue = ut.getBufferedImage("screens/intro_dialogue.png");
-            g2.drawImage(oakDialogue, 0, 0, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
+            g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
+
+            // continues the dialog on enter press
+            if (gp.keyH.enterPressed == true) {
+                dr.speak();
+                gp.keyH.enterPressed = false;
+            }
+
+            drawMessage(g2, currentDialog);
         }
     }
 
@@ -136,8 +153,7 @@ public class UI {
 
             // pokeball message
             if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeBall) {
-                drawMessage(g2, "press E to pick up PokeBall", gp.screenWidth / 2,
-                        gp.screenHeight / 2 + (4 * gp.tileSize));
+                drawMessage(g2, "press E to pick up PokeBall");
             }
 
             // pokechest message
@@ -148,23 +164,19 @@ public class UI {
                                                                                                              // opened
                                                                                                              // attribute
                 if (pokechest.opened == false) { // checks if pokechest is opened or not
-                    drawMessage(g2, "press E to open PokeChest", gp.screenWidth / 2, // when not opened
-                            gp.screenHeight / 2 + (4 * gp.tileSize));
+                    drawMessage(g2, "press E to open PokeChest");
                 } else {
-                    drawMessage(g2, "PokeChest already opened", gp.screenWidth / 2, // when opened
-                            gp.screenHeight / 2 + (4 * gp.tileSize));
+                    drawMessage(g2, "PokeChest already opened");
                 }
             }
 
             // door message
             if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_Door) {
-                drawMessage(g2, "press E to open up Door", gp.screenWidth / 2,
-                        gp.screenHeight / 2 + (4 * gp.tileSize));
+                drawMessage(g2, "press E to open up Door");
             }
 
             if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_nurseDialogue) {
-                drawMessage(g2, "press F to talk to Nurse Joy", gp.screenWidth / 2,
-                        gp.screenHeight / 2 + (4 * gp.tileSize));
+                drawMessage(g2, "press F to talk to Nurse Joy");
             }
         }
 
@@ -173,31 +185,14 @@ public class UI {
 
             // doctor oaK message.
             if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Doctor_Oak) {
-                drawMessage(g2, "press F to talk to Dottor Oak", gp.screenWidth / 2,
-                        gp.screenHeight / 2 + (4 * gp.tileSize));
+                drawMessage(g2, "press F to talk to Dottor Oak");
             }
 
             // nurse joy message
             if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Nurse_Joy) {
-                drawMessage(g2, "press F to talk to Nurse Joy", gp.screenWidth / 2,
-                        gp.screenHeight / 2 + (4 * gp.tileSize));
+                drawMessage(g2, "press F to talk to Nurse Joy");
             }
         }
-    }
-
-    public void drawMessage(Graphics2D g2, String message, int screenX, int screenY) {
-        int x = gp.tileSize;
-        int y = (gp.screenHeight / 4) * 3;
-        int width = gp.screenWidth - (gp.tileSize * 2);
-        int height = gp.tileSize * 2;
-
-        drawSubWindow(g2, x, y, width, height);
-
-        g2.setFont(pokemon_14);
-        g2.setColor(textShadow);
-        g2.drawString(message, x + 16 + 2, y + 32 + 2);
-        g2.setColor(textColor);
-        g2.drawString(message, x + 16, y + 32);
     }
 
     public void drawPauseScreen(Graphics2D g2) {
@@ -217,6 +212,25 @@ public class UI {
 
         // Draw the "Game Paused" message
         g2.drawString(text, x, y);
+    }
+
+    public void drawMessage(Graphics2D g2, String message) {
+        int x = gp.tileSize;
+        int y = (gp.screenHeight / 4) * 3;
+        int width = gp.screenWidth - (gp.tileSize * 2);
+        int height = (int)(gp.tileSize * 2.5);
+
+        drawSubWindow(g2, x, y, width, height);
+
+        g2.setFont(pokemon_16);
+
+        for (String line : message.split("\n")) {
+            g2.setColor(textShadow);
+            g2.drawString(line, x + 16 + 2, y + 32 + 2);
+            g2.setColor(textColor);
+            g2.drawString(line, x + 16, y + 32);
+            y += 40;
+        }
     }
 
     public void drawDialogueScreen(Graphics2D g2) {

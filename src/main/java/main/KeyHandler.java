@@ -23,8 +23,11 @@ public class KeyHandler implements KeyListener {
         if (gp.gameState == gp.titleState) {
           if (gp.userInterface.titleScreenState == 0) {
             gp.userInterface.titleScreenState =1;
+
           } else if(gp.userInterface.titleScreenState == 1) {
-            gp.gameState = gp.playState;
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+            }
           }
         } else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_ESCAPE) {
