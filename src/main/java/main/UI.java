@@ -21,7 +21,12 @@ import java.awt.Color;
 
 public class UI {
     GamePanel gp;
-    Timer t;
+    UtilityTool ut;
+
+    // timers
+    Timer dialogueTimer;
+    Timer titleTimer;
+    Timer dotTimer;
 
     // fonts
     Font dialog_16;
@@ -41,30 +46,69 @@ public class UI {
     Color textShadow = new Color(212, 212, 212);
 
     // Screen states
-    public int titleScreenState = -1;
-
-    // dialog states
-    public String currentDialog;
+    public int titleScreenState = 0;
 
     // animation states
     private boolean showStartText = true;
+    long animationStartTime = 0; // Tempo d'inizio dell'animazione
+    boolean isAnimationActive = true; // Stato dell'animazione
+    final int animationDuration = 3750; // Durata in millisecondi
+    long elapsedTime;
 
     // divs propreties
     int width;
     int height;
+    int dotHeight;
+    int dotOffset;
+    int dotCount;
+
+    // text propreties
+    // dialog states
+    public String currentDialog;
+    public String currentString = "";
+    int charIndex = 0;
+    int yOffset = 0;
 
     Doctor_Oak dr;
+    BufferedImage down_arrow;
 
     public UI(GamePanel gp) {
         this.gp = gp;
+        ut = new UtilityTool();
 
         dr = new Doctor_Oak(gp);
+        down_arrow = ut.getBufferedImage("screens/down_arrow.png");
+        down_arrow = UtilityTool.scaleImage(down_arrow, down_arrow.getWidth() * 3, down_arrow.getHeight() * 3);
 
-        t = new Timer(500, e -> {
+        // timers.
+        titleTimer = new Timer(500, event -> {
             showStartText = !showStartText;
             gp.repaint();
         });
-        t.start();
+        titleTimer.start();
+        dotTimer = new Timer(100, event -> {
+            dotCount++;
+            if (dotCount <= 5) {
+                dotOffset--;
+            } else {
+                dotOffset++;
+            }
+            if (dotCount == 10) {
+                dotCount = 0;
+            }
+            gp.repaint();
+        });
+        dotTimer.start();
+        dialogueTimer = new Timer(40, event -> {
+            currentString += currentDialog.charAt(charIndex);
+            charIndex++;
+            if (charIndex == currentDialog.length()) {
+                charIndex = 0;
+                dialogueTimer.stop();
+            }
+        });
+
+        // fonts
         this.dialog_16 = new Font("Dialog", Font.BOLD, 16); // Custom font for message
         this.dialog_80 = new Font("Dialog", Font.BOLD, 80);
         this.dialog_24 = new Font("Dialog", Font.BOLD, 24);
@@ -80,6 +124,7 @@ public class UI {
             e.printStackTrace();
         }
 
+        // attributes
         width = gp.screenWidth;
         height = gp.screenHeight;
     }
@@ -106,17 +151,13 @@ public class UI {
     }
 
     public void drawTitleScreen(Graphics2D g2) {
-        UtilityTool ut = new UtilityTool();
+        BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
+        titleScreen = UtilityTool.scaleImage(titleScreen, (int) (titleScreen.getWidth() * 3.5),
+                (int) (titleScreen.getHeight() * 3.5));
+        BufferedImage oakDialogue = ut.getBufferedImage("screens/intro_dialogue.png");
 
-        if (titleScreenState == -1) {
-            dr.speak();
-            titleScreenState = 0;
-        }
         if (titleScreenState == 0) {
             // draws backround gamescreen
-            BufferedImage titleScreen = ut.getBufferedImage("screens/title_screen.png");
-            titleScreen = UtilityTool.scaleImage(titleScreen, (int) (titleScreen.getWidth() * 3.5),
-                    (int) (titleScreen.getHeight() * 3.5));
             g2.drawImage(titleScreen, -8, 32, titleScreen.getWidth(), titleScreen.getHeight(), null);
 
             // draws "press any key to start"
@@ -130,7 +171,14 @@ public class UI {
             }
         }
         if (titleScreenState == 1) {
-            BufferedImage oakDialogue = ut.getBufferedImage("screens/intro_dialogue.png");
+            if (elapsedTime < 1750) {
+                g2.drawImage(titleScreen, -8, 32, titleScreen.getWidth(), titleScreen.getHeight(), null);
+            } else {
+                g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
+            }
+            fadeAnimation(g2);
+        }
+        if (titleScreenState == 2) {
             g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
 
             // continues the dialog on enter press
@@ -139,8 +187,66 @@ public class UI {
                 gp.keyH.enterPressed = false;
             }
 
-            drawMessage(g2, currentDialog);
+            drawMessage(g2, currentString);
         }
+    }
+
+    private void fadeAnimation(Graphics2D g2) {
+        if (isAnimationActive) {
+            if (animationStartTime == 0) {
+                animationStartTime = System.currentTimeMillis();
+            }
+    
+            elapsedTime = System.currentTimeMillis() - animationStartTime;
+            int transparency = 0;
+
+            if (elapsedTime <= animationDuration) {
+                if (elapsedTime < 1500) {
+                    // Incremento discreto della trasparenza in base al tempo trascorso
+                    transparency = (int) (255 * (elapsedTime / 1500.0));
+                } else if (elapsedTime < 2000) {
+                    transparency = 255;
+                } else if (elapsedTime < 3500) {
+                    transparency = (int) (255 * (1 - ((elapsedTime - 2000) / 1000.0)));
+                } else {
+                    transparency = 0;
+                }
+    
+                // Arrotondare il valore della trasparenza a intervalli discreti
+                if (transparency > 0 && transparency < 255) {
+                    transparency = (transparency / 16) * 16; // Arrotondamento al multiplo di 16
+                }
+    
+                transparency = Math.max(0, Math.min(255, transparency)); // Garantire che sia tra 0 e 255
+    
+                g2.setColor(new Color(0, 0, 0, transparency));
+                g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+            } else {
+                isAnimationActive = false;
+                titleScreenState = 2;
+            }
+        }
+    }
+    
+    
+
+    public void drawPauseScreen(Graphics2D g2) {
+        String text = " Game Paused ";
+
+        // Draw semi-transparent background
+        drawSubWindow(g2, 0, 0, gp.screenWidth, gp.screenHeight);
+
+        // Set font and color for the text
+        g2.setFont(pokemon_64);
+        g2.setColor(textColor);
+
+        // Center the text horizontally and vertically
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth / 2 - length / 2;
+        int y = gp.screenHeight / 2;
+
+        // Draw the "Game Paused" message
+        g2.drawString(text, x, y);
     }
 
     public void drawPlayMessages(Graphics2D g2) {
@@ -195,41 +301,29 @@ public class UI {
         }
     }
 
-    public void drawPauseScreen(Graphics2D g2) {
-        String text = " Game Paused ";
-
-        // Draw semi-transparent background
-        drawSubWindow(g2, 0, 0, gp.screenWidth, gp.screenHeight);
-
-        // Set font and color for the text
-        g2.setFont(pokemon_64);
-        g2.setColor(textColor);
-
-        // Center the text horizontally and vertically
-        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = gp.screenWidth / 2 - length / 2;
-        int y = gp.screenHeight / 2;
-
-        // Draw the "Game Paused" message
-        g2.drawString(text, x, y);
-    }
-
     public void drawMessage(Graphics2D g2, String message) {
         int x = gp.tileSize;
         int y = (gp.screenHeight / 4) * 3;
         int width = gp.screenWidth - (gp.tileSize * 2);
-        int height = (int)(gp.tileSize * 2.5);
+        int height = (int) (gp.tileSize * 2.5);
 
         drawSubWindow(g2, x, y, width, height);
 
         g2.setFont(pokemon_16);
 
+        int lastLineLenght = 0;
         for (String line : message.split("\n")) {
+            lastLineLenght = (int) g2.getFontMetrics().getStringBounds(line, g2).getWidth();
             g2.setColor(textShadow);
             g2.drawString(line, x + 16 + 2, y + 32 + 2);
             g2.setColor(textColor);
             g2.drawString(line, x + 16, y + 32);
             y += 40;
+        }
+
+        dotHeight = y - 25;
+        if (!dialogueTimer.isRunning()) {
+            g2.drawImage(down_arrow, lastLineLenght + 70, dotHeight + dotOffset, null);
         }
     }
 
@@ -250,13 +344,21 @@ public class UI {
         drawSubWindow(g2, x, y, width, height);
 
         g2.setColor(textColor);
-        g2.setFont(pokemon_14);
+        g2.setFont(pokemon_16);
 
-        x += gp.tileSize;
-        y += gp.tileSize;
-        for (String line : currentDialog.split("\n")) {
-            g2.drawString(line, x, y);
+        int lastLineLenght = 0;
+        for (String line : currentString.split("\n")) {
+            lastLineLenght = (int) g2.getFontMetrics().getStringBounds(line, g2).getWidth();
+            g2.setColor(textShadow);
+            g2.drawString(line, x + 16 + 2, y + 32 + 2);
+            g2.setColor(textColor);
+            g2.drawString(line, x + 16, y + 32);
             y += 40;
+        }
+
+        dotHeight = y - 25;
+        if (!dialogueTimer.isRunning()) {
+            g2.drawImage(down_arrow, lastLineLenght + 70, dotHeight + dotOffset, null);
         }
     }
 
@@ -273,15 +375,9 @@ public class UI {
         g2.drawRoundRect(x + 4, y + 4, width - 8, height - 8, 32, 40);
     }
 
-    // BATTLE ANIMATIONS
-
-    long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    boolean isAnimationActive = true; // Stato dell'animazione
-    final int animationDuration = 750; // Durata in millisecondi
-
+    // BATTLE
     public void drawBattleScreen(Graphics2D g2) {
         getBattleImagines(g2);
-        battleAnimation(g2);
     }
 
     public void getBattleImagines(Graphics2D g2) {
@@ -296,60 +392,5 @@ public class UI {
         // Disegna l'immagine del Pokémon selvatico
         image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage; // Pokémon che collide
         g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
-    }
-
-    public void battleAnimation(Graphics2D g2) {
-
-        if (isAnimationActive) {
-            if (animationStartTime == 0) {
-                animationStartTime = System.currentTimeMillis();
-            }
-
-            long elapsedTime = System.currentTimeMillis() - animationStartTime;
-
-            // Durata per ciascuna animazione (rettangoli e immagine)
-            int rectangleAnimationDuration = animationDuration / 2; // Prima metà del tempo
-            int imageAnimationDuration = animationDuration / 2; // Seconda metà del tempo
-
-            if (elapsedTime <= rectangleAnimationDuration) {
-                // **Animazione rettangoli**
-                double progress = (double) elapsedTime / rectangleAnimationDuration;
-
-                int maxHeight = gp.screenHeight / 2; // Altezza iniziale massima
-                int currentHeight = (int) (maxHeight * (1.0 - progress));
-
-                g2.setColor(Color.BLACK);
-                g2.fillRect(0, 0, gp.screenWidth, currentHeight); // Rettangolo superiore
-                g2.fillRect(0, gp.screenHeight - currentHeight, gp.screenWidth, currentHeight); // Rettangolo inferiore
-            } else {
-                // **Animazione immagine Pokémon**
-                double progress = Math.min(1.0,
-                        (double) (elapsedTime - rectangleAnimationDuration) / imageAnimationDuration);
-
-                // Ottieni l'immagine del Pokémon
-                BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
-
-                // Calcola la posizione dell'immagine
-                int finalX = (int) (gp.screenWidth * 0.75) - (image.getWidth() / 2); // 3/4 dello schermo
-                int finalY = (gp.screenHeight - image.getHeight()) / 2; // Centro verticale
-                int startX = gp.screenWidth; // Partenza fuori dallo schermo a destra
-                int currentX = (int) (startX + (finalX - startX) * progress);
-
-                // Disegna l'immagine nella posizione corrente
-                g2.drawImage(image, currentX, finalY, image.getWidth(), image.getHeight(), null);
-
-                if (progress >= 1.0) {
-                    // L'immagine rimane ferma una volta completato il movimento
-                    isAnimationActive = false; // Fine animazione generale, ma l'immagine resta visibile
-                }
-            }
-        } else {
-            // Mostra direttamente l'immagine al suo stato finale se l'animazione è
-            // terminata
-            BufferedImage image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
-            int finalX = (int) (gp.screenWidth * 0.75) - (image.getWidth() / 2); // 3/4 dello schermo
-            int finalY = (gp.screenHeight - image.getHeight()) / 2; // Centro verticale
-            g2.drawImage(image, finalX, finalY, image.getWidth(), image.getHeight(), null);
-        }
     }
 }

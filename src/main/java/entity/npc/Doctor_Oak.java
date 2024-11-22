@@ -10,11 +10,6 @@ public class Doctor_Oak extends NPC {
     }
 
     public void setDialogue() {
-        if (gp.player == null) {
-            System.out.println("Player object is null!");
-            return;  // Prevent further code from running if player is null
-        }
-
         this.dialogues.add("Hello, there!\nGlad to meet you!");
         this.dialogues.add("Welcome to the world of POKèMON!");
         this.dialogues.add("My name is OAK.");
@@ -35,7 +30,7 @@ public class Doctor_Oak extends NPC {
         this.dialogues.add("...Er, what was his name now?");
         //add rival name selection input
         this.dialogues.add("..Er, was it GREEN?");
-        this.dialogues.add("That's right! I remenìmber now!\nHis name is GREEN!");
+        this.dialogues.add("That's right! I remenber now!\nHis name is GREEN!");
         this.dialogues.add(gp.player.name+"!");
         this.dialogues.add("Your very own POKèMON legend is\nabout to unfold!");
         this.dialogues.add("A world of dreams and adventures\nwith POKèMON awaits! Let's go!");

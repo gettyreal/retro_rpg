@@ -21,14 +21,16 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
         if (gp.gameState == gp.titleState) {
-          if (gp.userInterface.titleScreenState == 0) {
-            gp.userInterface.titleScreenState =1;
+            if (gp.userInterface.titleScreenState == 0) {
+                gp.userInterface.titleScreenState = 1;
+                
 
-          } else if(gp.userInterface.titleScreenState == 1) {
-            if (code == KeyEvent.VK_ENTER) {
-                enterPressed = true;
             }
-          }
+            if (gp.userInterface.titleScreenState == 2) {
+                if (code == KeyEvent.VK_ENTER && !gp.userInterface.dialogueTimer.isRunning()) {
+                    refreshDialogue();
+                }
+            }
         } else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;
@@ -57,7 +59,7 @@ public class KeyHandler implements KeyListener {
             }
         } else if (gp.gameState == gp.dialogState) {
             if (code == KeyEvent.VK_ENTER) {
-                enterPressed = true;
+                refreshDialogue();
             }
         }
     }
@@ -95,5 +97,11 @@ public class KeyHandler implements KeyListener {
         } else {
             return false;
         }
+    }
+
+    public void refreshDialogue() {
+        enterPressed = true;
+        gp.userInterface.currentString = "";
+        gp.userInterface.dialogueTimer.start();
     }
 }
