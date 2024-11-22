@@ -176,6 +176,11 @@ public class UI {
             } else {
                 g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
             }
+            if (elapsedTime > 3500) { //start oak speech at the end of animation.
+                dr.speak();
+                dialogueTimer.start();
+                titleScreenState = 2;
+            }
             fadeAnimation(g2);
         }
         if (titleScreenState == 2) {
@@ -188,6 +193,9 @@ public class UI {
             }
 
             drawMessage(g2, currentString);
+        }
+        if (titleScreenState == 3) {
+            fadeAnimation(g2);
         }
     }
 
