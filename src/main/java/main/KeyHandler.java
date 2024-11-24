@@ -25,8 +25,17 @@ public class KeyHandler implements KeyListener {
                 gp.userInterface.titleScreenState = 1;
             }
             if (gp.userInterface.titleScreenState == 2) {
-                if (code == KeyEvent.VK_ENTER && !gp.userInterface.dialogueTimer.isRunning()) {
+                if (gp.userInterface.dialogueTimer.isRunning()) {
+                    return;
+                }
+                if (code == KeyEvent.VK_ENTER) {
                     refreshDialogue();
+                }
+                if (code == KeyEvent.VK_UP) {
+                    gp.userInterface.arrowY -= gp.userInterface.lineOffset;
+                }
+                if (code == KeyEvent.VK_DOWN) {
+                    gp.userInterface.arrowY += gp.userInterface.lineOffset;
                 }
             }
         } else if (gp.gameState == gp.playState) {

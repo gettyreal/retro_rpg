@@ -10,6 +10,7 @@ public class Doctor_Oak extends NPC {
     }
 
     public void setDialogue() {
+        this.dialogueIndex = 9;
         this.dialogues.add("Hello, there!\nGlad to meet you!");
         this.dialogues.add("Welcome to the world of POKèMON!");
         this.dialogues.add("My name is OAK.");

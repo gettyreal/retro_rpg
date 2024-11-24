@@ -35,6 +35,7 @@ public class UI {
     Font pokemon_font;
     Font pokemon_16;
     Font pokemon_14;
+    Font pokemon_24;
     Font pokemon_64;
 
     // Colors
@@ -42,11 +43,13 @@ public class UI {
     Color white = Color.white;
     Color boxOutline1 = new Color(66, 117, 160);
     Color boxOutline2 = new Color(162, 208, 232);
+    Color genderBoxOutline1 = new Color(38,49,52);
+    Color genderBoxOutline2 = new Color(111,105,127);
     Color textColor = new Color(101, 101, 101);
-    Color textShadow = new Color(212, 212, 212);
+    Color textShadow = new Color(192, 192, 192);
 
     // Screen states
-    public int titleScreenState = 0;
+    public int titleScreenState = 2;
 
     // animation states
     private boolean showStartText = true;
@@ -61,6 +64,9 @@ public class UI {
     int dotHeight;
     int dotOffset;
     int dotCount;
+    int arrowX = 450;
+    int arrowY = 305;
+    int lineOffset = 40;
 
     // text propreties
     // dialog states
@@ -118,6 +124,7 @@ public class UI {
             this.pokemon_font = Font.createFont(Font.TRUETYPE_FONT, is);
             this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f);
             this.pokemon_14 = pokemon_font.deriveFont(Font.BOLD, 14f);
+            this.pokemon_24 = pokemon_font.deriveFont(Font.BOLD, 24f);
             this.pokemon_64 = pokemon_font.deriveFont(Font.BOLD, 64f);
             is.close();
         } catch (FontFormatException | IOException e) {
@@ -191,12 +198,66 @@ public class UI {
                 dr.speak();
                 gp.keyH.enterPressed = false;
             }
-
             drawMessage(g2, currentString);
+            if (dr.dialogueIndex == 11) {
+                drawGenderPopUp(g2);
+                setPlayerGender();
+            }
         }
         if (titleScreenState == 3) {
             fadeAnimation(g2);
         }
+    }
+
+    public void drawGenderPopUp(Graphics2D g2) {
+        //checs Y bounds of the genderArrow
+        if (arrowY < 305) {
+            arrowY = 305 + lineOffset;
+        } else if (arrowY > 305 + lineOffset) {
+            arrowY = 305;
+        }
+
+        BufferedImage genderArrow = ut.getBufferedImage("screens/gender_arrow.png");
+        genderArrow = UtilityTool.scaleImage(genderArrow, (int)(genderArrow.getWidth() * 3.5), (int)(genderArrow.getHeight() * 3.5));
+
+        int width = 250;
+        int height = 144;
+        int x = gp.screenWidth - width - gp.tileSize * 2;
+        int y = 275;
+
+        drawGenderWindow(g2, x, y, width, height);
+        g2.setFont(pokemon_24);
+
+        g2.setColor(textShadow);
+        g2.drawString("BOY", x + 60 + 2, y + 60 + 2);
+        g2.drawString("GIRL", x + 60 + 2, y + 100 + 2);
+
+        g2.setColor(textColor);
+        g2.drawString("BOY", x + 60, y + 60);
+        g2.drawString("GIRL", x + 60, y + 100);
+
+        g2.drawImage(genderArrow, arrowX, arrowY, null);
+    }
+
+    private void setPlayerGender() {
+        if (arrowY == 305) {
+            gp.player.gender = "male";
+        } else if (arrowY == 305 + lineOffset) {
+            gp.player.gender = "female";
+        }
+    }
+
+    private void drawGenderWindow(Graphics2D g2, int x, int y, int width, int height) {
+        g2.setColor(white); // Black with transparency
+        g2.fillRoundRect(x, y, width, height, 5, 5);
+
+        g2.setColor(genderBoxOutline1);
+        g2.setStroke(new BasicStroke(4));
+        g2.drawRoundRect(x, y, width, height, 5, 5);
+
+        g2.setColor(genderBoxOutline2);
+        g2.setStroke(new BasicStroke(10));
+        g2.drawRect(x + 6, y + 6, width - 12, height - 12);
     }
 
     private void fadeAnimation(Graphics2D g2) {

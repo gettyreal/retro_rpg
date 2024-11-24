@@ -20,6 +20,8 @@ public class Player extends Entity {
     public int pokemonIndex = 999;
     public int npcIndex = 999;
 
+    public String gender = "";
+
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
