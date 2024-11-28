@@ -168,17 +168,17 @@ public class Player extends Entity {
             setEntityWorldPosition(18, 11);
         }
         if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
-            setEntityWorldPosition(37, 20);
+            upAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("fromSecondFloor")) {
-            setEntityWorldPosition(17, 21);
+            downAnimation();
         }
         
     }
 
     //method to start npc interaction
     //set gamestate to dialog state and instaantiace the first dialog
-    public void interactNPC(int index) {
+    private void interactNPC(int index) {
         if (index != 999) { 
             if (keyH.Fpressed == true) {
                 gp.gameState = gp.dialogState;
@@ -225,7 +225,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(playerImage, screenX, screenY, null);
-        //sssssg2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
+        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
 
     }
 }

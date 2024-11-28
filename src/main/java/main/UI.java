@@ -8,11 +8,6 @@ import java.io.InputStream;
 import javax.swing.Timer;
 
 import entity.npc.Doctor_Oak;
-import entity.npc.Nurse_Joy;
-import object.OBJ_Door;
-import object.OBJ_PokeBall;
-import object.OBJ_PokeChest;
-import object.OBJ_nurseDialogue;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -43,18 +38,18 @@ public class UI {
     Color white = Color.white;
     Color boxOutline1 = new Color(66, 117, 160);
     Color boxOutline2 = new Color(162, 208, 232);
-    Color genderBoxOutline1 = new Color(38,49,52);
-    Color genderBoxOutline2 = new Color(111,105,127);
+    Color genderBoxOutline1 = new Color(38, 49, 52);
+    Color genderBoxOutline2 = new Color(111, 105, 127);
     Color textColor = new Color(101, 101, 101);
     Color textShadow = new Color(192, 192, 192);
 
     // Screen states
-    public int titleScreenState = 2;
+    public int titleScreenState = 0;
 
     // animation states
     private boolean showStartText = true;
-    long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    boolean isAnimationActive = true; // Stato dell'animazione
+    public long animationStartTime = 0; // Tempo d'inizio dell'animazione
+    public boolean isAnimationActive = true; // Stato dell'animazione
     final int animationDuration = 3750; // Durata in millisecondi
     long elapsedTime;
 
@@ -138,15 +133,14 @@ public class UI {
 
     // draws messages on event, only player can cause these events
     public void draw(Graphics2D g2) {
+        if (gp.gameState == gp.playState) {
+            drawPlayScreen(g2);
+        }
         if (gp.gameState == gp.titleState) {
             drawTitleScreen(g2);
         }
-        if (gp.gameState == gp.playState) {
-            drawPlayMessages(g2);
-        }
         if (gp.gameState == gp.pauseState) { // pause screen
             drawPauseScreen(g2);
-            return;
         }
         if (gp.gameState == gp.dialogState) {
             drawDialogueScreen(g2);
@@ -155,6 +149,12 @@ public class UI {
             drawBattleScreen(g2);
         }
 
+    }
+
+    public void drawPlayScreen(Graphics2D g2) {
+        if (gp.player.SpriteAnimationOn) {
+            gp.userInterface.fadeAnimation(g2, 2000);
+        }
     }
 
     public void drawTitleScreen(Graphics2D g2) {
@@ -183,12 +183,12 @@ public class UI {
             } else {
                 g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
             }
-            if (elapsedTime > 3500) { //start oak speech at the end of animation.
+            if (elapsedTime > 3500) { // start oak speech at the end of animation.
                 dr.speak();
                 dialogueTimer.start();
                 titleScreenState = 2;
             }
-            fadeAnimation(g2);
+            fadeAnimation(g2, 3750);
         }
         if (titleScreenState == 2) {
             g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
@@ -204,13 +204,10 @@ public class UI {
                 setPlayerGender();
             }
         }
-        if (titleScreenState == 3) {
-            fadeAnimation(g2);
-        }
     }
 
     public void drawGenderPopUp(Graphics2D g2) {
-        //checs Y bounds of the genderArrow
+        // checs Y bounds of the genderArrow
         if (arrowY < 305) {
             arrowY = 305 + lineOffset;
         } else if (arrowY > 305 + lineOffset) {
@@ -218,7 +215,8 @@ public class UI {
         }
 
         BufferedImage genderArrow = ut.getBufferedImage("screens/gender_arrow.png");
-        genderArrow = UtilityTool.scaleImage(genderArrow, (int)(genderArrow.getWidth() * 3.5), (int)(genderArrow.getHeight() * 3.5));
+        genderArrow = UtilityTool.scaleImage(genderArrow, (int) (genderArrow.getWidth() * 3.5),
+                (int) (genderArrow.getHeight() * 3.5));
 
         int width = 250;
         int height = 144;
@@ -260,7 +258,7 @@ public class UI {
         g2.drawRect(x + 6, y + 6, width - 12, height - 12);
     }
 
-    private void fadeAnimation(Graphics2D g2) {
+    public void fadeAnimation(Graphics2D g2, final int animationDuration) {
         if (isAnimationActive) {
             if (animationStartTime == 0) {
                 animationStartTime = System.currentTimeMillis();
@@ -268,16 +266,24 @@ public class UI {
     
             elapsedTime = System.currentTimeMillis() - animationStartTime;
             int transparency = 0;
-
+    
+            // Calcolo dei tempi degli stadi
+            int time1 = animationDuration * 40 / 100; // Stadio 1: 40%
+            int time2 = animationDuration * 13 / 100 + time1; // Stadio 2: 13%
+            int time3 = animationDuration * 40 / 100 + time2; // Stadio 3: 40%
+    
             if (elapsedTime <= animationDuration) {
-                if (elapsedTime < 1500) {
-                    // Incremento discreto della trasparenza in base al tempo trascorso
-                    transparency = (int) (255 * (elapsedTime / 1500.0));
-                } else if (elapsedTime < 2000) {
+                if (elapsedTime < time1) {
+                    // Stadio 1: Incremento della trasparenza
+                    transparency = (int) (255 * (elapsedTime / (double) time1));
+                } else if (elapsedTime < time2) {
+                    // Stadio 2: Trasparenza piena
                     transparency = 255;
-                } else if (elapsedTime < 3500) {
-                    transparency = (int) (255 * (1 - ((elapsedTime - 2000) / 1000.0)));
+                } else if (elapsedTime < time3) {
+                    // Stadio 3: Decremento della trasparenza
+                    transparency = (int) (255 * (1 - ((elapsedTime - time2) / (double) (time3 - time2))));
                 } else {
+                    // Stadio 4: Trasparenza zero
                     transparency = 0;
                 }
     
@@ -286,19 +292,20 @@ public class UI {
                     transparency = (transparency / 16) * 16; // Arrotondamento al multiplo di 16
                 }
     
-                transparency = Math.max(0, Math.min(255, transparency)); // Garantire che sia tra 0 e 255
+                // Garantire che la trasparenza sia tra 0 e 255
+                transparency = Math.max(0, Math.min(255, transparency));
     
+                // Disegna il rettangolo con il colore trasparente
                 g2.setColor(new Color(0, 0, 0, transparency));
                 g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
             } else {
+                // Animazione completata
                 isAnimationActive = false;
                 titleScreenState = 2;
             }
         }
     }
     
-    
-
     public void drawPauseScreen(Graphics2D g2) {
         String text = " Game Paused ";
 
@@ -316,58 +323,6 @@ public class UI {
 
         // Draw the "Game Paused" message
         g2.drawString(text, x, y);
-    }
-
-    public void drawPlayMessages(Graphics2D g2) {
-        // play state messages
-        int objIndex = gp.Checker.checkObject(gp.player, true);
-        int npcIndex = gp.Checker.checkEntity(gp.player, gp.mapM.maps.get(gp.currentMap).npc);
-
-        // PLAYER - OBJ MESSAGES
-        if (objIndex != 999) { // checks if entity is colliding with obj null
-
-            // pokeball message
-            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeBall) {
-                drawMessage(g2, "press E to pick up PokeBall");
-            }
-
-            // pokechest message
-            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_PokeChest) {
-                OBJ_PokeChest pokechest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(objIndex); // downcast
-                                                                                                             // to
-                                                                                                             // obtain
-                                                                                                             // opened
-                                                                                                             // attribute
-                if (pokechest.opened == false) { // checks if pokechest is opened or not
-                    drawMessage(g2, "press E to open PokeChest");
-                } else {
-                    drawMessage(g2, "PokeChest already opened");
-                }
-            }
-
-            // door message
-            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_Door) {
-                drawMessage(g2, "press E to open up Door");
-            }
-
-            if (gp.mapM.maps.get(gp.currentMap).obj.get(objIndex) instanceof OBJ_nurseDialogue) {
-                drawMessage(g2, "press F to talk to Nurse Joy");
-            }
-        }
-
-        // PLAYER - NPC MESSAGES
-        if (npcIndex != 999) {
-
-            // doctor oaK message.
-            if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Doctor_Oak) {
-                drawMessage(g2, "press F to talk to Dottor Oak");
-            }
-
-            // nurse joy message
-            if (gp.mapM.maps.get(gp.currentMap).npc.get(npcIndex) instanceof Nurse_Joy) {
-                drawMessage(g2, "press F to talk to Nurse Joy");
-            }
-        }
     }
 
     public void drawMessage(Graphics2D g2, String message) {

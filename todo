@@ -1,10 +1,6 @@
 cosa fare per finire demo gioco:
 
-- fare secondo game state con selezione del nome e quello del tuo rivale.
-    - user input.
-
-- spawn in casa e mappa ridotta per dialogo con dr oak:
-- animazione draok
-- casa centro pokemon e pokeshop
-- scelta dello starter 
-- implementazione completa di pokemon fight sistem con esplorazione della mapp intorno.
+- menu comandi iniziale if u want
+- fight con pokemon e inventario.
+- modificare interazioni con oggetti e porte.
+- new maps.

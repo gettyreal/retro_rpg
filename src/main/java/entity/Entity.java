@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.Timer;
 
 import javax.imageio.ImageIO;
 
@@ -43,6 +44,12 @@ public abstract class Entity {
     public int spriteCounter = 0; // index of sprite active on screen
     public int spriteNumber = 0;
 
+    //entity animation
+    int animationDuration = 0;
+    Timer directionDownTimer;
+    Timer directionUpTimer;
+    public boolean SpriteAnimationOn = false;
+
     // collisions
     public Rectangle collisionArea;
     public int Xoffset, Yoffset;
@@ -58,7 +65,34 @@ public abstract class Entity {
     public int dialogueIndex = 0;
 
     public Entity(GamePanel gp) {
+        loadTimers();
         this.gp = gp;
+    }
+
+    private void loadTimers() {
+        directionDownTimer = new Timer(20, event -> {
+            this.SpriteAnimationOn = true;
+            this.worldX++;
+            if (animationDuration % 2 == 0) this.worldY++;
+            animationDuration++;
+            if (animationDuration > 50) {
+                directionDownTimer.stop();
+                this.SpriteAnimationOn = false;
+                setEntityWorldPosition(17, 21);
+            }
+        });
+
+        directionUpTimer = new Timer(20, event -> {
+            this.SpriteAnimationOn = true;
+            this.worldX--;
+            if (animationDuration % 2 == 0) this.worldY--;
+            animationDuration++;
+            if (animationDuration > 50) {
+                directionUpTimer.stop();
+                this.SpriteAnimationOn = false;
+                setEntityWorldPosition(37, 20);
+            }
+        });
     }
 
     // gets the entity image in the resources package
@@ -249,5 +283,21 @@ public abstract class Entity {
             }
             g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
         }
+    }
+
+    public void downAnimation() {
+        this.direction = "right";
+        gp.userInterface.animationStartTime = 0;
+        gp.userInterface.isAnimationActive = true;
+        animationDuration = 0;
+        directionDownTimer.start();
+    }
+
+    public void upAnimation() {
+        this.direction = "left";
+        gp.userInterface.animationStartTime = 0;
+        gp.userInterface.isAnimationActive = true;
+        animationDuration = 0;
+        directionUpTimer.start();
     }
 }

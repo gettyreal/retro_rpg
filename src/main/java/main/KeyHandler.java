@@ -98,6 +98,9 @@ public class KeyHandler implements KeyListener {
     }
 
     public boolean checkMovement() {
+        if (gp.player.SpriteAnimationOn) {
+            return true;
+        }
         if (upPressed == true || downPressed == true ||
                 leftPressed == true || rightPressed == true) {
             return true;
