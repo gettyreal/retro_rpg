@@ -75,9 +75,9 @@ public abstract class Entity {
             this.worldX++;
             if (animationDuration % 2 == 0) this.worldY++;
             animationDuration++;
-            if (animationDuration > 50) {
+            if (animationDuration > 40) {
+                this.direction = "idle";
                 directionDownTimer.stop();
-                this.SpriteAnimationOn = false;
                 setEntityWorldPosition(17, 21);
             }
         });
@@ -87,9 +87,9 @@ public abstract class Entity {
             this.worldX--;
             if (animationDuration % 2 == 0) this.worldY--;
             animationDuration++;
-            if (animationDuration > 50) {
+            if (animationDuration > 40) {
+                this.direction = "idle";
                 directionUpTimer.stop();
-                this.SpriteAnimationOn = false;
                 setEntityWorldPosition(37, 20);
             }
         });

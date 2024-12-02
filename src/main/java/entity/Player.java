@@ -94,6 +94,8 @@ public class Player extends Entity {
                     case "right":
                         this.worldX += this.speed;
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -189,42 +191,50 @@ public class Player extends Entity {
 
     @Override
     public void draw(Graphics2D g2) {
-        BufferedImage playerImage = null;
+        BufferedImage Image = null;
 
         // gets player srites
         if (!bushIn) { // if not in bush gets player normal sprites
             switch (this.direction) {
+                case "idle":
+                    Image = lastSprite;
+                    spriteCounter--; // stays on the same image
+                    break;
                 case "up":
-                    playerImage = this.up[spriteNumber];
+                    Image = this.up[spriteNumber];
+                    lastSprite = this.up[spriteNumber];
                     break;
                 case "down":
-                    playerImage = this.down[spriteNumber];
+                    Image = this.down[spriteNumber];
+                    lastSprite = this.down[spriteNumber];
                     break;
                 case "left":
-                    playerImage = this.left[spriteNumber];
+                    Image = this.left[spriteNumber];
+                    lastSprite = this.left[spriteNumber];
                     break;
                 case "right":
-                    playerImage = this.right[spriteNumber];
+                    Image = this.right[spriteNumber];
+                    lastSprite = this.right[spriteNumber];
                     break;
             }
         } else { // if in bush gets player bush sprites
             switch (this.direction) {
                 case "up":
-                    playerImage = this.bushUp[spriteNumber];
+                    Image = this.bushUp[spriteNumber];
                     break;
                 case "down":
-                    playerImage = this.bushDown[spriteNumber];
+                    Image = this.bushDown[spriteNumber];
                     break;
                 case "left":
-                    playerImage = this.bushLeft[spriteNumber];
+                    Image = this.bushLeft[spriteNumber];
                     break;
                 case "right":
-                    playerImage = this.bushRight[spriteNumber];
+                    Image = this.bushRight[spriteNumber];
                     break;
             }
         }
         // draws current player sprite
-        g2.drawImage(playerImage, screenX, screenY, null);
+        g2.drawImage(Image, screenX, screenY, null);
         //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
 
     }

@@ -153,7 +153,7 @@ public class UI {
 
     public void drawPlayScreen(Graphics2D g2) {
         if (gp.player.SpriteAnimationOn) {
-            gp.userInterface.fadeAnimation(g2, 2000);
+            gp.userInterface.fadeAnimation(g2, 1600);
         }
     }
 
@@ -301,6 +301,7 @@ public class UI {
             } else {
                 // Animazione completata
                 isAnimationActive = false;
+                gp.player.SpriteAnimationOn = false;
                 titleScreenState = 2;
             }
         }
