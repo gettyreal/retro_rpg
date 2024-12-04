@@ -3,9 +3,11 @@ package tile;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -17,52 +19,84 @@ public class TileManager {
     GamePanel gp;
     public CollisionChecker cChecker;
     public Tile[] tile;
+
+    //hash map with tiles form tilesets.
+    //Tile indicates the tile class and Integer is for the position in the big image.
+    // this supports larger tilesets with a lot of free space.
+    public HashMap<Integer, Tile> tileSet;
+    
+    //one layer of the maop
     public int mapTileNum[][];
 
     public TileManager(GamePanel gp, String tilesetFileImg,String mapFileName, String collisionFileName) {
         this.gp = gp;
         cChecker = new CollisionChecker(gp, this);
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        getTileImage(this.tile, tilesetFileImg);
-        loadMap(this.mapTileNum, mapFileName);
+
+        //tileset shit
+        getTileImage(tilesetFileImg);
         setTileCollision(collisionFileName);
+        System.out.println("breakpoint");
+        loadMap(this.mapTileNum, mapFileName);
     }
 
-    public void getTileImage(Tile[] tilesheet, String fileName) {
+    public void getTileImage(String fileName) {
         try {
-            //carica intero tileset
-            BufferedImage tileset = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-
-            // Dimensioni di ciascuna tile
+            // Load the entire tileset
+            BufferedImage tilesetImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
+    
+            // Tile dimensions
             int tileWidth = 16;
             int tileHeight = 16;
-            int totalTiles = tileset.getWidth() / tileWidth; // total tiles
+            int totalCol = tilesetImage.getWidth() / tileWidth;
+            int totalRow = tilesetImage.getHeight() / tileHeight;
 
-            tile = new Tile[totalTiles];
-
-            //estrazione dal tileset e salvataggio
-            for (int i = 0; i < totalTiles; i++) {
-                int tileX = i * tileWidth;
-                tile[i] = new Tile();
-                tile[i].image = tileset.getSubimage(tileX, 0, tileWidth, tileHeight);
-                tile[i].image = UtilityTool.scaleImage(tile[i].image, gp.tileSize, gp.tileSize); //scales the image
+            this.tileSet = new HashMap<>(); // Initialize HashMap
+    
+            // Extract tiles and save them
+            int tileIndex = 0;
+            for (int col = 0; col < totalCol; col++) {
+                for (int row = 0; row < totalRow; row++) {
+                    int tileX = col * tileWidth;
+                    int tileY = row * tileHeight; // Corrected
+    
+                    Tile tempTile = new Tile();
+                    tempTile.image = tilesetImage.getSubimage(tileX, tileY, tileWidth, tileHeight);
+                    tempTile.image = UtilityTool.scaleImage(tempTile.image, gp.tileSize, gp.tileSize);
+    
+                    this.tileSet.put(tileIndex, tempTile); // Use tileIndex as the key
+                    tileIndex++;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
     public void setTileCollision(String fileName) {
-        try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = br.readLine();
-            String indexes[] = line.split(" ");
-            for (int i = 0; i < tile.length; i++) {
-                if (Integer.parseInt(indexes[i]) == 1) {
-                    tile[i].collision = true;
+        String line;
+        Integer currentTileId = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName));){
+            while (br.readLine() != null) {
+                line = br.readLine();
+                line = line.trim();
+
+                if (line.startsWith("\"id\":")) {
+                    String[] splittedLine = line.split(":");
+                    currentTileId = Integer.parseInt(splittedLine[1].trim().replace(",", ""));
                 }
+
+                 if (line.contains("collisions") && line.contains("true")) {
+                    if (currentTileId!= null) {
+                        Tile tempTile = tileSet.get(currentTileId);
+                        tempTile.collision = true;
+                        tileSet.replace(currentTileId, tempTile);
+                        currentTileId = null;
+                    }
+                 }
             }
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +145,7 @@ public class TileManager {
                     worldX - gp.tileSize< gp.player.worldX + gp.player.screenX &&
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
+                g2.drawImage(tileSet.get(tileNum).image, screenX, screenY, null);
             }
             worldCol++;
             if (worldCol == gp.maxWorldCol) {

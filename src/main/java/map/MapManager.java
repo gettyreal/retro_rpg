@@ -16,13 +16,13 @@ public class MapManager {
 
     public void setMap() {
         // OVERWORLD MAP
-        addMap("overWorld Map", "tiles/tileset.png", "tilemap", "tiles/collisions.txt");
+        addMap("overWorld Map", "tiles/tilesheet.png", "tilemap", "tiles/pokemon_tileset.txt");
 
         // POKECENTRE MAP
-        addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");
+        //addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");
 
         // home MAP
-        addMap("home Map", "tiles/home.png", "home", "tiles/home.txt");
+        //addMap("home Map", "tiles/home.png", "home", "tiles/home.txt");
     }
 
     private void addMap(String mapName, String tilesetPath, String baseLayerName, String collisionPath) {

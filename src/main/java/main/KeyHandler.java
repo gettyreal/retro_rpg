@@ -54,10 +54,10 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_D) {
                 rightPressed = true;
             }
-            if (code == KeyEvent.VK_E) {
+            if (code == KeyEvent.VK_L) {
                 Epressed = true;
             }
-            if (code == KeyEvent.VK_F) {
+            if (code == KeyEvent.VK_L) {
                 Fpressed = true;
             }
         } else if (gp.gameState == gp.pauseState) {
