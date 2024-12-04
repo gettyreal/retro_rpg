@@ -56,21 +56,21 @@ public class TileManager {
 
             // Extract tiles and save them
             int tileIndex = 0;
-            for (int col = 0; col < totalCol; col++) {
-                for (int row = 0; row < totalRow; row++) {
+            for (int row = 0; row < totalRow; row++) {
+                for (int col = 0; col < totalCol; col++) {
                     int tileX = col * tileWidth;
-                    int tileY = row * tileHeight; // Corrected
+                    int tileY = row * tileHeight;
 
                     Tile tempTile = new Tile();
                     tempTile.image = tilesetImage.getSubimage(tileX, tileY, tileWidth, tileHeight);
                     tempTile.image = UtilityTool.scaleImage(tempTile.image, gp.tileSize, gp.tileSize);
-
                     if (!UtilityTool.isNullImage(tempTile.image)) {
-                        this.tileSet.put(tileIndex, tempTile); // Use tileIndex as the key
-                        tileIndex++;
+                        this.tileSet.put(tileIndex, tempTile);
                     }
+                    tileIndex++;
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,27 +82,21 @@ public class TileManager {
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            while (br.readLine() != null) {
-                line = br.readLine();
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
 
                 if (line.startsWith("\"id\":")) {
                     String[] splittedLine = line.split(":");
                     currentTileId = Integer.parseInt(splittedLine[1].trim().replace(",", ""));
                 }
-
-                if (line.contains("collisions") && line.contains("true")) {
-                    if (currentTileId != null) {
-                        Tile tempTile = tileSet.get(currentTileId);
-                        tempTile.collision = true;
-                        tileSet.replace(currentTileId, tempTile);
-                        currentTileId = null;
-                    }
+                if (line.contains("value") && line.contains("true")) {
+                    Tile tempTile = tileSet.get(currentTileId);
+                    tempTile.collision = true;
+                    tileSet.replace(currentTileId, tempTile);
+                    currentTileId = null;
                 }
             }
             br.close();
-
-            visualizzaTileSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,9 +158,9 @@ public class TileManager {
 
     public void visualizzaTileSet() {
         for (Map.Entry<Integer, Tile> entry : tileSet.entrySet()) {
-            System.out.println(entry);
             Tile tempTile = entry.getValue();
-            System.out.println(tempTile.collision);
+            System.out.print("| " + entry.getKey());
+            System.out.print(tempTile.collision + "|");
         }
     }
 }
