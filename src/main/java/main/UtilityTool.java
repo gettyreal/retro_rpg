@@ -24,4 +24,23 @@ public class UtilityTool {
         }
         return tempImg;
     }
+
+    public static boolean isNullImage(BufferedImage image) {
+        if (image == null) return true; // null image by default
+
+        // Loop through every pixel
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = image.getRGB(x, y);
+                
+                // Extract the alpha value (most significant 8 bits)
+                int alpha = (pixel >> 24) & 0xFF;
+
+                if (alpha != 0) {
+                    return false; // Found a non-transparent pixel
+                }
+            }
+        }
+        return true;
+    }
 }
