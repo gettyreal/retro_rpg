@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // maps
     public MapManager mapM = new MapManager(this);
-    public int currentMap = 2;
+    public int currentMap = 0;
 
     // game status
     public int gameState;
@@ -61,8 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() { // set default object before game starts
         mapSetup(0);
-        mapSetup(1);
-        mapSetup(2);
+        //mapSetup(1);
+        //mapSetup(2);
         gameState = playState;
     }
 
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void paintPlayState(Graphics2D g2) {
         mapM.maps.get(currentMap).layers.get(0).draw(g2);
-        mapM.maps.get(currentMap).layers.get(1).draw(g2);
+        //mapM.maps.get(currentMap).layers.get(1).draw(g2);
 
         // obj drawing
         for (int i = 0; i < mapM.maps.get(currentMap).obj.size(); i++) {
@@ -171,8 +171,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2); // draw player
 
-        mapM.maps.get(currentMap).layers.get(2).draw(g2);
-        mapM.maps.get(currentMap).layers.get(3).draw(g2);
+        //mapM.maps.get(currentMap).layers.get(2).draw(g2);
+        //mapM.maps.get(currentMap).layers.get(3).draw(g2);
         userInterface.draw(g2); // draws messages
     }
 

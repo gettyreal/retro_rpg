@@ -2,7 +2,10 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
@@ -42,5 +45,33 @@ public class UtilityTool {
             }
         }
         return true;
+    }
+
+    public int getCsvWidth(String fileName) {
+        int width = 0;
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName); // import della mappa
+            BufferedReader br = new BufferedReader(new InputStreamReader(is)); // reader
+            String line = br.readLine();
+            if (line != null) {
+                String[] columm = line.split(",");
+                width = columm.length;
+            }
+        } catch (Exception e) {
+        }
+        return width;
+    }
+
+    public int getCsvHeight(String fileName) {
+        int height = 0;
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName); // import della mappa
+            BufferedReader br = new BufferedReader(new InputStreamReader(is)); // reader
+            while (br.readLine() != null) {
+                height++;
+            }
+        } catch (Exception e) {
+        }
+        return height;
     }
 }

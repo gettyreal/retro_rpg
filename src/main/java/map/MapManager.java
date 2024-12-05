@@ -16,7 +16,7 @@ public class MapManager {
 
     public void setMap() {
         // OVERWORLD MAP
-        addMap("overWorld Map", "tiles/tilesheet.png", "tilemap", "tiles/pokemon_tileset..tsj");
+        addMap("overWorld Map", "tiles/tilesheet.png", "HOENN_MAP", "tiles/pokemon_tileset..tsj");
 
         // POKECENTRE MAP
         //addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");
@@ -30,7 +30,7 @@ public class MapManager {
         GameMap newMap = new GameMap(gp, mapName);
         maps.add(newMap);
 
-        for (int i = 1; i <= 1; i++) {
+        for (int i = 1; i <= 3; i++) {
                 String layerPath = "maps/" + baseLayerName + "_layer" + i + ".csv";
                 newMap.layers.add(new TileManager(gp, tilesetPath, layerPath, collisionPath));
         }
