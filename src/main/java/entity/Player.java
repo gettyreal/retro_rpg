@@ -43,8 +43,8 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         this.name = "GETTYREAL";
-        this.worldX = 32 * gp.tileSize;
-        this.worldY = 22 * gp.tileSize;
+        this.worldX = 0 * gp.tileSize;
+        this.worldY = 0 * gp.tileSize;
         this.speed = 2;
         this.direction = "up";
     }
@@ -69,7 +69,7 @@ public class Player extends Entity {
 
             // check if player is in bush
             // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
-            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
+            //bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); // used 2nd layer because bushes are on 2nd layer.
 
             // checks pokemon collision
             pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);

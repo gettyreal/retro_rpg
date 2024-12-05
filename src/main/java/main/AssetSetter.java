@@ -1,7 +1,7 @@
 package main;
 
 import entity.*;
-import entity.npc.*;
+//import entity.npc.*;
 import map.GameMap;
 import object.*;
 
@@ -16,6 +16,7 @@ public class AssetSetter {
 
     // adds obj into the game
     public void setObject(int mapIndex) {
+        /* 
         if (mapIndex == 0) {
             addObject(new OBJ_PokeChest(), 27, 23);
             addObject(new OBJ_Door("toPokecentre"), 7, 9);
@@ -38,11 +39,12 @@ public class AssetSetter {
             addObject(new OBJ_Door("toSecondFloor"), 17, 22);
             addObject(new OBJ_Door("fromSecondFloor"), 37, 20);
 
-        }
+        }*/
     }
 
     // adds pokemon to the game.
     public void setPokemons(int mapIndex) {
+        /* 
         if (mapIndex == 0) {   
             addPokemon(new Pokemon(gp, "treecko", "treecko/treecko_", "treecko/treecko_battle.png", 10, 12), 21, 26);
         }
@@ -50,10 +52,11 @@ public class AssetSetter {
             addPokemon(new Pokemon(gp, "treecko", "treecko/treecko_", "treecko/treecko_battle.png", 10, 12), 30, 25);
         }
         if (mapIndex == 2) {
-        }
+        }*/
     }
 
     public void setNPC(int mapIndex) {
+        /* 
         if (mapIndex == 0) {
 
         }
@@ -62,7 +65,7 @@ public class AssetSetter {
             addNPC(new Nurse_Joy(gp), 25, 20);
         }
         if (mapIndex == 2) {
-        }
+        } */
     }
 
     // adds a new object into the game

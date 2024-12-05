@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void paintPlayState(Graphics2D g2) {
         mapM.maps.get(currentMap).layers.get(0).draw(g2);
-        //mapM.maps.get(currentMap).layers.get(1).draw(g2);
+        mapM.maps.get(currentMap).layers.get(1).draw(g2);
 
         // obj drawing
         for (int i = 0; i < mapM.maps.get(currentMap).obj.size(); i++) {
@@ -171,7 +171,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2); // draw player
 
-        //mapM.maps.get(currentMap).layers.get(2).draw(g2);
+        mapM.maps.get(currentMap).layers.get(2).draw(g2);
         //mapM.maps.get(currentMap).layers.get(3).draw(g2);
         userInterface.draw(g2); // draws messages
     }
