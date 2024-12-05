@@ -43,8 +43,8 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         this.name = "GETTYREAL";
-        this.worldX = 0 * gp.tileSize;
-        this.worldY = 0 * gp.tileSize;
+        this.worldX = 93 * gp.tileSize;
+        this.worldY = 65 * gp.tileSize;
         this.speed = 2;
         this.direction = "up";
     }
@@ -235,7 +235,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(Image, screenX, screenY, null);
-        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
+        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //debug for visualising hitbox
 
     }
 }

@@ -17,9 +17,8 @@ import main.UtilityTool;
 
 public class TileManager {
     GamePanel gp;
-    // public CollisionChecker cChecker;
+    public CollisionChecker cChecker;
     UtilityTool ut = new UtilityTool();
-    public Tile[] tile;
 
     // hash map with tiles form tilesets.
     // Tile indicates the tile class and Integer is for the position in the big
@@ -27,21 +26,24 @@ public class TileManager {
     // this supports larger tilesets with a lot of free space.
     public HashMap<Integer, Tile> tileSet;
 
-    // one layer of the maop
-    public int mapTileNum[][];
+    // hash map with one layer of the map
+    //only stores non transparent blocks
+    // to be added : only stored player 25 x 25 adiacent area.
     public HashMap<Point, Integer> layerMap;
 
     int maxCol;
     int maxRow;
 
     public TileManager(GamePanel gp, String tilesetFileImg, String mapFileName, String collisionFileName) {
+        //class shit
         this.gp = gp;
-        // cChecker = new CollisionChecker(gp, this);
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        cChecker = new CollisionChecker(gp, this);
 
         // tileset shit
         getTileImage(tilesetFileImg);
         setTileCollision(collisionFileName);
+
+        //map shit
         loadMap(mapFileName);
     }
 
@@ -148,13 +150,14 @@ public class TileManager {
         for (int worldRow = 0; worldRow < maxRow; worldRow++) {
             for (int worldCol = 0; worldCol < maxCol; worldCol++) {
                 Point p = new Point(worldCol, worldRow);
-
-                // Get the tile number, default to -1 if not found
-                int tileNum = layerMap.getOrDefault(p, -1);
-
-                // Ensure the tile exists in the tileSet
+                int tileNum = layerMap.getOrDefault(p, -1); // Get the tile number, default to -1 if not found
                 Tile tile = tileSet.get(tileNum);
-                if (tile == null) {
+
+                //preconditions for skipping iteration
+                if (tileNum == -1) { //skips transparent tile.
+                    continue;
+                }
+                if (tile == null) {// Ensure the tile exists in the tileSet
                     continue; // Skip invalid tiles
                 }
 

@@ -235,7 +235,7 @@ public abstract class Entity {
 
     public void checkTileCollision() {
         for (TileManager tileM : gp.mapM.maps.get(gp.currentMap).layers) {
-            //tileM.cChecker.checkTile(this);
+            tileM.cChecker.checkTile(this);
         }
     }
 
