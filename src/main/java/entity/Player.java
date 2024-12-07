@@ -35,6 +35,7 @@ public class Player extends Entity {
         setDefaultValues(); // set spawn coordinates
 
         getEntityImage("player/player_");
+        getEntityBushImage("player/bush_");
 
         Xoffset = 0;
         Yoffset = 0;
@@ -73,8 +74,7 @@ public class Player extends Entity {
 
                 // check if player is in bush
                 // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
-                // bushIn =
-                // gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); //
+                bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); //
                 // used 2nd layer because bushes are on 2nd layer.
 
                 // checks pokemon collision

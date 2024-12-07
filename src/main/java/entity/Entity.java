@@ -121,6 +121,29 @@ public abstract class Entity {
         }
     }
 
+    public void getEntityBushImage(String packagePath) {
+        int indexFile = 0;
+        int indexArray = 0;
+        for (int i = 0; i < 16; i++) {
+            if (indexArray == 4) {
+                indexArray = 0;
+            }
+            // loads all player imagines
+            String bushName = packagePath + indexFile + ".png";
+            if (i < 4) {
+                loadImage(this.bushDown, indexArray, bushName);
+            } else if (i < 8) {
+                loadImage(this.bushUp, indexArray, bushName);
+            } else if (i < 12) {
+                loadImage(this.bushLeft, indexArray, bushName);
+            } else {
+                loadImage(this.bushRight, indexArray, bushName);
+            }
+            indexFile++;
+            indexArray++;
+        }
+    }
+
     public void loadImage(BufferedImage[] array, int indexArray, String fileName) {
         try {
             array[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));

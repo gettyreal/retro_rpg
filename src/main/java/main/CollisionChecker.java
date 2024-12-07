@@ -204,22 +204,20 @@ public class CollisionChecker {
         }
 
         // Prendi il numero del tile
-        tileNum = this.tileM.layerMap.get(new Point(entityTileCol, entityTileRow));
+        Point p = new Point(entityTileCol, entityTileRow);
+        tileNum = this.tileM.layerMap.getOrDefault(p, -1);
 
         // Verifica se il tile è un bush
-        if (tileNum >= 260 && tileNum <= 275 || tileNum >= 343 && tileNum <= 362) {
+        if (tileNum == 1938) {
             // Calcola il centro del tile
             int tileCenterX = (entityTileCol * gp.tileSize) + gp.tileSize / 2;
             int tileCenterY = (entityTileRow * gp.tileSize) + gp.tileSize / 2;
 
-            // Definisci una hitbox centrale all'interno del tile (esempio: 5x5 pixel)
-            int bushHitboxSize = 36; // minimum size done by hand.
-            int halfBushHitbox = bushHitboxSize / 2;
-
-            int bushHitboxLeftX = tileCenterX - halfBushHitbox;
-            int bushHitboxRightX = tileCenterX + halfBushHitbox;
-            int bushHitboxTopY = tileCenterY - halfBushHitbox;
-            int bushHitboxBottomY = tileCenterY + halfBushHitbox;
+            // Definisci una hitbox centrale all'interno del tile (1x1 pixel)
+            int bushHitboxLeftX = tileCenterX;
+            int bushHitboxRightX = tileCenterX;
+            int bushHitboxTopY = tileCenterY;
+            int bushHitboxBottomY = tileCenterY;
 
             // Verifica se il rettangolo di collisione dell'entità interseca la hitbox
             // centrale del bush
