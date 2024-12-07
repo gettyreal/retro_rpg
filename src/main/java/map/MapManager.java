@@ -16,7 +16,7 @@ public class MapManager {
 
     public void setMap() {
         // OVERWORLD MAP
-        addMap("overWorld Map", "tiles/tilesheet.png", "HOENN MAP", "tiles/pokemon_tileset..tsj");
+        addMap("overWorld Map", "tiles/tilesheet.png", "HOENN MAP", "tiles/pokemon tileset..tsj");
 
         // POKECENTRE MAP
         //addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");

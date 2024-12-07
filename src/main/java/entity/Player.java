@@ -16,6 +16,9 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    int playerWalkOffset = 22;
+    int walkCounter = 0;
+
     public int objIndex = 999; // set obj null value.
     public int pokemonIndex = 999;
     public int npcIndex = 999;
@@ -32,11 +35,10 @@ public class Player extends Entity {
         setDefaultValues(); // set spawn coordinates
 
         getEntityImage("player/player_");
-        getEntityBushImage("player/bush_");
 
         Xoffset = 0;
         Yoffset = 0;
-        this.collisionArea = new Rectangle(Xoffset, Yoffset, 46, 46);
+        this.collisionArea = new Rectangle(Xoffset, Yoffset, 62, 62);
         solidAreaDefaultX = collisionArea.x;
         solidAreaDefaultY = collisionArea.y;
 
@@ -48,8 +50,8 @@ public class Player extends Entity {
         this.name = "GETTYREAL";
         this.worldX = 93 * gp.tileSize;
         this.worldY = 65 * gp.tileSize;
-        this.speed = 2;
-        this.direction = "up";
+        this.speed = 4;
+        this.direction = "down";
     }
 
     @Override
@@ -111,7 +113,7 @@ public class Player extends Entity {
             }
 
             this.spriteCounter++;
-            if (spriteCounter > 10) { // ogni 10 update cambia sprite
+            if (spriteCounter == 8) { // ogni 8 update cambia sprite
                 if (spriteNumber == 3) { // se le sprite sono finite l'animazione riparte
                     spriteNumber = 0;
                 } else {
@@ -125,6 +127,13 @@ public class Player extends Entity {
                 moving = false;
                 pixelCounter = 0;
             }
+
+            this.walkCounter++;
+            if (walkCounter < 8) {
+                playerWalkOffset = 24;
+            } else if (walkCounter < 16) {
+                playerWalkOffset = 22;
+            } else walkCounter = 0;
         }
         // events on collision
         interactNPC(npcIndex);
@@ -260,10 +269,8 @@ public class Player extends Entity {
             }
         }
         // draws current player sprite
-        g2.drawImage(Image, screenX, screenY, null);
-        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // debug for
-                                                                                                      // visualising
-                                                                                                      // hitbox
+        g2.drawImage(Image, screenX + 4, screenY - playerWalkOffset, null);
+        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //hitbox
 
     }
 }

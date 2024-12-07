@@ -10,69 +10,6 @@
  "tileheight":16,
  "tiles":[
         {
-         "id":257,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":258,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":259,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":260,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":261,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":262,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
-         "id":263,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
          "id":418,
          "properties":[
                 {
