@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Door;
 import object.OBJ_PokeChest;
+import object.OBJ_Stairs;
 import object.SuperObject;
 
 import java.awt.Graphics2D;
@@ -25,13 +26,9 @@ public class Player extends Entity {
 
     public String gender = "";
 
-    boolean moving = false;
-    int pixelCounter = 0;
-
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
-
         setDefaultValues(); // set spawn coordinates
 
         getEntityImage("player/player_");
@@ -128,7 +125,7 @@ public class Player extends Entity {
             }
 
             pixelCounter += this.speed;
-            if (pixelCounter == gp.tileSize) {
+            if (pixelCounter == walkDuration) {
                 moving = false;
                 pixelCounter = 0;
             }
@@ -160,9 +157,24 @@ public class Player extends Entity {
 
                 keyH.Apressed = false; // resets the key
             }
-            if (keyH.upPressed == true || keyH.downPressed == true) {
+            if (keyH.upPressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
-                    interactDoor(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                    interactDoorUp(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.downPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
+                    interactDoorDown(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.leftPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Stairs) {
+                    interactStairsDown(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.rightPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Stairs) {
+                    interactStairsUp(gp.mapM.maps.get(gp.currentMap).obj.get(index));
                 }
             }
             // if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof
@@ -182,36 +194,45 @@ public class Player extends Entity {
         }
     }
 
-    public void interactDoor(SuperObject door) {
+    public void interactDoorUp(SuperObject door) {
         if (door.actionCode.equals("toPokecentre")) {
             gp.currentMap = 1;
             setEntityWorldPosition(25, 11);
-        }
-        if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(96,33);
         }
         if (door.actionCode.equals("toPlayerHouse")) {
             gp.currentMap = 2;
             setEntityWorldPosition(4, 9);
         }
-        if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(19, 49);
-        }
-        if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
-            upAnimation();
-        }
-        if (door.actionCode.equalsIgnoreCase("fromSecondFloor")) {
-            downAnimation();
-        }
         if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
             gp.currentMap = 1;
             setEntityWorldPosition(7, 12);
         }
+    }
+
+    public void interactDoorDown(SuperObject door) {
+        if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
+            gp.currentMap = 0;
+            setEntityWorldPosition(96,33);
+        }
+        if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
+            gp.currentMap = 0;
+            setEntityWorldPosition(19, 49);
+        }
         if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
             gp.currentMap = 0;
             setEntityWorldPosition(22, 57);
+        }
+    }
+
+    public void interactStairsUp(SuperObject stair) {
+        if (stair.actionCode.equalsIgnoreCase("toSecondFloor")) {
+            upAnimation();
+        }
+    }
+
+    public void interactStairsDown(SuperObject stair) {
+        if (stair.actionCode.equalsIgnoreCase("fromSecondFloor")) {
+            downAnimation();
         }
     }
 

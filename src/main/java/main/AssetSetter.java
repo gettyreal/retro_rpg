@@ -25,6 +25,8 @@ public class AssetSetter {
         }
         if (mapIndex == 2) {
             addObject(new OBJ_Door("fromPlayerHouse"), 4, 9);
+            addObject(new OBJ_Stairs("toSecondFloor"), 11, 2);
+            addObject(new OBJ_Stairs("fromSecondFloor"), 36, 2);
         }
         
     }

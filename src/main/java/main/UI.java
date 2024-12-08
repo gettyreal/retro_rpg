@@ -14,7 +14,7 @@ import java.awt.FontFormatException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
-public class UI {
+public class UI{
     GamePanel gp;
     UtilityTool ut;
 
@@ -49,7 +49,7 @@ public class UI {
     // animation states
     private boolean showStartText = true;
     public long animationStartTime = 0; // Tempo d'inizio dell'animazione
-    public boolean isAnimationActive = true; // Stato dell'animazione
+    public boolean isAnimationActive = false; // Stato dell'animazione
     final int animationDuration = 3750; // Durata in millisecondi
     long elapsedTime;
 
@@ -73,7 +73,7 @@ public class UI {
     Doctor_Oak dr;
     BufferedImage down_arrow;
 
-    public UI(GamePanel gp) {
+    public UI (GamePanel gp) {
         this.gp = gp;
         ut = new UtilityTool();
 
@@ -152,9 +152,7 @@ public class UI {
     }
 
     public void drawPlayScreen(Graphics2D g2) {
-        if (gp.player.SpriteAnimationOn) {
             gp.userInterface.fadeAnimation(g2, 1600);
-        }
     }
 
     public void drawTitleScreen(Graphics2D g2) {
@@ -301,7 +299,6 @@ public class UI {
             } else {
                 // Animazione completata
                 isAnimationActive = false;
-                gp.player.SpriteAnimationOn = false;
                 titleScreenState = 2;
             }
         }
