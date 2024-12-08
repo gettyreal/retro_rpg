@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() { // set default object before game starts
         mapSetup(0); //world map 
         mapSetup(1); //birch map
+        mapSetup(2); //players house
         gameState = playState;
     }
 

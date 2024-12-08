@@ -187,17 +187,17 @@ public class Player extends Entity {
             gp.currentMap = 1;
             setEntityWorldPosition(25, 11);
         }
-        if (door.actionCode.equals("toHome")) {
-            gp.currentMap = 2;
-            setEntityWorldPosition(13, 28);
-        }
         if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
             gp.currentMap = 0;
             setEntityWorldPosition(96,33);
         }
-        if (door.actionCode.equalsIgnoreCase("fromHome")) {
+        if (door.actionCode.equals("toPlayerHouse")) {
+            gp.currentMap = 2;
+            setEntityWorldPosition(4, 9);
+        }
+        if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
             gp.currentMap = 0;
-            setEntityWorldPosition(18, 11);
+            setEntityWorldPosition(19, 49);
         }
         if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
             upAnimation();

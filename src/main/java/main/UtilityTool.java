@@ -89,4 +89,21 @@ public class UtilityTool {
         }
         return true; //if null returns true.
     }
+
+    public static boolean checkEqualImage(BufferedImage img1, BufferedImage img2) {
+        // Check if the dimensions are the same
+        if (img1.getWidth() != img2.getWidth() || img1.getHeight() != img2.getHeight()) {
+            return false;
+        }
+
+        // Compare pixel-by-pixel
+        for (int y = 0; y < img1.getHeight(); y++) {
+            for (int x = 0; x < img1.getWidth(); x++) {
+                if (img1.getRGB(x, y) != img2.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
