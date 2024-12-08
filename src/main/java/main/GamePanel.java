@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() { // set default object before game starts
         mapSetup(0);
-        //mapSetup(1);
+        mapSetup(1);
         //mapSetup(2);
         gameState = playState;
     }
@@ -122,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        System.out.println(player.worldX / tileSize + " | " + player.worldY / tileSize);
         switch (gameState) {
             case titleState:
                 userInterface.draw(g2);

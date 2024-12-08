@@ -19,7 +19,7 @@ public class MapManager {
         addMap("overWorld Map", "tiles/tilesheet.png", "HOENN MAP", "tiles/pokemon tileset..tsj");
 
         // POKECENTRE MAP
-        //addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre.txt");
+        addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre tileset.tsj");
 
         // home MAP
         //addMap("home Map", "tiles/home.png", "home", "tiles/home.txt");
@@ -33,7 +33,7 @@ public class MapManager {
         for (int i = 1; i <= 3; i++) {
                 String layerPath = "maps/" + baseLayerName + "_layer" + i + ".csv";
                 newMap.layers.add(new TileManager(gp, tilesetPath, layerPath, collisionPath));
-        }
+        }   
     }
 
 }

@@ -49,8 +49,8 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         this.name = "GETTYREAL";
-        this.worldX = 93 * gp.tileSize;
-        this.worldY = 65 * gp.tileSize;
+        this.worldX = 100 * gp.tileSize;
+        this.worldY = 31 * gp.tileSize;
         this.speed = 4;
         this.direction = "down";
     }
@@ -70,21 +70,14 @@ public class Player extends Entity {
                     this.direction = "right";
                 }
 
+                objIndex = gp.Checker.checkObject(this, true);
+
                 moving = true;
 
-                // check if player is in bush
-                // debug System.out.println(gp.tileM2.cChecker.checkInBush(this));
-                bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this); //
-                // used 2nd layer because bushes are on 2nd layer.
-
-                // checks pokemon collision
-                pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
-
-                // checks entity collision
-                npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
-
-                // check objcets collison + gets the value of the obj colliding
-                objIndex = gp.Checker.checkObject(this, true);
+                // events on collision
+                interactNPC(npcIndex);
+                interactPokemon(pokemonIndex);
+                interactObject(objIndex); // removes the obj on e key press if possible
             }
         }
 
@@ -92,6 +85,18 @@ public class Player extends Entity {
             // check collision on all layers
             collisionOn = false;
             checkTileCollision();
+
+            // check if player is in bush
+            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this);
+            // used 2nd layer because bushes are on 2nd layer.
+
+            // checks pokemon collision
+            pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
+
+            // checks entity collision
+            npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
+
+            // check objcets collison + gets the value of the obj colliding
 
             if (collisionOn == false) {
                 switch (direction) {
@@ -133,28 +138,17 @@ public class Player extends Entity {
                 playerWalkOffset = 24;
             } else if (walkCounter < 16) {
                 playerWalkOffset = 22;
-            } else walkCounter = 0;
+            } else
+                walkCounter = 0;
         }
-        // events on collision
-        interactNPC(npcIndex);
-        interactPokemon(pokemonIndex);
-        interactObject(objIndex); // removes the obj on e key press if possible
     }
 
     public void interactObject(int index) {
         if (index != 999) { // index == 999 null object.
-            if (keyH.Epressed == true) {
+            if (keyH.Apressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_PokeChest) {
-                    gp.mapM.maps.get(gp.currentMap).obj.get(index).loadImage("object/poke-chest-open.png"); // changes
-                                                                                                            // imagine
-                                                                                                            // after
-                                                                                                            // opening
-                                                                                                            // chest
-                    OBJ_PokeChest pokeChest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(index); // down
-                                                                                                              // cast to
-                                                                                                              // modify
-                                                                                                              // opened
-                                                                                                              // boolean
+                    gp.mapM.maps.get(gp.currentMap).obj.get(index).loadImage("object/poke-chest-open.png");
+                    OBJ_PokeChest pokeChest = (OBJ_PokeChest) gp.mapM.maps.get(gp.currentMap).obj.get(index);
                     pokeChest.opened = true; // put pokechst opened on true after user input
                 }
 
@@ -164,11 +158,12 @@ public class Player extends Entity {
                     objIndex--; // prevents index out bounds exeption
                 }
 
+                keyH.Apressed = false; // resets the key
+            }
+            if (keyH.upPressed == true || keyH.downPressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
                     interactDoor(gp.mapM.maps.get(gp.currentMap).obj.get(index));
                 }
-
-                keyH.Epressed = false; // resets the key
             }
             // if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof
             // OBJ_nurseDialogue) {
@@ -190,7 +185,7 @@ public class Player extends Entity {
     public void interactDoor(SuperObject door) {
         if (door.actionCode.equals("toPokecentre")) {
             gp.currentMap = 1;
-            setEntityWorldPosition(25, 27);
+            setEntityWorldPosition(25, 11);
         }
         if (door.actionCode.equals("toHome")) {
             gp.currentMap = 2;
@@ -198,7 +193,7 @@ public class Player extends Entity {
         }
         if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
             gp.currentMap = 0;
-            setEntityWorldPosition(7, 9);
+            setEntityWorldPosition(96,33);
         }
         if (door.actionCode.equalsIgnoreCase("fromHome")) {
             gp.currentMap = 0;
@@ -217,7 +212,7 @@ public class Player extends Entity {
     // set gamestate to dialog state and instaantiace the first dialog
     private void interactNPC(int index) {
         if (index != 999) {
-            if (keyH.Fpressed == true) {
+            if (keyH.Apressed == true) {
                 gp.gameState = gp.dialogState;
                 gp.mapM.maps.get(gp.currentMap).npc.get(index).speak();
             }
@@ -270,7 +265,8 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(Image, screenX + 4, screenY - playerWalkOffset, null);
-        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); //hitbox
+        // g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width,
+        // collisionArea.height); //hitbox
 
     }
 }
