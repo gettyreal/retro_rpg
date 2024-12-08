@@ -16,13 +16,9 @@ public class MapManager {
 
     public void setMap() {
         // OVERWORLD MAP
-        addMap("overWorld Map", "tiles/tilesheet.png", "HOENN MAP", "tiles/pokemon tileset..tsj");
-
-        // POKECENTRE MAP
-        addMap("pokecentre Map", "tiles/pokecentre.png", "pokecentre", "tiles/pokecentre tileset.tsj");
-
-        // home MAP
-        //addMap("home Map", "tiles/home.png", "home", "tiles/home.txt");
+        addMap("overWorld Map", "Tilesets/Outside.png", "world map", "collisions/outdoors.tsj");
+        //BIRCH LAB
+        addMap("birch map", "Tilesets/Interior general.png", "birch lab", "collisions/Interior general.tsj");
     }
 
     private void addMap(String mapName, String tilesetPath, String baseLayerName, String collisionPath) {

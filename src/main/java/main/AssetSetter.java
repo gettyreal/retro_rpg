@@ -17,16 +17,12 @@ public class AssetSetter {
     // adds obj into the game
     public void setObject(int mapIndex) { 
         if (mapIndex == 0) {
-            addObject(new OBJ_Door("toPokecentre"), 96, 33);
+            addObject(new OBJ_Door("toBirchLab"), 22, 57);
         }
         if (mapIndex == 1) {
-            addObject(new OBJ_Door("fromPokecentre"), 25, 12);
+            addObject(new OBJ_Door("fromBirchLab"), 7, 13);
         }
-        if (mapIndex == 2) {
-            addObject(new OBJ_Door("fromHome"), 13, 28);
-            addObject(new OBJ_Door("toSecondFloor"), 17, 22);
-            addObject(new OBJ_Door("fromSecondFloor"), 37, 20);
-        }
+        
     }
 
     // adds pokemon to the game.

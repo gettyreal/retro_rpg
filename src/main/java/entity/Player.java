@@ -49,8 +49,8 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         this.name = "GETTYREAL";
-        this.worldX = 100 * gp.tileSize;
-        this.worldY = 31 * gp.tileSize;
+        this.worldX = 25 * gp.tileSize;
+        this.worldY = 50 * gp.tileSize;
         this.speed = 4;
         this.direction = "down";
     }
@@ -87,8 +87,8 @@ public class Player extends Entity {
             checkTileCollision();
 
             // check if player is in bush
-            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(1).cChecker.checkInBush(this);
-            // used 2nd layer because bushes are on 2nd layer.
+            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(0).cChecker.checkInBush(this);
+            // used 1nd layer because bushes are on 1nd layer.
 
             // checks pokemon collision
             pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
@@ -205,7 +205,14 @@ public class Player extends Entity {
         if (door.actionCode.equalsIgnoreCase("fromSecondFloor")) {
             downAnimation();
         }
-
+        if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
+            gp.currentMap = 1;
+            setEntityWorldPosition(7, 12);
+        }
+        if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
+            gp.currentMap = 0;
+            setEntityWorldPosition(22, 57);
+        }
     }
 
     // method to start npc interaction

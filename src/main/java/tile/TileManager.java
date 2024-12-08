@@ -53,15 +53,15 @@ public class TileManager {
             BufferedImage tilesetImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
 
             // Tile dimensions
-            int tileWidth = 16;
-            int tileHeight = 16;
+            int tileWidth = 32;
+            int tileHeight = 32;
             int totalCol = tilesetImage.getWidth() / tileWidth;
             int totalRow = tilesetImage.getHeight() / tileHeight;
 
             this.tileSet = new HashMap<>(); // Initialize HashMap
             Tile nullTile = new Tile();
             // get first tile as NULL (trasparent) tile
-            nullTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/NULL.png"));
+            nullTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Tilesets/NULL.png"));
             nullTile.image = UtilityTool.scaleImage(nullTile.image, gp.tileSize, gp.tileSize);
             this.tileSet.put(-1, nullTile);
 
