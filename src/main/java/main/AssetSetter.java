@@ -1,7 +1,7 @@
 package main;
 
 import entity.*;
-import entity.npc.*;
+//import entity.npc.*;
 import map.GameMap;
 import object.*;
 
@@ -15,34 +15,19 @@ public class AssetSetter {
     }
 
     // adds obj into the game
-    public void setObject(int mapIndex) {
+    public void setObject(int mapIndex) { 
         if (mapIndex == 0) {
-            addObject(new OBJ_PokeChest(), 27, 23);
-            addObject(new OBJ_Door("toPokecentre"), 7, 9);
-            addObject(new OBJ_Door("toHome"), 18, 11);
-            addObject(new OBJ_Door("ToPokeshop"), 12, 10);
-            addObject(new OBJ_PokeBall(), 5, 10);
-            addObject(new OBJ_PokeBall(), 5, 19);
-            addObject(new OBJ_PokeBall(), 10, 24);
-            addObject(new OBJ_PokeBall(), 17, 30);
-            addObject(new OBJ_PokeBall(), 37, 11);
-            addObject(new OBJ_PokeBall(), 45, 42);
-            addObject(new OBJ_PokeBall(), 20, 45);
+            addObject(new OBJ_Door("toBirchLab"), 22, 57);
         }
         if (mapIndex == 1) {
-            addObject(new OBJ_Door("fromPokecentre"), 25, 27);
-            addObject(new OBJ_nurseDialogue(), 25, 22);
+            addObject(new OBJ_Door("fromBirchLab"), 7, 13);
         }
-        if (mapIndex == 2) {
-            addObject(new OBJ_Door("fromHome"), 13, 28);
-            addObject(new OBJ_Door("toSecondFloor"), 17, 22);
-            addObject(new OBJ_Door("fromSecondFloor"), 37, 20);
-
-        }
+        
     }
 
     // adds pokemon to the game.
     public void setPokemons(int mapIndex) {
+        /* 
         if (mapIndex == 0) {   
             addPokemon(new Pokemon(gp, "treecko", "treecko/treecko_", "treecko/treecko_battle.png", 10, 12), 21, 26);
         }
@@ -50,10 +35,11 @@ public class AssetSetter {
             addPokemon(new Pokemon(gp, "treecko", "treecko/treecko_", "treecko/treecko_battle.png", 10, 12), 30, 25);
         }
         if (mapIndex == 2) {
-        }
+        }*/
     }
 
     public void setNPC(int mapIndex) {
+        /* 
         if (mapIndex == 0) {
 
         }
@@ -62,7 +48,7 @@ public class AssetSetter {
             addNPC(new Nurse_Joy(gp), 25, 20);
         }
         if (mapIndex == 2) {
-        }
+        } */
     }
 
     // adds a new object into the game

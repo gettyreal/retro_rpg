@@ -148,7 +148,7 @@ public abstract class Entity {
         try {
             array[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
             array[indexArray] = UtilityTool.scaleImage(array[indexArray],
-                    array[indexArray].getWidth() * 2, array[indexArray].getHeight() * 2); // scale img
+            array[indexArray].getWidth() * 2, array[indexArray].getHeight() * 2); // scale img
         } catch (IOException e) {
             e.printStackTrace();
         }

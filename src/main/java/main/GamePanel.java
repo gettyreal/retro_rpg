@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // screen setting
     final int originalTileSize = 16; // 64 x 64
-    final double scale = 3; // moltiplicatore dei pixel
+    final double scale = 4; // moltiplicatore dei pixel
     public final int tileSize = (int) (originalTileSize * scale); // 64 x 64
     public final int maxScreenCol = 16; // 16 colonne
     public final int maxScreenRow = 12; // 12 rown quindi 4:3
@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // maps
     public MapManager mapM = new MapManager(this);
-    public int currentMap = 2;
+    public int currentMap = 0;
 
     // game status
     public int gameState;
@@ -60,9 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() { // set default object before game starts
-        mapSetup(0);
-        mapSetup(1);
-        mapSetup(2);
+        mapSetup(0); //world map 
+        mapSetup(1); //birch map
         gameState = playState;
     }
 
@@ -122,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        //System.out.println(player.worldX / tileSize + " | " + player.worldY / tileSize);
         switch (gameState) {
             case titleState:
                 userInterface.draw(g2);
@@ -172,7 +171,6 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2); // draw player
 
         mapM.maps.get(currentMap).layers.get(2).draw(g2);
-        mapM.maps.get(currentMap).layers.get(3).draw(g2);
         userInterface.draw(g2); // draws messages
     }
 

@@ -1,5 +1,6 @@
 package main;
 
+import tile.Point;
 import java.util.ArrayList;
 
 import entity.Entity;
@@ -34,41 +35,62 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if (this.tileM.tile[tileNum1].collision == true ||
-                        this.tileM.tile[tileNum2].collision == true) {
+                if (checkDefaultSkipConditions(entityLeftCol, entityTopRow, entityRightCol, entityTopRow)) {
+                    break;
+                }
+                tileNum1 = this.tileM.layerMap.get(new Point(entityLeftCol, entityTopRow));
+                tileNum2 = this.tileM.layerMap.get(new Point(entityRightCol, entityTopRow));
+
+                if (this.tileM.tileSet.get(tileNum1).collision == true ||
+                        this.tileM.tileSet.get(tileNum2).collision == true) {
                     entity.collisionOn = true;
                 }
                 break;
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (this.tileM.tile[tileNum1].collision == true ||
-                        this.tileM.tile[tileNum2].collision == true) {
+                if (checkDefaultSkipConditions(entityLeftCol, entityBottomRow, entityRightCol, entityBottomRow)) {
+                    break;
+                }
+                tileNum1 = this.tileM.layerMap.get(new Point(entityLeftCol, entityBottomRow));
+                tileNum2 = this.tileM.layerMap.get(new Point(entityRightCol, entityBottomRow));
+                if (this.tileM.tileSet.get(tileNum1).collision == true ||
+                        this.tileM.tileSet.get(tileNum2).collision == true) {
                     entity.collisionOn = true;
                 }
                 break;
             case "left":
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if (this.tileM.tile[tileNum1].collision == true ||
-                        this.tileM.tile[tileNum2].collision == true) {
+                if (checkDefaultSkipConditions(entityLeftCol, entityTopRow, entityLeftCol, entityBottomRow)) {
+                    break;
+                }
+                tileNum1 = this.tileM.layerMap.get(new Point(entityLeftCol, entityTopRow));
+                tileNum2 = this.tileM.layerMap.get(new Point(entityLeftCol, entityBottomRow));
+                if (this.tileM.tileSet.get(tileNum1).collision == true ||
+                        this.tileM.tileSet.get(tileNum2).collision == true) {
                     entity.collisionOn = true;
                 }
                 break;
             case "right":
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
-                tileNum1 = this.tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = this.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (this.tileM.tile[tileNum1].collision == true ||
-                        this.tileM.tile[tileNum2].collision == true) {
+                if (checkDefaultSkipConditions(entityRightCol, entityTopRow, entityRightCol, entityBottomRow)) {
+                    break;
+                }
+                tileNum1 = this.tileM.layerMap.get(new Point(entityRightCol, entityTopRow));
+                tileNum2 = this.tileM.layerMap.get(new Point(entityRightCol, entityBottomRow));
+                if (this.tileM.tileSet.get(tileNum1).collision == true ||
+                        this.tileM.tileSet.get(tileNum2).collision == true) {
                     entity.collisionOn = true;
                 }
                 break;
         }
+    }
+
+    private boolean checkDefaultSkipConditions(int x1, int y1, int x2, int y2) {
+        if (UtilityTool.checkNullTile(this.tileM.layerMap, x1, y1) ||
+                UtilityTool.checkNullTile(this.tileM.layerMap, x2, y2)) {
+            return true;
+        }
+        return false;
     }
 
     public int checkObject(Entity entity, boolean player) {
@@ -79,8 +101,10 @@ public class CollisionChecker {
                 entity.collisionArea.x = entity.worldX + entity.collisionArea.x;
                 entity.collisionArea.y = entity.worldY + entity.collisionArea.y;
                 // obj solid area position
-                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj.get(i).worldX + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x;
-                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj.get(i).worldY + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj
+                        .get(i).worldX + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj
+                        .get(i).worldY + gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y;
 
                 switch (entity.direction) {
                     case "up":
@@ -97,7 +121,8 @@ public class CollisionChecker {
                     case "down":
                         entity.collisionArea.y += entity.speed;
                         if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea
+                                    .intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
                                 if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
@@ -110,7 +135,8 @@ public class CollisionChecker {
                     case "left":
                         entity.collisionArea.x -= entity.speed;
                         if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea
+                                    .intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
                                 if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
@@ -123,7 +149,8 @@ public class CollisionChecker {
                     case "right":
                         entity.collisionArea.x += entity.speed;
                         if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
-                            if (entity.collisionArea.intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
+                            if (entity.collisionArea
+                                    .intersects(gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea)) {
                                 if (gp.mapM.maps.get(gp.currentMap).obj.get(i).collision == true) {
                                     entity.collisionOn = true;
                                 }
@@ -137,8 +164,10 @@ public class CollisionChecker {
                 // resets rectangle areas and positions
                 entity.collisionArea.x = entity.solidAreaDefaultX;
                 entity.collisionArea.y = entity.solidAreaDefaultY;
-                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj.get(i).solidAreaDefaultX;
-                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj.get(i).solidAreaDefaultY;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.x = gp.mapM.maps.get(gp.currentMap).obj
+                        .get(i).solidAreaDefaultX;
+                gp.mapM.maps.get(gp.currentMap).obj.get(i).collisionArea.y = gp.mapM.maps.get(gp.currentMap).obj
+                        .get(i).solidAreaDefaultY;
             }
         }
         return index;
@@ -175,22 +204,20 @@ public class CollisionChecker {
         }
 
         // Prendi il numero del tile
-        tileNum = this.tileM.mapTileNum[entityTileCol][entityTileRow];
+        Point p = new Point(entityTileCol, entityTileRow);
+        tileNum = this.tileM.layerMap.getOrDefault(p, -1);
 
         // Verifica se il tile è un bush
-        if (tileNum >= 260 && tileNum <= 275 || tileNum >= 343 && tileNum <= 362) {
+        if (tileNum == 6) {
             // Calcola il centro del tile
             int tileCenterX = (entityTileCol * gp.tileSize) + gp.tileSize / 2;
             int tileCenterY = (entityTileRow * gp.tileSize) + gp.tileSize / 2;
 
-            // Definisci una hitbox centrale all'interno del tile (esempio: 5x5 pixel)
-            int bushHitboxSize = 36; // minimum size done by hand.
-            int halfBushHitbox = bushHitboxSize / 2;
-
-            int bushHitboxLeftX = tileCenterX - halfBushHitbox;
-            int bushHitboxRightX = tileCenterX + halfBushHitbox;
-            int bushHitboxTopY = tileCenterY - halfBushHitbox;
-            int bushHitboxBottomY = tileCenterY + halfBushHitbox;
+            // Definisci una hitbox centrale all'interno del tile (1x1 pixel)
+            int bushHitboxLeftX = tileCenterX;
+            int bushHitboxRightX = tileCenterX;
+            int bushHitboxTopY = tileCenterY;
+            int bushHitboxBottomY = tileCenterY;
 
             // Verifica se il rettangolo di collisione dell'entità interseca la hitbox
             // centrale del bush
