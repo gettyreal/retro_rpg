@@ -1360,15 +1360,6 @@
                 }]
         }, 
         {
-         "id":3123,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":true
-                }]
-        }, 
-        {
          "id":3124,
          "properties":[
                 {

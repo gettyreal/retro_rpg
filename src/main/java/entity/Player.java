@@ -199,31 +199,25 @@ public class Player extends Entity {
 
     public void interactDoorUp(SuperObject Door) {
         OBJ_Door door = (OBJ_Door) Door;
-        if (door.actionCode.equals("toPokecentre")) {
-            gp.currentMap = 1;
-            setEntityWorldPosition(25, 11);
-        }
         if (door.actionCode.equals("toPlayerHouse")) {
-            door.doorOpenedAnimation();
+            door.setTransferCoordinates(2,4, 8);
+            door.openAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
-            gp.currentMap = 1;
-            setEntityWorldPosition(7, 12);
+            door.setTransferCoordinates(1, 7, 12);
+            door.openAnimation();
         }
     }
 
     public void interactDoorDown(SuperObject Door) {
         OBJ_Door door = (OBJ_Door) Door;
-        if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(96,33);
-        }
         if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
-            door.doorClosedAnimation();
+            door.setTransferCoordinates(0,19, 48);
+            door.closeAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(22, 57);
+            door.setTransferCoordinates(0, 22, 56);
+            door.closeAnimation();
         }
     }
 

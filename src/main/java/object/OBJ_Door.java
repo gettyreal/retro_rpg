@@ -13,15 +13,20 @@ import main.UtilityTool;
 public class OBJ_Door extends SuperObject { // door wont be visible because the image is visible on tilemaps.
     GamePanel gp;
 
+    OBJ_Door linkedDoor;
+    int transferX;
+    int transferY;
+    int transnferMap;
+
     public BufferedImage[] doorSprites;
     public int spriteIndex = 0;
 
-    Timer spriteTimer;
+    Timer doorOpenedTimer;
+    Timer doorClosedTimer;
     int timerIndex = 0;
 
-    // constructor
-    // get as paramentet the action code for different behaviors
-    public OBJ_Door(String actionCode, GamePanel gp) {
+    // constructors
+    public OBJ_Door(String actionCode, GamePanel gp, String doorTileName, int doorTileColums) {
         this.gp = gp;
         loadTimers();
         this.name = "door";
@@ -29,21 +34,54 @@ public class OBJ_Door extends SuperObject { // door wont be visible because the 
         this.collision = false;
         this.pickable = false;
         loadImage("object/null.png");
-        loadSprites("object/door1.png", 1);
+        String filePath = "object/" + doorTileName + ".png";
+        loadSprites(filePath, 1);
+    }
+
+    public OBJ_Door(String actionCode, GamePanel gp, OBJ_Door link) {
+        this.gp = gp;
+        this.linkedDoor = link;
+        loadTimers();
+        this.name = "door";
+        this.actionCode = actionCode;
+        this.collision = false;
+        this.pickable = false;
+        loadImage("object/null.png");
+    }
+
+    public void setTransferCoordinates(int indexMap, int x, int y) {
+        this.transferX = x;
+        this.transferY = y;
+        this.transnferMap = indexMap;
     }
 
     private void loadTimers() {
-        this.spriteTimer = new Timer(100, e -> {
+        this.doorOpenedTimer = new Timer(100, e -> {
             if (timerIndex < 3) {
                 spriteIndex++;
             } else if (timerIndex < 4) {
                 gp.player.movingDisabled = false;
                 gp.userInterface.startAnimation();
             } else if (timerIndex == 10) {
-                gp.currentMap = 2;
-                gp.player.setEntityWorldPosition(4, 9);
-                this.spriteTimer.stop();
-                spriteIndex = 0;
+                gp.currentMap = this.transnferMap;
+                gp.player.setEntityWorldPosition(transferX, transferY);
+                this.doorOpenedTimer.stop();
+            }
+            this.timerIndex++;
+        });
+
+        this.doorClosedTimer = new Timer(100, e -> {
+            if (timerIndex == 0) {
+                gp.userInterface.startAnimation();
+            }else if (timerIndex == 7) {
+                gp.currentMap = this.transnferMap;
+                gp.player.setEntityWorldPosition(transferX, transferY);
+            } else if(timerIndex == 10) {
+                gp.player.movingDisabled = false;
+            } else if(timerIndex > 10 && timerIndex < 14) {
+                linkedDoor.spriteIndex--;
+            } else if(timerIndex == 14){
+                this.doorClosedTimer.stop();
             }
             this.timerIndex++;
         });
@@ -74,21 +112,20 @@ public class OBJ_Door extends SuperObject { // door wont be visible because the 
         }
     }
 
-    public void doorOpenedAnimation() {
+    public void openAnimation() {
         gp.player.movingDisabled = true;
         timerIndex = 0;
-        spriteTimer.start();
+        doorOpenedTimer.start();
     }
 
-    public void doorClosedAnimation() {
+    public void closeAnimation() {
+        gp.player.movingDisabled = true;
         timerIndex = 0;
-        gp.currentMap = 0;
-        gp.player.setEntityWorldPosition(19, 48);
+        doorClosedTimer.start();
     }
 
     @Override
     public void draw(Graphics2D g2, GamePanel gp) {
-        System.out.println(this.timerIndex);
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
