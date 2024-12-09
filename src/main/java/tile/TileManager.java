@@ -8,17 +8,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import main.CollisionChecker;
 import main.GamePanel;
 import main.UtilityTool;
 
+//class to handle single layer maps
 public class TileManager {
-    GamePanel gp;
-    public CollisionChecker cChecker;
-    UtilityTool ut = new UtilityTool();
+    GamePanel gp; // game panel
+    public CollisionChecker cChecker; // collision checker for each layer
+    UtilityTool ut = new UtilityTool(); // usefull functions for handling tilesets and imagines
 
     // hash map with tiles form tilesets.
     // Tile indicates the tile class and Integer is for the position in the big
@@ -27,48 +26,61 @@ public class TileManager {
     public HashMap<Integer, Tile> tileSet;
 
     // hash map with one layer of the map
-    //only stores non transparent blocks
+    // only stores non transparent blocks
     // to be added : only stored player 25 x 25 adiacent area.
     public HashMap<Point, Integer> layerMap;
 
+    // max layer dimensions
     int maxCol;
     int maxRow;
 
+    // constructor
     public TileManager(GamePanel gp, String tilesetFileImg, String mapFileName, String collisionFileName) {
-        //class shit
+        // class shit
         this.gp = gp;
         cChecker = new CollisionChecker(gp, this);
 
-        // tileset shit
+        // loads layer tileset and gets if tile collision = true
         getTileImage(tilesetFileImg);
         setTileCollision(collisionFileName);
 
-        //map shit
+        // load the layer map based on the tileset
         loadMap(mapFileName);
     }
 
+    // method to get all imagines from a tileset
+    // gets as parameter the tileset file path (in the resources/Tilesets folder)
     public void getTileImage(String fileName) {
         try {
-            // Load the entire tileset
+            // Load the entire image tileset
             BufferedImage tilesetImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
 
             // Tile dimensions
             int tileWidth = 32;
             int tileHeight = 32;
+            // max tileset dimension
             int totalCol = tilesetImage.getWidth() / tileWidth;
             int totalRow = tilesetImage.getHeight() / tileHeight;
 
+            // instantiate the tileset
             this.tileSet = new HashMap<>(); // Initialize HashMap
+
+            // get first tile as EMPTY (trasparent) tile
+            Tile emptyTile = new Tile();
+            emptyTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Tilesets/EMPTY.png"));
+            emptyTile.image = UtilityTool.scaleImage(emptyTile.image, gp.tileSize, gp.tileSize);
+            this.tileSet.put(-1, emptyTile);
+
+            // get NULL tile for skipping null iteration
             Tile nullTile = new Tile();
-            // get first tile as NULL (trasparent) tile
             nullTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Tilesets/NULL.png"));
             nullTile.image = UtilityTool.scaleImage(nullTile.image, gp.tileSize, gp.tileSize);
-            this.tileSet.put(-1, nullTile);
 
             // Extract tiles and save them
-            int tileIndex = 0;
+            int tileIndex = 0; // index for each tile
             for (int row = 0; row < totalRow; row++) {
                 for (int col = 0; col < totalCol; col++) {
+                    // x and y position of the tile in the tileset
                     int tileX = col * tileWidth;
                     int tileY = row * tileHeight;
 
@@ -76,11 +88,11 @@ public class TileManager {
                     tempTile.image = tilesetImage.getSubimage(tileX, tileY, tileWidth, tileHeight);
                     tempTile.image = UtilityTool.scaleImage(tempTile.image, gp.tileSize, gp.tileSize);
 
-                    // adds only if not transparent tile
-                    if (!UtilityTool.isNullImage(tempTile.image)) {
+                    // adds only if not null tile
+                    if (!UtilityTool.checkEqualImage(tempTile.image, nullTile.image)) {
                         this.tileSet.put(tileIndex, tempTile);
                     }
-                    tileIndex++;
+                    tileIndex++; // increase tile index
                 }
             }
         } catch (IOException e) {
@@ -88,48 +100,67 @@ public class TileManager {
         }
     }
 
+    // method to set tile collision if needed
+    // gets as parameter collision json file path (in the resources/collision
+    // folder)
+    // checks in collision for each tileset collision json
+    // if propretiies collision is true in the json gets the tileNum and sets it to
+    // true in the hashmap
     public void setTileCollision(String fileName) {
-        String line;
-        Integer currentTileId = null;
+        String line; // for json in-line reading
+        Integer currentTileId = null; // tile id to get the exact tile in the tileset
         try {
+            // line reader
             InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
 
+            // read lines untill end of file
+            while ((line = br.readLine()) != null) {
+                line = line.trim(); // òine formatting
+
+                // gets the id of the tile for proprieties handling
                 if (line.startsWith("\"id\":")) {
                     String[] splittedLine = line.split(":");
                     currentTileId = Integer.parseInt(splittedLine[1].trim().replace(",", ""));
                 }
+
+                // if value = true in the line sets the collision variable to true
                 if (line.contains("value") && line.contains("true")) {
                     Tile tempTile = tileSet.get(currentTileId); // new tile obj that referf into the hashmap
                     tempTile.collision = true;
                     currentTileId = null;
                 }
             }
-            br.close();
+            br.close(); // closes line reader
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // method to load layer map
+    // gets ad parameter the layer file path (in the resources/maps folder)
     public void loadMap(String fileName) {
-        this.layerMap = new HashMap<>();
+        this.layerMap = new HashMap<>(); // instatiate layer hashmap
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName); // import della mappa
-            BufferedReader br = new BufferedReader(new InputStreamReader(is)); // reader
+            // layer map name
+            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+            // max map dimension
             maxCol = ut.getCsvWidth(fileName);
             maxRow = ut.getCsvHeight(fileName);
+            // indexes for tiles coordinates
             int col = 0;
             int row = 0;
 
+            // load map
             while (col < maxCol && row < maxRow) {
-                String line = br.readLine();
-                while (col < maxCol) {
+                String line = br.readLine(); // line reading
+                while (col < maxCol) { // check each row
                     String numbers[] = line.split(","); // splitta la linea in un array di stringhe dallo spazio
                     int num = Integer.parseInt(numbers[col]);
 
+                    // adds tile to map only if the arent null (-1) and tilemun in in the tileset
                     if (tileSet.containsKey(num) && num != -1) {
                         layerMap.put(new Point(col, row), num);
                     }
@@ -140,12 +171,13 @@ public class TileManager {
                     row++;
                 }
             }
-            br.close();
+            br.close(); // close reader
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // method to draw the layers
     public void draw(Graphics2D g2) {
         for (int worldRow = 0; worldRow < maxRow; worldRow++) {
             for (int worldCol = 0; worldCol < maxCol; worldCol++) {
@@ -153,8 +185,8 @@ public class TileManager {
                 int tileNum = layerMap.getOrDefault(p, -1); // Get the tile number, default to -1 if not found
                 Tile tile = tileSet.get(tileNum);
 
-                //preconditions for skipping iteration
-                if (tileNum == -1) { //skips transparent tile.
+                // preconditions for skipping iteration
+                if (tileNum == -1) { // skips transparent tile.
                     continue;
                 }
                 if (tile == null) {// Ensure the tile exists in the tileSet
@@ -180,6 +212,8 @@ public class TileManager {
         }
     }
 
+    // method to visualize the entire tileset on console
+    // user for debugging only
     public void visualizzaTileSet() {
         for (Map.Entry<Integer, Tile> entry : tileSet.entrySet()) {
             Tile tempTile = entry.getValue();

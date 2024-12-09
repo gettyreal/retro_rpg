@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +45,12 @@ public abstract class Entity {
     public int spriteCounter = 0; // index of sprite active on screen
     public int spriteNumber = 0;
 
+    public boolean movingDisabled = false;
+    boolean moving = false;
+    int pixelCounter = 0;
+    int walkDuration;
     //entity animation
+    ActionListener at;
     int animationDuration = 0;
     Timer directionDownTimer;
     Timer directionUpTimer;
@@ -67,30 +73,29 @@ public abstract class Entity {
     public Entity(GamePanel gp) {
         loadTimers();
         this.gp = gp;
+        walkDuration = gp.tileSize;
     }
 
     private void loadTimers() {
         directionDownTimer = new Timer(20, event -> {
-            this.SpriteAnimationOn = true;
-            this.worldX++;
+            this.worldX--;
             if (animationDuration % 2 == 0) this.worldY++;
             animationDuration++;
-            if (animationDuration > 40) {
-                this.direction = "idle";
+            if (animationDuration == 40) {
                 directionDownTimer.stop();
-                setEntityWorldPosition(17, 21);
+                this.walkDuration = gp.tileSize;
+                setEntityWorldPosition(10, 2);
             }
         });
 
         directionUpTimer = new Timer(20, event -> {
-            this.SpriteAnimationOn = true;
-            this.worldX--;
+            this.worldX++;
             if (animationDuration % 2 == 0) this.worldY--;
             animationDuration++;
-            if (animationDuration > 40) {
-                this.direction = "idle";
+            if (animationDuration == 40) {
                 directionUpTimer.stop();
-                setEntityWorldPosition(37, 20);
+                this.walkDuration = gp.tileSize;
+                setEntityWorldPosition(36, 2);
             }
         });
     }
@@ -286,17 +291,17 @@ public abstract class Entity {
     }
 
     public void downAnimation() {
-        this.direction = "right";
-        gp.userInterface.animationStartTime = 0;
-        gp.userInterface.isAnimationActive = true;
+        this.walkDuration = gp.tileSize * 2;
+        this.direction = "left";
+        gp.userInterface.startAnimation();
         animationDuration = 0;
         directionDownTimer.start();
     }
 
     public void upAnimation() {
-        this.direction = "left";
-        gp.userInterface.animationStartTime = 0;
-        gp.userInterface.isAnimationActive = true;
+        this.walkDuration = gp.tileSize * 2;
+        this.direction = "right";
+        gp.userInterface.startAnimation();
         animationDuration = 0;
         directionUpTimer.start();
     }

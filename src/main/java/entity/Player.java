@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Door;
 import object.OBJ_PokeChest;
+import object.OBJ_Stairs;
 import object.SuperObject;
 
 import java.awt.Graphics2D;
@@ -25,13 +26,9 @@ public class Player extends Entity {
 
     public String gender = "";
 
-    boolean moving = false;
-    int pixelCounter = 0;
-
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
-
         setDefaultValues(); // set spawn coordinates
 
         getEntityImage("player/player_");
@@ -57,6 +54,9 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        if (movingDisabled) {
+            return;
+        }
         if (moving == false) {
             if (keyH.checkMovement()) {
                 // move the player by playerSpeed
@@ -128,7 +128,7 @@ public class Player extends Entity {
             }
 
             pixelCounter += this.speed;
-            if (pixelCounter == gp.tileSize) {
+            if (pixelCounter == walkDuration) {
                 moving = false;
                 pixelCounter = 0;
             }
@@ -160,9 +160,24 @@ public class Player extends Entity {
 
                 keyH.Apressed = false; // resets the key
             }
-            if (keyH.upPressed == true || keyH.downPressed == true) {
+            if (keyH.upPressed == true) {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
-                    interactDoor(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                    interactDoorUp(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.downPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Door) {
+                    interactDoorDown(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.leftPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Stairs) {
+                    interactStairsDown(gp.mapM.maps.get(gp.currentMap).obj.get(index));
+                }
+            }
+            if (keyH.rightPressed == true) {
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Stairs) {
+                    interactStairsUp(gp.mapM.maps.get(gp.currentMap).obj.get(index));
                 }
             }
             // if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof
@@ -182,36 +197,39 @@ public class Player extends Entity {
         }
     }
 
-    public void interactDoor(SuperObject door) {
-        if (door.actionCode.equals("toPokecentre")) {
-            gp.currentMap = 1;
-            setEntityWorldPosition(25, 11);
-        }
-        if (door.actionCode.equals("toHome")) {
-            gp.currentMap = 2;
-            setEntityWorldPosition(13, 28);
-        }
-        if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(96,33);
-        }
-        if (door.actionCode.equalsIgnoreCase("fromHome")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(18, 11);
-        }
-        if (door.actionCode.equalsIgnoreCase("toSecondFloor")) {
-            upAnimation();
-        }
-        if (door.actionCode.equalsIgnoreCase("fromSecondFloor")) {
-            downAnimation();
+    public void interactDoorUp(SuperObject Door) {
+        OBJ_Door door = (OBJ_Door) Door;
+        if (door.actionCode.equals("toPlayerHouse")) {
+            door.setTransferCoordinates(2,4, 8);
+            door.openAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
-            gp.currentMap = 1;
-            setEntityWorldPosition(7, 12);
+            door.setTransferCoordinates(1, 7, 12);
+            door.openAnimation();
+        }
+    }
+
+    public void interactDoorDown(SuperObject Door) {
+        OBJ_Door door = (OBJ_Door) Door;
+        if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
+            door.setTransferCoordinates(0,19, 48);
+            door.closeAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(22, 57);
+            door.setTransferCoordinates(0, 22, 56);
+            door.closeAnimation();
+        }
+    }
+
+    public void interactStairsUp(SuperObject stair) {
+        if (stair.actionCode.equalsIgnoreCase("toSecondFloor")) {
+            upAnimation();
+        }
+    }
+
+    public void interactStairsDown(SuperObject stair) {
+        if (stair.actionCode.equalsIgnoreCase("fromSecondFloor")) {
+            downAnimation();
         }
     }
 

@@ -3,25 +3,25 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import java.awt.Rectangle;
-
 import main.GamePanel;
 import main.UtilityTool;
 
+//class superObject to determine single object subclass
 public class SuperObject{
-    public BufferedImage image;
-    public String name;
-    public String actionCode;
-    public boolean collision = false;
-    public boolean pickable = false;
-    public int worldX, worldY;
-    public Rectangle collisionArea = new Rectangle(0, 0, 48, 48);
+    public BufferedImage image; //object image
+    public String name; //object name
+    public String actionCode; //object action code to determine specific action
+    public boolean collision = false; //object collision
+    public boolean pickable = false; //pickable to determin if object is pickable or not
+    public int worldX, worldY;  //object coordinates
+    public Rectangle collisionArea = new Rectangle(0, 0, 48, 48); //object hitbox
+    //hit box proprieties
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
 
+    //default method to draw object on map
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
@@ -34,10 +34,11 @@ public class SuperObject{
         }
     }
 
+    //default method to load the object image
     public void loadImage(String filename) {
         try {
             this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(filename));
-            UtilityTool.scaleImage(image, 48, 48);
+            UtilityTool.scaleImage(image, 64, 64);
         } catch (IOException e) {
             e.printStackTrace();
         }

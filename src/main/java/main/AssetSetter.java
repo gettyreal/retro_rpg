@@ -17,10 +17,16 @@ public class AssetSetter {
     // adds obj into the game
     public void setObject(int mapIndex) { 
         if (mapIndex == 0) {
-            addObject(new OBJ_Door("toBirchLab"), 22, 57);
+            addObject(new OBJ_Door("toBirchLab", gp, "door2", 1), 22, 57);
+            addObject(new OBJ_Door("toPlayerHouse", gp, "door1", 1), 19, 49);
         }
         if (mapIndex == 1) {
-            addObject(new OBJ_Door("fromBirchLab"), 7, 13);
+            addObject(new OBJ_Door("fromBirchLab", gp, (OBJ_Door)gp.mapM.maps.get(0).obj.get(0)), 7, 13);
+        }
+        if (mapIndex == 2) {
+            addObject(new OBJ_Door("fromPlayerHouse", gp, (OBJ_Door)gp.mapM.maps.get(0).obj.get(1)), 4, 9);
+            addObject(new OBJ_Stairs("toSecondFloor"), 11, 2);
+            addObject(new OBJ_Stairs("fromSecondFloor"), 36, 2);
         }
         
     }

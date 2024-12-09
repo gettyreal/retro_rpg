@@ -24,14 +24,14 @@ public class Doctor_Oak extends NPC {
         //add boy or girl user input
         this.dialogues.add("Let's begin with your name.\nWhat is it?");
         //add your name screen
-        this.dialogues.add("Right...\nSo your name is "+ gp.player.name+".");
+        this.dialogues.add("Right...\nSo your name is "+".");
         this.dialogues.add("This is my grandson.");
         this.dialogues.add("He's been your rival since you both\nboth were babies.");
         this.dialogues.add("...Er, what was his name now?");
         //add rival name selection input
         this.dialogues.add("..Er, was it GREEN?");
         this.dialogues.add("That's right! I remenber now!\nHis name is GREEN!");
-        this.dialogues.add(gp.player.name+"!");
+        this.dialogues.add("!");
         this.dialogues.add("Your very own POKèMON legend is\nabout to unfold!");
         this.dialogues.add("A world of dreams and adventures\nwith POKèMON awaits! Let's go!");
         //add last animation.
