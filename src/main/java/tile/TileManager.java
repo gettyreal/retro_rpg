@@ -59,11 +59,17 @@ public class TileManager {
             int totalRow = tilesetImage.getHeight() / tileHeight;
 
             this.tileSet = new HashMap<>(); // Initialize HashMap
+
+            Tile emptyTile = new Tile();
+            // get first tile as EMPTY (trasparent) tile
+            emptyTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Tilesets/EMPTY.png"));
+            emptyTile.image = UtilityTool.scaleImage(emptyTile.image, gp.tileSize, gp.tileSize);
+            this.tileSet.put(-1, emptyTile);
+
             Tile nullTile = new Tile();
-            // get first tile as NULL (trasparent) tile
+            //get NULL tile for skipping null iteration
             nullTile.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Tilesets/NULL.png"));
             nullTile.image = UtilityTool.scaleImage(nullTile.image, gp.tileSize, gp.tileSize);
-            this.tileSet.put(-1, nullTile);
 
             // Extract tiles and save them
             int tileIndex = 0;
@@ -77,7 +83,7 @@ public class TileManager {
                     tempTile.image = UtilityTool.scaleImage(tempTile.image, gp.tileSize, gp.tileSize);
 
                     // adds only if not transparent tile
-                    if (!UtilityTool.isNullImage(tempTile.image)) {
+                    if (!UtilityTool.isNullImage(tempTile.image) && !UtilityTool.checkEqualImage(tempTile.image, nullTile.image)) {
                         this.tileSet.put(tileIndex, tempTile);
                     }
                     tileIndex++;
