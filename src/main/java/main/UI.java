@@ -309,6 +309,11 @@ public class UI{
             }
         }
     }
+
+    public void startAnimation() {
+        this.animationStartTime = 0;
+        this.isAnimationActive = true;
+    }
     
     //method to draw the paused screen state
     //to be changed with option bar and player menu states

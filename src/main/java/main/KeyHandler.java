@@ -99,6 +99,9 @@ public class KeyHandler implements KeyListener {
 
     //method to check if movement is appening
     public boolean checkMovement() {
+        if (gp.player.movingDisabled) {
+            return false;
+        }
         if (gp.player.SpriteAnimationOn) {
             return true;
         }

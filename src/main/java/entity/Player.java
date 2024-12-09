@@ -54,6 +54,9 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        if (movingDisabled) {
+            return;
+        }
         if (moving == false) {
             if (keyH.checkMovement()) {
                 // move the player by playerSpeed
@@ -194,14 +197,14 @@ public class Player extends Entity {
         }
     }
 
-    public void interactDoorUp(SuperObject door) {
+    public void interactDoorUp(SuperObject Door) {
+        OBJ_Door door = (OBJ_Door) Door;
         if (door.actionCode.equals("toPokecentre")) {
             gp.currentMap = 1;
             setEntityWorldPosition(25, 11);
         }
         if (door.actionCode.equals("toPlayerHouse")) {
-            gp.currentMap = 2;
-            setEntityWorldPosition(4, 9);
+            door.doorOpenedAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
             gp.currentMap = 1;
@@ -209,14 +212,14 @@ public class Player extends Entity {
         }
     }
 
-    public void interactDoorDown(SuperObject door) {
+    public void interactDoorDown(SuperObject Door) {
+        OBJ_Door door = (OBJ_Door) Door;
         if (door.actionCode.equalsIgnoreCase("fromPokecentre")) {
             gp.currentMap = 0;
             setEntityWorldPosition(96,33);
         }
         if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
-            gp.currentMap = 0;
-            setEntityWorldPosition(19, 49);
+            door.doorClosedAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
             gp.currentMap = 0;

@@ -45,6 +45,7 @@ public abstract class Entity {
     public int spriteCounter = 0; // index of sprite active on screen
     public int spriteNumber = 0;
 
+    public boolean movingDisabled = false;
     boolean moving = false;
     int pixelCounter = 0;
     int walkDuration;
@@ -292,8 +293,7 @@ public abstract class Entity {
     public void downAnimation() {
         this.walkDuration = gp.tileSize * 2;
         this.direction = "left";
-        gp.userInterface.animationStartTime = 0;
-        gp.userInterface.isAnimationActive = true;
+        gp.userInterface.startAnimation();
         animationDuration = 0;
         directionDownTimer.start();
     }
@@ -301,8 +301,7 @@ public abstract class Entity {
     public void upAnimation() {
         this.walkDuration = gp.tileSize * 2;
         this.direction = "right";
-        gp.userInterface.animationStartTime = 0;
-        gp.userInterface.isAnimationActive = true;
+        gp.userInterface.startAnimation();
         animationDuration = 0;
         directionUpTimer.start();
     }
