@@ -2,34 +2,46 @@ package main;
 
 import tile.Point;
 import java.util.ArrayList;
-
 import entity.Entity;
 import tile.TileManager;
 
+//collision checker class
+//cheks all tipe of collisions
+// 1 in game panel for npc pokemon and obj
+// 1 in each layer for tile collisions
 public class CollisionChecker {
-    GamePanel gp;
-    TileManager tileM;
+    GamePanel gp; //gamePanel
+    TileManager tileM; //tile manager for single lauer.
 
+    //constructor for single layer
     public CollisionChecker(GamePanel gp, TileManager tileM) {
         this.gp = gp;
         this.tileM = tileM;
     }
 
+    //general constructor for entities
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
 
+    //method to check if player is colliding with a collision = true tile
+    //sets the collision variable of the entity to true if collision is happening
+    //takes as parameter the entity which to check collision
     public void checkTile(Entity entity) {
+        //takes entity hitbox corners coordinates
         int entityLeftWorldX = entity.worldX + entity.collisionArea.x;
         int entityRightWorldX = entity.worldX + entity.collisionArea.x + entity.collisionArea.width;
         int entityTopWorldY = entity.worldY + entity.collisionArea.y;
         int entityBottomWorldY = entity.worldY + entity.collisionArea.y + entity.collisionArea.height;
 
+        //gets entiy adiacent coordinates
         int entityLeftCol = entityLeftWorldX / gp.tileSize;
         int entityRightCol = entityRightWorldX / gp.tileSize;
         int entityTopRow = entityTopWorldY / gp.tileSize;
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
+        //2 tiles for checking collisions
+        // to be redone ad tile base movement only allows grid movement
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
