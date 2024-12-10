@@ -16,7 +16,7 @@ public class SuperObject{
     public boolean collision = false; //object collision
     public boolean pickable = false; //pickable to determin if object is pickable or not
     public int worldX, worldY;  //object coordinates
-    public Rectangle collisionArea = new Rectangle(0, 0, 48, 48); //object hitbox
+    public Rectangle collisionArea = new Rectangle(0, 0, 64, 64); //object hitbox
     //hit box proprieties
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;

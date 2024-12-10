@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Door;
 import object.OBJ_PokeChest;
+import object.OBJ_Sign;
 import object.OBJ_Stairs;
 import object.SuperObject;
 
@@ -34,9 +35,9 @@ public class Player extends Entity {
         getEntityImage("player/player_");
         getEntityBushImage("player/bush_");
 
-        Xoffset = 0;
-        Yoffset = 0;
-        this.collisionArea = new Rectangle(Xoffset, Yoffset, 62, 62);
+        Xoffset = 2;
+        Yoffset = 2;
+        this.collisionArea = new Rectangle(Xoffset, Yoffset, 60, 60);
         solidAreaDefaultX = collisionArea.x;
         solidAreaDefaultY = collisionArea.y;
 
@@ -70,14 +71,8 @@ public class Player extends Entity {
                     this.direction = "right";
                 }
 
-                objIndex = gp.Checker.checkObject(this, true);
-
                 moving = true;
 
-                // events on collision
-                interactNPC(npcIndex);
-                interactPokemon(pokemonIndex);
-                interactObject(objIndex); // removes the obj on e key press if possible
             }
         }
 
@@ -85,6 +80,8 @@ public class Player extends Entity {
             // check collision on all layers
             collisionOn = false;
             checkTileCollision();
+
+            objIndex = gp.Checker.checkObject(this, true);
 
             // check if player is in bush
             bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(0).cChecker.checkInBush(this);
@@ -141,6 +138,11 @@ public class Player extends Entity {
             } else
                 walkCounter = 0;
         }
+
+        // events on collision
+        interactNPC(npcIndex);
+        interactPokemon(pokemonIndex);
+        interactObject(objIndex); // removes the obj on e key press if possible
     }
 
     public void interactObject(int index) {
@@ -156,6 +158,11 @@ public class Player extends Entity {
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index).pickable == true) {
                     gp.mapM.maps.get(gp.currentMap).aSetter.removeObject(index);
                     objIndex--; // prevents index out bounds exeption
+                }
+
+                if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Sign) {
+                    OBJ_Sign sign = (OBJ_Sign)gp.mapM.maps.get(gp.currentMap).obj.get(index);
+                    sign.printMessage();
                 }
 
                 keyH.Apressed = false; // resets the key
@@ -247,7 +254,6 @@ public class Player extends Entity {
     @Override
     public void draw(Graphics2D g2) {
         BufferedImage Image = null;
-
         // gets player srites
         if (!bushIn) { // if not in bush gets player normal sprites
             switch (this.direction) {
@@ -290,8 +296,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(Image, screenX + 4, screenY - playerWalkOffset, null);
-        // g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width,
-        // collisionArea.height); //hitbox
+        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width,collisionArea.height); //hitbox
 
     }
 }

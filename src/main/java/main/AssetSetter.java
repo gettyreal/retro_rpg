@@ -19,6 +19,7 @@ public class AssetSetter {
         if (mapIndex == 0) {
             addObject(new OBJ_Door("toBirchLab", gp, "door2", 1), 22, 57);
             addObject(new OBJ_Door("toPlayerHouse", gp, "door1", 1), 19, 49);
+            addObject(new OBJ_Sign("viridian city"), 29, 52);
         }
         if (mapIndex == 1) {
             addObject(new OBJ_Door("fromBirchLab", gp, (OBJ_Door)gp.mapM.maps.get(0).obj.get(0)), 7, 13);
