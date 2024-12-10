@@ -73,28 +73,26 @@ public class Player extends Entity {
 
                 moving = true;
 
+                // check collision on all layers
+                collisionOn = false;
+                checkTileCollision();
+
+                // check objcets collison + gets the value of the obj colliding
+                objIndex = gp.Checker.checkObject(this, true);
+
+                // check if player is in bush
+                bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(0).cChecker.checkInBush(this);
+                // used 1nd layer because bushes are on 1nd layer.
+
+                // checks pokemon collision
+                pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
+
+                // checks entity collision
+                npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
             }
         }
 
         if (moving == true) {
-            // check collision on all layers
-            collisionOn = false;
-            checkTileCollision();
-
-            objIndex = gp.Checker.checkObject(this, true);
-
-            // check if player is in bush
-            bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(0).cChecker.checkInBush(this);
-            // used 1nd layer because bushes are on 1nd layer.
-
-            // checks pokemon collision
-            pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
-
-            // checks entity collision
-            npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
-
-            // check objcets collison + gets the value of the obj colliding
-
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":
@@ -161,7 +159,7 @@ public class Player extends Entity {
                 }
 
                 if (gp.mapM.maps.get(gp.currentMap).obj.get(index) instanceof OBJ_Sign) {
-                    OBJ_Sign sign = (OBJ_Sign)gp.mapM.maps.get(gp.currentMap).obj.get(index);
+                    OBJ_Sign sign = (OBJ_Sign) gp.mapM.maps.get(gp.currentMap).obj.get(index);
                     sign.printMessage();
                 }
 
@@ -207,7 +205,7 @@ public class Player extends Entity {
     public void interactDoorUp(SuperObject Door) {
         OBJ_Door door = (OBJ_Door) Door;
         if (door.actionCode.equals("toPlayerHouse")) {
-            door.setTransferCoordinates(2,4, 8);
+            door.setTransferCoordinates(2, 4, 8);
             door.openAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("toBirchLab")) {
@@ -219,7 +217,7 @@ public class Player extends Entity {
     public void interactDoorDown(SuperObject Door) {
         OBJ_Door door = (OBJ_Door) Door;
         if (door.actionCode.equalsIgnoreCase("fromPlayerHouse")) {
-            door.setTransferCoordinates(0,19, 48);
+            door.setTransferCoordinates(0, 19, 48);
             door.closeAnimation();
         }
         if (door.actionCode.equalsIgnoreCase("fromBirchLab")) {
@@ -296,7 +294,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(Image, screenX + 4, screenY - playerWalkOffset, null);
-        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width,collisionArea.height); //hitbox
+        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
 
     }
 }

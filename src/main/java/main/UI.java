@@ -29,6 +29,8 @@ public class UI implements ActionListener{
     Font pokemon_16;
     Font pokemon_14;
     Font pokemon_24;
+    Font pokemon_32;
+    Font pokemon_48;
     Font pokemon_64;
 
     // Colors
@@ -85,7 +87,7 @@ public class UI implements ActionListener{
         dr = new Doctor_Oak(gp); //start dialogue
         //load down arrow
         down_arrow = ut.getBufferedImage("screens/down_arrow.png");
-        down_arrow = UtilityTool.scaleImage(down_arrow, down_arrow.getWidth() * 3, down_arrow.getHeight() * 3);
+        down_arrow = UtilityTool.scaleImage(down_arrow, down_arrow.getWidth() * 4, down_arrow.getHeight() * 4);
 
         // timers.
         titleTimer = new Timer(500, event -> { //title timer
@@ -95,12 +97,12 @@ public class UI implements ActionListener{
         titleTimer.start();
         dotTimer = new Timer(100, event -> { // dialogue dot timer
             dotCount++;
-            if (dotCount <= 5) {
+            if (dotCount <= 6) {
                 dotOffset--;
             } else {
                 dotOffset++;
             }
-            if (dotCount == 10) {
+            if (dotCount == 12) {
                 dotCount = 0;
             }
             gp.repaint();
@@ -117,11 +119,13 @@ public class UI implements ActionListener{
 
         // fonts
         try {
-            InputStream is = getClass().getResourceAsStream("/font/Pokemon_Classic.ttf");
+            InputStream is = getClass().getResourceAsStream("/font/power clear.ttf");
             this.pokemon_font = Font.createFont(Font.TRUETYPE_FONT, is);
-            this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f);
+            this.pokemon_16 = pokemon_font.deriveFont(Font.BOLD, 16f * 2);
             this.pokemon_14 = pokemon_font.deriveFont(Font.BOLD, 14f);
             this.pokemon_24 = pokemon_font.deriveFont(Font.BOLD, 24f);
+            this.pokemon_32 = pokemon_font.deriveFont(Font.BOLD, 32f);
+            this.pokemon_48 = pokemon_font.deriveFont(Font.PLAIN, 48f);
             this.pokemon_64 = pokemon_font.deriveFont(Font.BOLD, 64f);
             is.close();
         } catch (FontFormatException | IOException e) {
@@ -357,21 +361,21 @@ public class UI implements ActionListener{
 
         drawSubWindow(g2, x, y, width, height);
 
-        g2.setFont(pokemon_16);
+        g2.setFont(pokemon_48);
 
         int lastLineLenght = 0;
         for (String line : message.split("\n")) {
             lastLineLenght = (int) g2.getFontMetrics().getStringBounds(line, g2).getWidth();
             g2.setColor(textShadow);
-            g2.drawString(line, x + 16 + 2, y + 32 + 2);
+            g2.drawString(line, x + 32 + 3, y + 64 + 3);
             g2.setColor(textColor);
-            g2.drawString(line, x + 16, y + 32);
+            g2.drawString(line, x + 32, y + 64);
             y += 40;
         }
 
-        dotHeight = y - 25;
+        dotHeight = y;
         if (!dialogueTimer.isRunning()) {
-            g2.drawImage(down_arrow, lastLineLenght + 70, dotHeight + dotOffset, null);
+            g2.drawImage(down_arrow, lastLineLenght + 100, dotHeight + dotOffset, null);
         }
     }
 

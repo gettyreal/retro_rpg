@@ -49,18 +49,17 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ESCAPE) { //gets pause screen
                 gp.gameState = gp.pauseState;
             }
+            
             if (code == KeyEvent.VK_W) { //player up
                 upPressed = true;
-            }
-            if (code == KeyEvent.VK_S) { //player down
+            } else if (code == KeyEvent.VK_S) { //player down
                 downPressed = true;
-            }
-            if (code == KeyEvent.VK_A) { //player left
+            } else if (code == KeyEvent.VK_A) { //player left
                 leftPressed = true;
-            }
-            if (code == KeyEvent.VK_D) { //player right
+            } else if (code == KeyEvent.VK_D) { //player right
                 rightPressed = true;
             }
+            
             if (code == KeyEvent.VK_L) { //interact with obj and npc's
                 Apressed = true;
             }
