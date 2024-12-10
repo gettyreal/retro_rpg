@@ -1,24 +1,31 @@
 package object;
 
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OBJ_Sign extends SuperObject{
+    ActionListener listener;
+    boolean closeMessage = false;
     //texts
-    public ArrayList<String> dialogues;
+    String dialogues;
     public int dialogueIndex = 0;
 
-    public OBJ_Sign(String message) {
-        this.dialogues = new ArrayList<>();
-        addMessage(message);
-    }
-
-    public void addMessage(String message) {
-        this.dialogues.add(message);
+    public OBJ_Sign(String message, ActionListener listener) {
+        this.dialogues = message;
+        this.listener = listener;
     }
 
     public void printMessage() {
-        for (String string : dialogues) {
-            System.out.println(string);
+        ActionEvent event;
+        if (listener == null) return;
+        if (!closeMessage) {
+            event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, dialogues);
+            listener.actionPerformed(event);
+            closeMessage = true;
+        } else {
+            event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "stop");
+            listener.actionPerformed(event);
+            closeMessage = false;
         }
     }
 }

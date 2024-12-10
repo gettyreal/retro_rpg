@@ -1,17 +1,21 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.Timer;
 import entity.npc.Doctor_Oak;
+import object.OBJ_Sign;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
-public class UI{
+public class UI implements ActionListener{
     GamePanel gp; //gamePanel
     UtilityTool ut; //utility tool to handle imagines
 
@@ -69,6 +73,8 @@ public class UI{
 
     //down arrow image
     BufferedImage down_arrow;
+
+    public boolean textActive = false;
 
     //constructor
     //loads class and timers for animations and ui
@@ -150,6 +156,10 @@ public class UI{
     //method to draw events onn playstate
     public void drawPlayScreen(Graphics2D g2) {
         gp.userInterface.fadeAnimation(g2, 1600);
+
+        if (textActive) {
+            drawMessage(g2, currentString);
+        }
     }
 
     //method to draw the title screen (for now unused)
@@ -338,7 +348,8 @@ public class UI{
 
     //method to draw a generic message (think it's unused)
     //gets as parameter the message to draw
-    public void drawMessage(Graphics2D g2, String message) {
+    public void drawMessage(Graphics2D g2, String message) { 
+
         int x = gp.tileSize;
         int y = (gp.screenHeight / 4) * 3;
         int width = gp.screenWidth - (gp.tileSize * 2);
@@ -438,5 +449,20 @@ public class UI{
         // draws the pokemon image (to be implememted further)
         image = gp.mapM.maps.get(gp.currentMap).pokemons.get(gp.player.pokemonIndex).battleImage;
         g2.drawImage(image, 17 * gp.tileSize, 5 * gp.tileSize, image.getWidth(), image.getHeight(), null);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String eventText = e.getActionCommand();
+        if (eventText.equals("stop")) { //precondition to skip NULL events
+            this.textActive = false;
+            this.currentString = "";
+            return;
+        }
+        if (e.getSource() instanceof OBJ_Sign) {
+            this.currentDialog = eventText;
+            this.textActive = true;
+            this.dialogueTimer.start();
+        }
     }
 }
