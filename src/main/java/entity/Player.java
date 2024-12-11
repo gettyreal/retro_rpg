@@ -32,8 +32,8 @@ public class Player extends Entity {
         this.keyH = keyH;
         setDefaultValues(); // set spawn coordinates
 
-        getEntityImage("player/player_");
-        getEntityBushImage("player/bush_");
+        getEntityImage("characters/player/player_");
+        getEntityBushImage("characters/player/bush_");
 
         Xoffset = 2;
         Yoffset = 2;

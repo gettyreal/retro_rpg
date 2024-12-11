@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.Timer;
-import entity.npc.Doctor_Oak;
 import object.OBJ_Sign;
 
 import java.awt.Font;
@@ -71,7 +70,6 @@ public class UI implements ActionListener{
     int yOffset = 0;
 
     //start dialigue (unused)
-    Doctor_Oak dr;
 
     //down arrow image
     BufferedImage down_arrow;
@@ -84,7 +82,6 @@ public class UI implements ActionListener{
         this.gp = gp;
         ut = new UtilityTool();
 
-        dr = new Doctor_Oak(gp); //start dialogue
         //load down arrow
         down_arrow = ut.getBufferedImage("screens/down_arrow.png");
         down_arrow = UtilityTool.scaleImage(down_arrow, down_arrow.getWidth() * 4, down_arrow.getHeight() * 4);
@@ -194,7 +191,7 @@ public class UI implements ActionListener{
                 g2.drawImage(oakDialogue, 0, -92, oakDialogue.getWidth(), oakDialogue.getHeight(), null);
             }
             if (elapsedTime > 3500) { // start oak speech at the end of animation.
-                dr.speak();
+                //dr.speak();
                 dialogueTimer.start();
                 titleScreenState = 2;
             }
@@ -205,14 +202,14 @@ public class UI implements ActionListener{
 
             // continues the dialog on enter press
             if (gp.keyH.Apressed == true) {
-                dr.speak();
+                //dr.speak();
                 gp.keyH.Apressed = false;
             }
             drawMessage(g2, currentString);
-            if (dr.dialogueIndex == 11) {
+            //if (dr.dialogueIndex == 11) {
                 drawGenderPopUp(g2);
                 setPlayerGender();
-            }
+            //}
         }
     }
 
