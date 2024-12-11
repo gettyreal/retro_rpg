@@ -1,23 +1,23 @@
 package object;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import main.UI;
 
 public class OBJ_Sign extends SuperObject{
-    ActionListener listener;
+    UI listener;
     boolean closeMessage = false;
     //texts
     String dialogues;
     public int dialogueIndex = 0;
 
-    public OBJ_Sign(String message, ActionListener listener) {
+    public OBJ_Sign(String message, UI listener) {
         this.dialogues = message;
         this.listener = listener;
     }
 
     public void printMessage() {
         ActionEvent event;
-        if (listener == null) return;
+        if (listener.dialogueTimer.isRunning()) return;
         if (!closeMessage) {
             event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, dialogues);
             listener.actionPerformed(event);
@@ -26,6 +26,6 @@ public class OBJ_Sign extends SuperObject{
             event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "stop");
             listener.actionPerformed(event);
             closeMessage = false;
-        }
+        } 
     }
 }

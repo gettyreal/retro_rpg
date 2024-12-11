@@ -20,7 +20,7 @@ public class UI implements ActionListener{
     UtilityTool ut; //utility tool to handle imagines
 
     // timers
-    Timer dialogueTimer;
+    public Timer dialogueTimer;
     Timer titleTimer;
     Timer dotTimer;
 
