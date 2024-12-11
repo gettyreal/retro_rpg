@@ -18,9 +18,6 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    int playerWalkOffset = 22;
-    int walkCounter = 0;
-
     public int objIndex = 999; // set obj null value.
     public int pokemonIndex = 999;
     public int npcIndex = 999;
@@ -129,9 +126,9 @@ public class Player extends Entity {
 
             this.walkCounter++;
             if (walkCounter < 8) {
-                playerWalkOffset = 24;
+                imageOffset = 24;
             } else if (walkCounter < 16) {
-                playerWalkOffset = 22;
+                imageOffset = 22;
             } else
                 walkCounter = 0;
         }
@@ -292,7 +289,7 @@ public class Player extends Entity {
             }
         }
         // draws current player sprite
-        g2.drawImage(Image, screenX + 4, screenY - playerWalkOffset, null);
+        g2.drawImage(Image, screenX + 4, screenY - imageOffset, null);
         g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
 
     }

@@ -49,6 +49,10 @@ public abstract class Entity {
     boolean moving = false;
     int pixelCounter = 0;
     public int walkDuration;
+
+    int imageOffset = 22;
+    int walkCounter = 0;
+    
     //entity animation
     ActionListener at;
     int animationDuration = 0;
@@ -289,7 +293,7 @@ public abstract class Entity {
                     break;
             }
             if (Image != null) {
-                g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
+                g2.drawImage(Image, screenX, screenY - imageOffset, Image.getWidth(), Image.getHeight(), null);
             } else System.out.println("null image");
             g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
         }
