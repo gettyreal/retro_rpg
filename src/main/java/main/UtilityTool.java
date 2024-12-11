@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,11 +17,20 @@ public class UtilityTool {
     // method to scale a image
     // take as parametet the original image and scaled width and height.
     public static BufferedImage scaleImage(BufferedImage original, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = scaledImage.createGraphics();
+    
+        // Set high-quality rendering hints
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
         g2.drawImage(original, 0, 0, width, height, null);
+        g2.dispose(); // Always dispose Graphics2D to release resources
+    
         return scaledImage;
     }
+    
 
     // method to get a image from a file
     // gets as image the file path
