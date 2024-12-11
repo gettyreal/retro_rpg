@@ -17,8 +17,8 @@ public class AssetSetter {
     // adds obj into the game
     public void setObject(int mapIndex) { 
         if (mapIndex == 0) {
-            addObject(new OBJ_Door("toBirchLab", gp, "door2", 1), 22, 57);
-            addObject(new OBJ_Door("toPlayerHouse", gp, "door1", 1), 19, 49);
+            addObject(new OBJ_Door("toBirchLab", gp, "door2", 1), 22, 56);
+            addObject(new OBJ_Door("toPlayerHouse", gp, "door1", 1), 19, 48);
             addObject(new OBJ_Sign("LITTLEROOT TOWN", gp.userInterface), 29, 52);
             addObject(new OBJ_Sign( gp.player.name +"'S HOUSE", gp.userInterface), 23, 48);
             addObject(new OBJ_Sign("BIRCH'S HOUSE", gp.userInterface), 28, 48);

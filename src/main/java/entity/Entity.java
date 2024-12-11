@@ -48,7 +48,7 @@ public abstract class Entity {
     public boolean movingDisabled = false;
     boolean moving = false;
     int pixelCounter = 0;
-    int walkDuration;
+    public int walkDuration;
     //entity animation
     ActionListener at;
     int animationDuration = 0;

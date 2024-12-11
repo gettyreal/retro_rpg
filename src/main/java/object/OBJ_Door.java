@@ -82,6 +82,7 @@ public class OBJ_Door extends SuperObject { // door wont be visible because the 
                 linkedDoor.spriteIndex--;
             } else if(timerIndex == 14){
                 this.doorClosedTimer.stop();
+                gp.player.walkDuration = gp.tileSize;
             }
             this.timerIndex++;
         });
@@ -119,6 +120,7 @@ public class OBJ_Door extends SuperObject { // door wont be visible because the 
     }
 
     public void closeAnimation() {
+        gp.player.walkDuration += 4;
         gp.player.movingDisabled = true;
         timerIndex = 0;
         doorClosedTimer.start();
@@ -135,7 +137,7 @@ public class OBJ_Door extends SuperObject { // door wont be visible because the 
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(this.image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             if (this.actionCode.contains("to")) {
-                g2.drawImage(this.doorSprites[spriteIndex], screenX, screenY - gp.tileSize, gp.tileSize, gp.tileSize,null);
+                g2.drawImage(this.doorSprites[spriteIndex], screenX, screenY, gp.tileSize, gp.tileSize,null);
             }
         }
     }
