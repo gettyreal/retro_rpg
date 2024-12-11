@@ -83,16 +83,15 @@ public class Player extends Entity {
                 // check if player is in bush
                 bushIn = gp.mapM.maps.get(gp.currentMap).layers.get(0).cChecker.checkInBush(this);
                 // used 1nd layer because bushes are on 1nd layer.
-
-                // checks pokemon collision
-                pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
-
-                // checks entity collision
-                npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
             }
         }
 
         if (moving == true) {
+            // checks pokemon collision
+            pokemonIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).pokemons);
+
+            // checks entity collision
+            npcIndex = gp.Checker.checkEntity(this, gp.mapM.maps.get(gp.currentMap).npc);
             if (collisionOn == false) {
                 switch (direction) {
                     case "up":

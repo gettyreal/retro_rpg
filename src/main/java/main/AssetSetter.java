@@ -48,16 +48,9 @@ public class AssetSetter {
     }
 
     public void setNPC(int mapIndex) {
-        /* 
         if (mapIndex == 0) {
-
+            addNPC(new NPC(gp, "npc15", "NPC 15 walk"), 30, 55);
         }
-        if (mapIndex == 1) {
-            addNPC(new Doctor_Oak(gp), 20, 21);
-            addNPC(new Nurse_Joy(gp), 25, 20);
-        }
-        if (mapIndex == 2) {
-        } */
     }
 
     // adds a new object into the game

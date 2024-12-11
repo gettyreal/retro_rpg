@@ -71,8 +71,8 @@ public abstract class Entity {
     public int dialogueIndex = 0;
 
     public Entity(GamePanel gp) {
-        loadTimers();
         this.gp = gp;
+        loadTimers();
         walkDuration = gp.tileSize;
     }
 
@@ -162,6 +162,7 @@ public abstract class Entity {
     // sets default behavior of entity class
     // each single entity behaves differently so nothing is inside
     public void setAction() {
+
         updateLockCounter++;
         Random random = new Random();
         int randomTime = random.nextInt(240) + 180; // Intervallo di 2-3 secondi circa
@@ -194,6 +195,7 @@ public abstract class Entity {
     // set default update cicle of entiy
     // much the same for all entities exept for player
     public void update() {
+        if (movingDisabled) return;
         setAction();
 
         // checks entity collision
@@ -286,7 +288,10 @@ public abstract class Entity {
                     lastSprite = this.right[spriteNumber];
                     break;
             }
-            g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
+            if (Image != null) {
+                g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
+            } else System.out.println("null image");
+            g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
         }
     }
 
