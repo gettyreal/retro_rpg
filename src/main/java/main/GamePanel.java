@@ -198,6 +198,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2); // draw player
 
+        for (int i = 0; i < mapM.maps.get(currentMap).npc.size(); i++) {
+            if (mapM.maps.get(currentMap).npc.get(i) != null) {
+                mapM.maps.get(currentMap).npc.get(i).drawHead(g2);
+            }
+        }
+
         mapM.maps.get(currentMap).layers.get(2).draw(g2); //draws third layer
         userInterface.draw(g2); // draws ui messages
     }

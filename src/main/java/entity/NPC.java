@@ -16,7 +16,7 @@ public class NPC extends Entity {
         this.speed = 4;
         // gets player image
         getEntityImage(packageName);
-
+        this.imageOffset = 20;
         // gets collision area parameters
         this.Xoffset = 0;
         this.Yoffset = 0;
@@ -37,26 +37,39 @@ public class NPC extends Entity {
         BufferedImage npcSprite = ui.getBufferedImage("characters/NPC/" + packagePath + ".png");
         int x = 0;
         int y = 6;
+        int headHeight = 10;
         int spriteHeight = 42;
         int spriteWidth = 32;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 switch (i) {
                     case 0:
-                        this.down[j] = npcSprite.getSubimage(x, y, spriteWidth, spriteHeight);
-                        this.down[j] = UtilityTool.scaleImage(this.down[j], this.down[j].getWidth() * 2, this.down[j].getHeight() * 2);
+                        Sprite downSprite = new Sprite(
+                                npcSprite.getSubimage(x, y + headHeight, spriteWidth, spriteHeight - headHeight),
+                                npcSprite.getSubimage(x, y, spriteWidth, headHeight));
+                        this.down[j] = downSprite;
+                        this.down[j].scaleSprites();
                         break;
                     case 1:
-                        this.left[j] = npcSprite.getSubimage(x, y, spriteWidth, spriteHeight);
-                        //this.left[j] = UtilityTool.scaleImage(this.left[j], spriteWidth * 2, spriteHeight * 2);
+                        Sprite leftSprite = new Sprite(
+                                npcSprite.getSubimage(x, y + headHeight, spriteWidth, spriteHeight - headHeight),
+                                npcSprite.getSubimage(x, y, spriteWidth, headHeight));
+                        this.left[j] = leftSprite;
+                        this.left[j].scaleSprites();
                         break;
                     case 2:
-                        this.right[j] = npcSprite.getSubimage(x, y, spriteWidth, spriteHeight);
-                        //this.right[j] = UtilityTool.scaleImage(this.right[j], spriteWidth * 2, spriteHeight * 2);
+                        Sprite rightSprite = new Sprite(
+                                npcSprite.getSubimage(x, y + headHeight, spriteWidth, spriteHeight - headHeight),
+                                npcSprite.getSubimage(x, y, spriteWidth, headHeight));
+                        this.right[j] = rightSprite;
+                        this.right[j].scaleSprites();
                         break;
                     case 3:
-                        this.up[j] = npcSprite.getSubimage(x, y, spriteWidth, spriteHeight);
-                        //this.up[j] = UtilityTool.scaleImage(this.up[j], spriteWidth * 2, spriteHeight * 2);
+                        Sprite upSprite = new Sprite(
+                                npcSprite.getSubimage(x, y + headHeight, spriteWidth, spriteHeight - headHeight),
+                                npcSprite.getSubimage(x, y, spriteWidth, headHeight));
+                        this.up[j] = upSprite;
+                        this.up[j].scaleSprites();
                         break;
                 }
                 x += spriteWidth;

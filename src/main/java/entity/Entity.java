@@ -27,15 +27,15 @@ public abstract class Entity {
 
     // movement animation
 
-    public BufferedImage[] up = new BufferedImage[4];
-    public BufferedImage[] down = new BufferedImage[4];
-    public BufferedImage[] left = new BufferedImage[4];
-    public BufferedImage[] right = new BufferedImage[4];
+    public Sprite[] up = new Sprite[4];
+    public Sprite[] down = new Sprite[4];
+    public Sprite[] left = new Sprite[4];
+    public Sprite[] right = new Sprite[4];
 
-    public BufferedImage[] bushUp = new BufferedImage[4];
-    public BufferedImage[] bushDown = new BufferedImage[4];
-    public BufferedImage[] bushLeft = new BufferedImage[4];
-    public BufferedImage[] bushRight = new BufferedImage[4];
+    public Sprite[] bushUp = new Sprite[4];
+    public Sprite[] bushDown = new Sprite[4];
+    public Sprite[] bushLeft = new Sprite[4];
+    public Sprite[] bushRight = new Sprite[4];
 
     public BufferedImage lastSprite;
     public BufferedImage battleImage;
@@ -153,11 +153,12 @@ public abstract class Entity {
         }
     }
 
-    public void loadImage(BufferedImage[] array, int indexArray, String fileName) {
+    public void loadImage(Sprite[] array, int indexArray, String fileName) {
         try {
-            array[indexArray] = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
-            array[indexArray] = UtilityTool.scaleImage(array[indexArray],
-            array[indexArray].getWidth() * 2, array[indexArray].getHeight() * 2); // scale img
+            Sprite tempSprite = new Sprite(ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName)), null);
+            array[indexArray] = tempSprite;
+            array[indexArray].body = UtilityTool.scaleImage(array[indexArray].body,
+            array[indexArray].body.getWidth() * 2, array[indexArray].body.getHeight() * 2); // scale img
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -276,26 +277,63 @@ public abstract class Entity {
                     spriteCounter--; // stays on the same image
                     break;
                 case "up":
-                    Image = this.up[spriteNumber];
-                    lastSprite = this.up[spriteNumber];
+                    Image = this.up[spriteNumber].body;
+                    lastSprite = this.up[spriteNumber].body;
                     break;
                 case "down":
-                    Image = this.down[spriteNumber];
-                    lastSprite = this.down[spriteNumber];
+                    Image = this.down[spriteNumber].body;
+                    lastSprite = this.down[spriteNumber].body;
                     break;
                 case "left":
-                    Image = this.left[spriteNumber];
-                    lastSprite = this.left[spriteNumber];
+                    Image = this.left[spriteNumber].body;
+                    lastSprite = this.left[spriteNumber].body;
                     break;
                 case "right":
-                    Image = this.right[spriteNumber];
-                    lastSprite = this.right[spriteNumber];
+                    Image = this.right[spriteNumber].body;
+                    lastSprite = this.right[spriteNumber].body;
                     break;
             }
             if (Image != null) {
-                g2.drawImage(Image, screenX, screenY - imageOffset, Image.getWidth(), Image.getHeight(), null);
+                g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
             } else System.out.println("null image");
             g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
+        }
+    }
+
+    public void drawHead(Graphics2D g2) {
+        BufferedImage head = null;
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+            switch (this.direction) {
+                case "idle":
+                    head = lastSprite;
+                    spriteCounter--; // stays on the same image
+                    break;
+                case "up":
+                    head = this.up[spriteNumber].head;
+                    lastSprite = this.up[spriteNumber].head;
+                    break;
+                case "down":
+                    head = this.down[spriteNumber].head;
+                    lastSprite = this.down[spriteNumber].head;
+                    break;
+                case "left":
+                    head = this.left[spriteNumber].head;
+                    lastSprite = this.left[spriteNumber].head;
+                    break;
+                case "right":
+                    head = this.right[spriteNumber].head;
+                    lastSprite = this.right[spriteNumber].head;
+                    break;
+            }
+            if (head != null) {
+                g2.drawImage(head, screenX, screenY - imageOffset, head.getWidth(), head.getHeight(), null);
+            } else System.out.println("null image");
         }
     }
 

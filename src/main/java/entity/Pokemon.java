@@ -64,7 +64,7 @@ public class Pokemon extends Entity {
     }
 
     @Override
-    public void loadImage(BufferedImage[] array, int indexArray, String fileName) {
+    public void loadImage(Sprite[] array, int indexArray, String fileName) {
         try {
             // Carica l'immagine
             BufferedImage originalImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream(fileName));
@@ -74,7 +74,7 @@ public class Pokemon extends Entity {
                     originalImage.getWidth() * 3, originalImage.getHeight() * 3);
 
             // Imposta l'immagine scalata nell'array
-            array[indexArray] = scaledImage;
+            array[indexArray].body = scaledImage;
             
             collisionArea = new Rectangle(Xoffset, Yoffset, scaledImage.getWidth(), scaledImage.getHeight());
         } catch (IOException e) {

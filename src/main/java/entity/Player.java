@@ -256,35 +256,35 @@ public class Player extends Entity {
                     spriteCounter--; // stays on the same image
                     break;
                 case "up":
-                    Image = this.up[spriteNumber];
-                    lastSprite = this.up[spriteNumber];
+                    Image = this.up[spriteNumber].body;
+                    lastSprite = this.up[spriteNumber].body;
                     break;
                 case "down":
-                    Image = this.down[spriteNumber];
-                    lastSprite = this.down[spriteNumber];
+                    Image = this.down[spriteNumber].body;
+                    lastSprite = this.down[spriteNumber].body;
                     break;
                 case "left":
-                    Image = this.left[spriteNumber];
-                    lastSprite = this.left[spriteNumber];
+                    Image = this.left[spriteNumber].body;
+                    lastSprite = this.left[spriteNumber].body;
                     break;
                 case "right":
-                    Image = this.right[spriteNumber];
-                    lastSprite = this.right[spriteNumber];
+                    Image = this.right[spriteNumber].body;
+                    lastSprite = this.right[spriteNumber].body;
                     break;
             }
         } else { // if in bush gets player bush sprites
             switch (this.direction) {
                 case "up":
-                    Image = this.bushUp[spriteNumber];
+                    Image = this.bushUp[spriteNumber].body;
                     break;
                 case "down":
-                    Image = this.bushDown[spriteNumber];
+                    Image = this.bushDown[spriteNumber].body;
                     break;
                 case "left":
-                    Image = this.bushLeft[spriteNumber];
+                    Image = this.bushLeft[spriteNumber].body;
                     break;
                 case "right":
-                    Image = this.bushRight[spriteNumber];
+                    Image = this.bushRight[spriteNumber].body;
                     break;
             }
         }
