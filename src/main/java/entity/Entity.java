@@ -296,7 +296,7 @@ public abstract class Entity {
             if (Image != null) {
                 g2.drawImage(Image, screenX, screenY, Image.getWidth(), Image.getHeight(), null);
             } else System.out.println("null image");
-            g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
+            //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
         }
     }
 

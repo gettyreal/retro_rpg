@@ -239,8 +239,8 @@ public class Player extends Entity {
     private void interactNPC(int index) {
         if (index != 999) {
             if (keyH.Apressed == true) {
-                gp.gameState = gp.dialogState;
-                gp.mapM.maps.get(gp.currentMap).npc.get(index).speak();
+                //gp.gameState = gp.dialogState;
+                //gp.mapM.maps.get(gp.currentMap).npc.get(index).speak();
             }
         }
     }
@@ -290,7 +290,7 @@ public class Player extends Entity {
         }
         // draws current player sprite
         g2.drawImage(Image, screenX + 4, screenY - imageOffset, null);
-        g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
+        //g2.drawRect(screenX + Xoffset, screenY + Yoffset, collisionArea.width, collisionArea.height); // hitbox
 
     }
 }
